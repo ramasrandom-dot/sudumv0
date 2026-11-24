@@ -12,17 +12,12 @@ const pos = (start: string, end: string) => {
 export default function Timeline() {
   return (
     <section className="bg-white" aria-labelledby="timeline-title">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 id="timeline-title" className="text-3xl font-bold text-navy md:text-4xl">
-            الدفعة الأولى: <span className="tabular">33</span> أسبوعًا في عام <span className="tabular">2027</span>
-          </h2>
-          <p className="max-w-[46ch] text-slate">
-            كل بوابة عبور معلنة بتاريخها من اليوم الأول. تتوقف الورش في رمضان وإجازة عيد الأضحى.
-          </p>
-        </div>
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-10">
+        <h2 id="timeline-title" className="text-3xl font-bold text-navy md:text-4xl">
+          <span className="tabular">33</span> أسبوعًا في عام <span className="tabular">2027</span>
+        </h2>
 
-        <div className="mt-12">
+        <div className="mt-10">
           <TimelineChart />
         </div>
       </div>

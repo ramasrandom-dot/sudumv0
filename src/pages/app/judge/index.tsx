@@ -37,7 +37,7 @@ export function JudgeEvents() {
               <StageBadge stage={ev.stage} full />
             </div>
             <p className="text-sm text-slate">
-              <span className="tabular">{fmtDate(ev.date)}</span> · {relativeDays(ev.date)} · يعبر <span className="tabular">{ev.capacity}</span> من{' '}
+              <span className="tabular">{fmtDate(ev.date)}</span> · {relativeDays(ev.date)} · يتأهل <span className="tabular">{ev.capacity}</span> من{' '}
               <span className="tabular">{total || '—'}</span>
             </p>
           </div>
@@ -51,7 +51,7 @@ export function JudgeEvents() {
               <Progress value={(done / total) * 100} color={STAGE[ev.stage].color} label="تقدم التقييم" />
             </div>
           ) : (
-            <Badge tone="neutral">تُحدَّد الفرق بعد العبور</Badge>
+            <Badge tone="neutral">تُحدَّد الفرق لاحقًا</Badge>
           )}
           <ArrowLeft className="size-5 text-slate" aria-hidden />
         </Link>
@@ -63,7 +63,7 @@ export function JudgeEvents() {
   const closed = events.filter((e) => e.published)
   return (
     <>
-      <PageHeader title="أيام التحكيم" lede="بطاقة تقييم موحدة بخمسة معايير موزونة. درجاتك سرية حتى إعلان النتائج، ويرى الفريق ملاحظاتك دون اسمك." />
+      <PageHeader title="أيام التحكيم" lede="درجاتك سرية، ويرى الفريق ملاحظاتك دون اسمك." />
       <h2 className="mb-3 text-sm font-semibold text-slate">القادمة</h2>
       {open.length ? <ul className="flex flex-col gap-3">{open.map((e) => <Item key={e.id} ev={e} />)}</ul> : <Card><EmptyState title="لا أيام تحكيم قادمة" /></Card>}
       <h2 className="mb-3 mt-8 text-sm font-semibold text-slate">السابقة</h2>
@@ -155,7 +155,7 @@ export function JudgeEvent() {
                 <div className="grid gap-6 p-5 md:grid-cols-[1fr_1.2fr]">
                   <dl className="grid grid-cols-2 gap-4">
                     <Meta label="القطاع">{team.sector}</Meta>
-                    <Meta label="نقطة الدخول">{ENTRY_POINTS[team.entry].label}</Meta>
+                    <Meta label="الفئة">{ENTRY_POINTS[team.entry].label}</Meta>
                     <Meta label="مستخدمون"><span className="tabular">{team.metrics?.users ?? 0}</span></Meta>
                     <Meta label="مقابلات"><span className="tabular">{team.metrics?.interviews ?? 0}</span></Meta>
                     {team.metrics?.revenue ? <Meta label="إيراد (ريال)"><span className="tabular">{team.metrics.revenue.toLocaleString('en-US')}</span></Meta> : null}
@@ -235,7 +235,7 @@ export function JudgeEvent() {
                       </div>
                     ))}
                     <div className="px-5 py-4">
-                      <Field label="ملاحظة للفريق" htmlFor="j-comment" hint="تظهر للفريق بعد إعلان النتائج، دون اسمك." error={error}>
+                      <Field label="ملاحظة للفريق" htmlFor="j-comment" hint="تظهر للفريق دون اسمك." error={error}>
                         <Textarea id="j-comment" value={comment} onChange={(e) => { setComment(e.target.value); setError('') }} />
                       </Field>
                     </div>
@@ -272,7 +272,7 @@ export function JudgeScores() {
   const mine = state.scores.filter((s) => s.judgeId === me.id).sort((a, b) => b.at.localeCompare(a.at))
   return (
     <>
-      <PageHeader title="تقييماتي" lede="كل بطاقات التقييم التي قدّمتها، ويمكن تعديلها حتى إعلان النتائج." />
+      <PageHeader title="تقييماتي" lede="يمكن تعديلها حتى إعلان النتائج." />
       <Card>
         {mine.length ? (
           <div className="overflow-x-auto">

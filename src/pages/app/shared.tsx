@@ -17,7 +17,7 @@ export function MilestoneBadge({ m }: { m: Milestone }) {
 const SESSION_KIND: Record<Session['kind'], string> = {
   mentoring: 'جلسة إرشاد',
   'office-hours': 'ساعة مكتبية',
-  clinic: 'عيادة',
+  clinic: 'استشارة',
 }
 
 const SESSION_STATUS: Record<Session['status'], { label: string; tone: 'neutral' | 'blue' | 'green' | 'warn' | 'danger' }> = {

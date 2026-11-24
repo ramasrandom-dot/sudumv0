@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ExternalLink, Send, Stethoscope, Users } from 'lucide-react'
 import { StageBadge, StageTrack, Star } from '@/components/brand'
 import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, Meta, PageHeader, Progress, Select, Textarea, useToast } from '@/components/ui'
-import { CRITERIA, ENTRY_POINTS, STAGE, TODAY } from '@/data/program'
+import { CRITERIA, ENTRY_POINTS, STAGE, TODAY, nextStage } from '@/data/program'
 import type { Milestone } from '@/data/types'
 import { daysFromToday, fmtDate, fmtDay } from '@/lib/dates'
 import { eventResults, weightedTotal } from '@/lib/scoring'
@@ -59,8 +59,8 @@ export function ParticipantOverview() {
             </p>
             <p className="mt-2 max-w-[60ch] opacity-85">
               {team.status === 'exited'
-                ? `لم يعبر الفريق بوابة ${stage.fullName}. ملاحظات المحكّمين في صفحة النتائج، والتقديم مفتوح للدفعة القادمة.`
-                : `المخرج: ${stage.outcome}`}
+                ? 'لم يتأهل الفريق. ملاحظات المحكّمين في صفحة النتائج.'
+                : `النتيجة المطلوبة: ${stage.outcome}`}
             </p>
           </div>
           <div className="flex flex-col justify-center rounded-xl bg-black/15 px-6 py-4 text-center">
@@ -84,7 +84,7 @@ export function ParticipantOverview() {
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-navy">{nextMilestone.title}</p>
                   <p className="text-sm text-slate">
-                    معلم الأسبوع <span className="tabular">{nextMilestone.week}</span> · التسليم{' '}
+                    مهمة الأسبوع <span className="tabular">{nextMilestone.week}</span> · التسليم{' '}
                     <span className="tabular">{fmtDay(nextMilestone.due)}</span> · <Rel iso={nextMilestone.due} />
                   </p>
                 </div>
@@ -110,7 +110,7 @@ export function ParticipantOverview() {
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-navy">{nextWorkshop.title}</p>
                   <p className="text-sm text-slate">
-                    ورشة الأسبوع <span className="tabular">{nextWorkshop.week}</span> · {nextWorkshop.verb}
+                    ورشة الأسبوع <span className="tabular">{nextWorkshop.week}</span>
                   </p>
                 </div>
               </ListRow>
@@ -120,13 +120,13 @@ export function ParticipantOverview() {
 
         <div className="flex flex-col gap-6">
           <Card className="p-5">
-            <h2 className="font-bold text-navy">المعالم المعتمدة</h2>
+            <h2 className="font-bold text-navy">المهام المعتمدة</h2>
             <p className="tabular mt-2 text-3xl font-bold text-navy">
               {progress.approved}
               <span className="text-lg text-slate"> / {progress.total}</span>
             </p>
             <div className="mt-3">
-              <Progress value={progress.pct} color={stage.color} label="نسبة المعالم المعتمدة" />
+              <Progress value={progress.pct} color={stage.color} label="نسبة المهام المعتمدة" />
             </div>
           </Card>
           <Card className="p-5">
@@ -181,7 +181,7 @@ function SubmitForm({ m, onDone }: { m: Milestone; onDone: () => void }) {
         onDone()
       }}
     >
-      <Field label="رابط التسليم" htmlFor={`link-${m.id}`} error={error} hint="ملف في Drive أو رابط النموذج الأولي" required>
+      <Field label="رابط التسليم" htmlFor={`link-${m.id}`} error={error} required>
         <Input id={`link-${m.id}`} dir="ltr" value={link} onChange={(e) => { setLink(e.target.value); setError('') }} placeholder="https://" aria-invalid={!!error} />
       </Field>
       <Field label="ملاحظة للمرشدة" htmlFor={`note-${m.id}`}>
@@ -207,13 +207,10 @@ export function ParticipantMilestones() {
 
   return (
     <>
-      <PageHeader
-        title="المعالم والتسليمات"
-        lede={`معالم ${stage.fullName} يعتمدها المرشد، وتُبنى عليها جاهزية الفريق ليوم التحكيم.`}
-      />
+      <PageHeader title="المهام" />
       <Card>
         {ms.length === 0 && (
-          <EmptyState title="لا معالم بعد">تُضاف معالم {stage.fullName} مع بداية المرحلة في {fmtDay(stage.start)}.</EmptyState>
+          <EmptyState title="لا مهام بعد">تبدأ {stage.fullName} في {fmtDay(stage.start)}.</EmptyState>
         )}
         <ol className="divide-y divide-line">
           {ms.map((m) => {
@@ -267,10 +264,9 @@ export function ParticipantWorkshops() {
   const team = useMyTeam()
   const { state } = useStore()
   const list = state.workshops.filter((w) => w.stage === team.stage)
-  const stage = STAGE[team.stage]
   return (
     <>
-      <PageHeader title="الورش" lede={`${stage.steps}. الحضور يُسجّل في الورشة، والعيادات متاحة بعدها عند الحاجة.`} />
+      <PageHeader title="الورش" lede={STAGE[team.stage].fullName} />
       <Card>
         <ul className="divide-y divide-line">
           {list.map((w) => {
@@ -283,8 +279,8 @@ export function ParticipantWorkshops() {
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold text-navy">{w.title}</p>
                   <p className="text-sm text-slate">
-                    الأسبوع <span className="tabular">{w.week}</span> · {w.verb}
-                    {expert && <> · تقدّمها {expert.name}</>}
+                    الأسبوع <span className="tabular">{w.week}</span>
+                    {expert && <> · {expert.name}</>}
                   </p>
                 </div>
                 {past ? (
@@ -319,7 +315,7 @@ export function ParticipantMentoring() {
 
   return (
     <>
-      <PageHeader title="الإرشاد والعيادات" lede="جلسة أسبوعية ثابتة مع مرشدتكِ، وساعات مكتبية تحجزينها عند الحاجة، وعيادات متخصصة مع الخبراء." />
+      <PageHeader title="الإرشاد والاستشارات" />
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div className="flex flex-col gap-6">
           <Card>
@@ -338,11 +334,11 @@ export function ParticipantMentoring() {
                 ))}
               </ul>
             ) : (
-              <EmptyState title="لا جلسات قادمة">احجزي ساعة مكتبية أو اطلبي عيادة من القائمة المجاورة.</EmptyState>
+              <EmptyState title="لا جلسات قادمة">احجزي ساعة مكتبية أو اطلبي استشارة.</EmptyState>
             )}
           </Card>
           <Card>
-            <CardHeader title="سجل الجلسات" sub="ملاحظات المرشدة بعد كل جلسة" />
+            <CardHeader title="سجل الجلسات" />
             <ul className="divide-y divide-line">
               {past.map((s) => (
                 <li key={s.id} className="px-5 py-4">
@@ -392,17 +388,17 @@ export function ParticipantMentoring() {
           </Card>
 
           <Card>
-            <CardHeader title="اطلبي عيادة متخصصة" sub="قانونية ومالية وتقنية وتسويقية" />
+            <CardHeader title="اطلبي استشارة" sub="قانونية، مالية، تقنية، تسويقية" />
             <form
               className="flex flex-col gap-4 p-5"
               onSubmit={(e) => {
                 e.preventDefault()
                 if (!clinic.expertId || clinic.topic.trim().length < 5 || !clinic.date) {
-                  setClinicError('اختاري الخبير والموعد واكتبي موضوع العيادة.')
+                  setClinicError('اختاري الخبير والموعد واكتبي الموضوع.')
                   return
                 }
                 actions.requestSession({ teamId: team.id, hostId: clinic.expertId, kind: 'clinic', date: clinic.date, time: '13:00', topic: clinic.topic })
-                toast('أُرسل طلب العيادة إلى الخبير')
+                toast('أُرسل طلب الاستشارة إلى الخبير')
                 setClinic({ expertId: '', topic: '', date: '' })
                 setClinicError('')
               }}
@@ -418,7 +414,7 @@ export function ParticipantMentoring() {
               <Field label="الموعد المفضل" htmlFor="cl-date">
                 <Input id="cl-date" type="date" min={TODAY} value={clinic.date} onChange={(e) => setClinic({ ...clinic, date: e.target.value })} />
               </Field>
-              <Field label="موضوع العيادة" htmlFor="cl-topic" error={clinicError}>
+              <Field label="الموضوع" htmlFor="cl-topic" error={clinicError}>
                 <Textarea id="cl-topic" className="min-h-20" value={clinic.topic} onChange={(e) => setClinic({ ...clinic, topic: e.target.value })} />
               </Field>
               <Button type="submit" variant="secondary">
@@ -442,7 +438,7 @@ export function ParticipantResults() {
 
   return (
     <>
-      <PageHeader title="نتائج التحكيم" lede="معايير كل بوابة معلنة مسبقًا. تظهر الدرجات وملاحظات المحكّمين بعد إعلان النتائج." />
+      <PageHeader title="نتائج التحكيم" />
       <div className="flex flex-col gap-6">
         {events.map((ev) => {
           const stage = STAGE[ev.stage]
@@ -451,7 +447,7 @@ export function ParticipantResults() {
               <Card key={ev.id}>
                 <CardHeader
                   title={ev.title}
-                  sub={<>القادم · <span className="tabular">{fmtDate(ev.date)}</span> · يعبر <span className="tabular">{ev.capacity}</span> فرق إلى {STAGE.sanam.fullName}</>}
+                  sub={<>القادم · <span className="tabular">{fmtDate(ev.date)}</span> · يتأهل <span className="tabular">{ev.capacity}</span> فرق{nextStage(ev.stage) ? ` إلى ${STAGE[nextStage(ev.stage)!].fullName}` : ''}</>}
                   action={<StageBadge stage={ev.stage} />}
                 />
                 <div className="p-5">
@@ -480,7 +476,7 @@ export function ParticipantResults() {
               <CardHeader
                 title={ev.title}
                 sub={<span className="tabular">{fmtDate(ev.date)}</span>}
-                action={advanced ? <Badge tone="green">عبر الفريق إلى المرحلة التالية</Badge> : <Badge tone="neutral">لم يعبر</Badge>}
+                action={advanced ? <Badge tone="green">تأهل الفريق</Badge> : <Badge tone="neutral">لم يتأهل</Badge>}
               />
               {sheets.length > 0 && mine ? (
                 <div className="grid gap-6 p-5 md:grid-cols-[12rem_1fr]">
@@ -513,7 +509,7 @@ export function ParticipantResults() {
                   </div>
                 </div>
               ) : (
-                <p className="p-5 text-sm text-slate">تأهل الفريق بعد مقابلة الفرز ومختبر الأفكار.</p>
+                <p className="p-5 text-sm text-slate">تأهل الفريق بعد مقابلة القبول.</p>
               )}
             </Card>
           )
@@ -550,16 +546,16 @@ export function ParticipantTeam() {
         <Card className="p-5">
           <dl className="grid gap-4">
             <Meta label="المرحلة"><StageBadge stage={team.stage} full /></Meta>
-            <Meta label="نقطة الدخول">{ENTRY_POINTS[team.entry].label}</Meta>
+            <Meta label="الفئة">{ENTRY_POINTS[team.entry].label}</Meta>
             <Meta label="القطاع">{team.sector}</Meta>
-            <Meta label="الانضمام للمرحلة">{team.joinedVia === 'advanced' ? 'عبور من المرحلة السابقة' : 'مقعد مفتوح'}</Meta>
+            <Meta label="الانضمام">{team.joinedVia === 'advanced' ? 'تأهل من المرحلة السابقة' : 'مقعد مفتوح'}</Meta>
             {mentor && <Meta label="المرشدة">{mentor.name}</Meta>}
           </dl>
         </Card>
         <Card className="lg:col-span-2">
-          <CardHeader title="ميثاق العمل" sub="اتفاق الفريق على الأدوار وطريقة اتخاذ القرار" />
+          <CardHeader title="اتفاق الفريق" />
           <p className="max-w-[70ch] p-5 leading-loose text-navy">
-            {team.charter ?? 'لم يُرفع ميثاق العمل بعد.'}
+            {team.charter ?? 'لم يُكتب اتفاق الفريق بعد.'}
           </p>
         </Card>
       </div>

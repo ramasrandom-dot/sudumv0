@@ -33,21 +33,21 @@ export interface NavItem {
 export const NAV: Record<Role, NavItem[]> = {
   participant: [
     { to: '/app/participant', label: 'نظرة عامة', icon: Home, end: true },
-    { to: '/app/participant/milestones', label: 'المعالم والتسليمات', icon: ListChecks },
+    { to: '/app/participant/milestones', label: 'المهام', icon: ListChecks },
     { to: '/app/participant/workshops', label: 'الورش', icon: Presentation },
-    { to: '/app/participant/mentoring', label: 'الإرشاد والعيادات', icon: MessagesSquare },
+    { to: '/app/participant/mentoring', label: 'الإرشاد والاستشارات', icon: MessagesSquare },
     { to: '/app/participant/results', label: 'نتائج التحكيم', icon: Trophy },
     { to: '/app/participant/team', label: 'فريقي', icon: UsersRound },
   ],
   mentor: [
     { to: '/app/mentor', label: 'فرقي', icon: UsersRound, end: true },
-    { to: '/app/mentor/reviews', label: 'معالم بانتظار الاعتماد', icon: ClipboardCheck },
+    { to: '/app/mentor/reviews', label: 'مهام بانتظار الاعتماد', icon: ClipboardCheck },
     { to: '/app/mentor/sessions', label: 'الجلسات', icon: MessagesSquare },
     { to: '/app/mentor/hours', label: 'الساعات المكتبية', icon: CalendarClock },
   ],
   expert: [
     { to: '/app/expert', label: 'ورشي', icon: Presentation, end: true },
-    { to: '/app/expert/clinics', label: 'طلبات العيادات', icon: Stethoscope },
+    { to: '/app/expert/clinics', label: 'طلبات الاستشارات', icon: Stethoscope },
     { to: '/app/expert/profile', label: 'ملفي', icon: UserRound },
   ],
   judge: [
@@ -60,7 +60,7 @@ export const NAV: Record<Role, NavItem[]> = {
     { to: '/app/admin/teams', label: 'الفرق', icon: UsersRound },
     { to: '/app/admin/workshops', label: 'الورش', icon: Presentation },
     { to: '/app/admin/people', label: 'المرشدون والخبراء', icon: Users },
-    { to: '/app/admin/judging', label: 'التحكيم والعبور', icon: Flag },
+    { to: '/app/admin/judging', label: 'التحكيم والتأهل', icon: Flag },
     { to: '/app/admin/escalations', label: 'التصعيد', icon: AlertTriangle },
     { to: '/app/admin/timeline', label: 'الجدول الزمني', icon: CalendarDays },
   ],

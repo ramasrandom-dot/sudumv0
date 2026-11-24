@@ -34,7 +34,8 @@ export interface AppState {
   escalations: Escalation[]
 }
 
-const VERSION = 1
+// Bump when seed text or shape changes, so stale saved demo state is discarded.
+const VERSION = 2
 const KEY = 'sudum-demo-state'
 
 const fresh = (): AppState => ({

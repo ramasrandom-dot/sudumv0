@@ -9,9 +9,9 @@ import { useStore } from '@/store/AppStore'
 import PageHero from './PageHero'
 
 const KINDS: Record<NominationKind, { label: string; detail: string }> = {
-  mentor: { label: 'مرشد/ة', detail: 'جلسة أسبوعية مع فريق أو فريقين، وساعات مكتبية، واعتماد المعالم.' },
-  expert: { label: 'خبير/ة', detail: 'تقديم ورشة في أسبوعها، وعيادات متخصصة عند حاجة الفرق.' },
-  judge: { label: 'محكّم/ة', detail: 'المشاركة في لجان التحكيم الخارجية ببطاقة التقييم الموحدة.' },
+  mentor: { label: 'مرشد/ة', detail: 'جلسة أسبوعية مع فريق.' },
+  expert: { label: 'خبير/ة', detail: 'ورشة أو جلسة استشارية.' },
+  judge: { label: 'محكّم/ة', detail: 'تقييم الفرق في أيام التحكيم.' },
 }
 
 export default function Join() {
@@ -50,17 +50,17 @@ export default function Join() {
     <>
       <PageHero
         title="انضم إلى شبكة سُدُم"
-        lede="نرشّح مرشدين وخبراء ومحكّمين في خمسة محاور. اختر دورك ومجالاتك، ويتواصل معك فريق البرنامج لمطابقتك مع احتياج الفرق."
+        lede="اختر دورك ومجالاتك، ونتواصل معك."
       />
       <section className="bg-canvas">
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6 md:py-20">
           {done ? (
             <div className="rounded-xl border border-line bg-white p-8 shadow-card md:p-10" role="status">
               <Star className="size-10" color="#2086C2" />
-              <h2 className="mt-5 text-2xl font-bold text-navy">شكرًا لك، وصل ترشيحك</h2>
-              <p className="mt-3 text-slate">يراجع فريق البرنامج الترشيحات أسبوعيًا، ويتواصل معك عند المطابقة مع فريق أو ورشة.</p>
+              <h2 className="mt-5 text-2xl font-bold text-navy">وصل طلبك، شكرًا لك</h2>
+              <p className="mt-3 text-slate">نتواصل معك قريبًا.</p>
               <div className="mt-6 rounded-lg bg-tint-blue px-4 py-3 text-sm text-navy">
-                نسخة تجريبية: ادخل بصفة «إدارة البرنامج» وافتح «المرشدون والخبراء» لاعتماد الترشيح.
+                نسخة تجريبية: طلبك يظهر الآن عند «إدارة البرنامج».
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink to="/login">جرّب المنصة</ButtonLink>
@@ -107,7 +107,7 @@ export default function Join() {
 
               <fieldset>
                 <legend className="text-lg font-bold text-navy">مجالات الخبرة</legend>
-                <p className="mt-1 text-sm text-slate">اختر كل ما ينطبق عليك. نستخدمها لمطابقتك مع احتياج الفرق.</p>
+                <p className="mt-1 text-sm text-slate">اختر كل ما ينطبق عليك.</p>
                 {errors.areas && <p className="mt-2 text-sm text-danger" role="alert">{errors.areas}</p>}
                 <div className="mt-5 grid gap-6 md:grid-cols-2">
                   {EXPERTISE.map((g) => (
@@ -131,13 +131,13 @@ export default function Join() {
                 </div>
               </fieldset>
 
-              <Field label="نبذة قصيرة" htmlFor="j-note" hint="خبراتك السابقة مع المشاريع الناشئة، والوقت المتاح شهريًا.">
+              <Field label="نبذة قصيرة" htmlFor="j-note" hint="اختياري">
                 <Textarea id="j-note" value={note} onChange={(e) => setNote(e.target.value)} />
               </Field>
 
               <div className="flex justify-end border-t border-line pt-6">
                 <Button type="submit" size="lg">
-                  إرسال الترشيح
+                  إرسال الطلب
                 </Button>
               </div>
             </form>

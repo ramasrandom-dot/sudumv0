@@ -33,7 +33,7 @@ export const isOverdue = (m: Milestone) => (m.status === 'todo' || m.status === 
 
 export const MILESTONE_STATUS: Record<MilestoneStatus, { label: string; tone: 'neutral' | 'blue' | 'green' | 'warn' }> = {
   todo: { label: 'لم يُسلَّم', tone: 'neutral' },
-  submitted: { label: 'بانتظار المرشد', tone: 'blue' },
+  submitted: { label: 'بانتظار الاعتماد', tone: 'blue' },
   approved: { label: 'معتمد', tone: 'green' },
   changes: { label: 'مطلوب تعديل', tone: 'warn' },
 }

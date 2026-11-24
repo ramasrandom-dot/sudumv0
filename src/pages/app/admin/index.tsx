@@ -61,8 +61,8 @@ export function AdminDashboard() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="فرق نشطة في تمكين" value={active.length} note={<>يعبر <span className="tabular">5</span> منها إلى سنام</>} accent={stage.ink} />
-        <Stat label="معالم بانتظار المرشدين" value={awaiting} note="تسليمات لم تُعتمد بعد" />
+        <Stat label="فرق نشطة في تمكين" value={active.length} note={<>يتأهل <span className="tabular">5</span> منها إلى سنام</>} accent={stage.ink} />
+        <Stat label="مهام بانتظار المرشدين" value={awaiting} />
         <Stat label="طلبات تقديم جديدة" value={newApps} note={<Link className="text-blue-ink hover:underline" to="/app/admin/applications">مراجعة الطلبات</Link>} />
         <Stat
           label="تحديات مفتوحة"
@@ -74,7 +74,7 @@ export function AdminDashboard() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <Card>
-          <CardHeader title="رحلة الدفعة" sub="من التسجيل إلى المسرعة" />
+          <CardHeader title="رحلة الدفعة" />
           <ul className="flex flex-col gap-4 p-5">
             {FUNNEL.map((f) => (
               <li key={f.label} className="grid grid-cols-[minmax(0,9.5rem)_1fr_3rem] items-center gap-3 text-sm">
@@ -97,10 +97,10 @@ export function AdminDashboard() {
             </p>
             <div>
               <div className="mb-1.5 flex justify-between text-sm">
-                <span className="text-slate">معالم معتمدة عبر الفرق</span>
+                <span className="text-slate">المهام المعتمدة</span>
                 <span className="tabular font-semibold text-navy">{progress.approved} / {progress.total}</span>
               </div>
-              <Progress value={progress.pct} color={stage.color} label="المعالم المعتمدة" />
+              <Progress value={progress.pct} color={stage.color} label="المهام المعتمدة" />
             </div>
             <Link to="/app/admin/judging" className="inline-flex items-center gap-1 text-sm font-semibold text-blue-ink hover:underline">
               إعداد يوم التحكيم
@@ -112,7 +112,7 @@ export function AdminDashboard() {
 
       <div className="mt-6 grid items-start gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader title="فرق تحتاج متابعة" sub="معالم متأخرة أو مُعادة للتعديل" />
+          <CardHeader title="فرق تحتاج متابعة" />
           {atRisk.length ? (
             <ul className="divide-y divide-line">
               {atRisk.map(({ t, late, changes }) => (
@@ -151,7 +151,7 @@ export function AdminDashboard() {
           <Card>
             <CardHeader
               title="أحمال المرشدين"
-              action={newNoms > 0 && <Link to="/app/admin/people" className="text-sm font-semibold text-blue-ink hover:underline"><span className="tabular">{newNoms}</span> ترشيحات جديدة</Link>}
+              action={newNoms > 0 && <Link to="/app/admin/people" className="text-sm font-semibold text-blue-ink hover:underline"><span className="tabular">{newNoms}</span> طلبات انضمام</Link>}
             />
             <ul className="divide-y divide-line">
               {mentors.map((m) => {
@@ -213,7 +213,7 @@ function ApplicationRow({ a }: { a: Application }) {
       {open && (
         <div className="grid gap-6 border-t border-line bg-canvas/50 px-5 py-5 md:grid-cols-[1.3fr_1fr]">
           <dl className="grid gap-3 text-sm">
-            <div><dt className="text-slate">نقطة الدخول</dt><dd className="text-navy">{ENTRY_POINTS[a.entry].label}</dd></div>
+            <div><dt className="text-slate">الفئة</dt><dd className="text-navy">{ENTRY_POINTS[a.entry].label}</dd></div>
             <div><dt className="text-slate">الكلية أو الجهة</dt><dd className="text-navy">{a.college}</dd></div>
             <div><dt className="text-slate">المشكلة</dt><dd className="text-navy">{a.problem}</dd></div>
             <div><dt className="text-slate">الفكرة</dt><dd className="text-navy">{a.idea}</dd></div>
@@ -228,7 +228,7 @@ function ApplicationRow({ a }: { a: Application }) {
               <Textarea id={`an-${a.id}`} className="min-h-20" value={note} onChange={(e) => setNote(e.target.value)} />
             </Field>
             <div className="flex flex-wrap gap-2">
-              {a.status === 'new' && <Button size="sm" onClick={() => decide('interview', `دُعيت ${a.leadName} لمقابلة الفرز`)}>دعوة لمقابلة الفرز</Button>}
+              {a.status === 'new' && <Button size="sm" onClick={() => decide('interview', `دُعيت ${a.leadName} لمقابلة القبول`)}>دعوة لمقابلة القبول</Button>}
               {a.status !== 'accepted' && <Button size="sm" variant="secondary" onClick={() => decide('accepted', `قُبل طلب ${a.leadName}`)}><Check className="size-4" aria-hidden />قبول</Button>}
               {a.status !== 'declined' && <Button size="sm" variant="ghost" onClick={() => decide('declined', 'سُجّل الاعتذار')}><X className="size-4" aria-hidden />اعتذار</Button>}
             </div>
@@ -246,7 +246,7 @@ export function AdminApplications() {
   const count = (s: ApplicationStatus) => state.applications.filter((a) => a.status === s).length
   return (
     <>
-      <PageHeader title="طلبات التقديم" lede="الإلهام لدفعة 2028، والمقاعد المفتوحة في تمكين وسنام. مقابلة الفرز 10 دقائق مع لجنة خارجية." />
+      <PageHeader title="طلبات التقديم" />
       <div className="mb-4">
         <Segmented
           label="حالة الطلب"
@@ -279,7 +279,7 @@ export function AdminTeams() {
 
   return (
     <>
-      <PageHeader title="الفرق" lede="مطابقة المرشدين، ومتابعة المعالم، وحالة كل فريق في رحلته." />
+      <PageHeader title="الفرق" />
       <div className="mb-4">
         <Segmented
           label="تصفية الفرق"
@@ -287,7 +287,7 @@ export function AdminTeams() {
           onChange={setFilter}
           options={[
             { value: 'active', label: 'النشطة', count: state.teams.filter((t) => t.status === 'active').length },
-            { value: 'exited', label: 'غير العابرة', count: state.teams.filter((t) => t.status !== 'active').length },
+            { value: 'exited', label: 'لم تتأهل', count: state.teams.filter((t) => t.status !== 'active').length },
             { value: 'all', label: 'الكل', count: state.teams.length },
           ]}
         />
@@ -299,7 +299,7 @@ export function AdminTeams() {
               <th className="px-5 py-3 text-start font-semibold">الفريق</th>
               <th className="px-3 py-3 text-start font-semibold">المرحلة</th>
               <th className="px-3 py-3 text-start font-semibold">المرشد</th>
-              <th className="px-3 py-3 text-start font-semibold">المعالم</th>
+              <th className="px-3 py-3 text-start font-semibold">المهام</th>
               <th className="px-3 py-3 text-start font-semibold">مستخدمون</th>
               <th className="px-5 py-3 text-start font-semibold">الحالة</th>
             </tr>
@@ -313,7 +313,7 @@ export function AdminTeams() {
                 <tr key={t.id} className="hover:bg-canvas/50">
                   <td data-label="الفريق" className="px-5 py-3">
                     <p className="font-bold text-navy">{t.name}</p>
-                    <p className="text-xs text-slate">{t.sector} · {t.joinedVia === 'open-seat' ? 'مقعد مفتوح' : 'عبور'}</p>
+                    <p className="text-xs text-slate">{t.sector} · {t.joinedVia === 'open-seat' ? 'مقعد مفتوح' : 'متأهل'}</p>
                   </td>
                   <td data-label="المرحلة" className="px-3 py-3"><StageBadge stage={t.stage} /></td>
                   <td data-label="المرشد" className="px-3 py-3">
@@ -334,10 +334,10 @@ export function AdminTeams() {
                       <span className="text-slate">—</span>
                     )}
                   </td>
-                  <td data-label="المعالم" className="px-3 py-3">
+                  <td data-label="المهام" className="px-3 py-3">
                     {ms.length ? (
                       <div className="flex min-w-28 items-center gap-2">
-                        <Progress value={p.pct} color={STAGE[t.stage].color} label={`معالم ${t.name}`} />
+                        <Progress value={p.pct} color={STAGE[t.stage].color} label={`مهام ${t.name}`} />
                         <span className="tabular text-xs text-slate">{p.approved}/{p.total}</span>
                         {late > 0 && <Badge tone="danger"><span className="tabular">{late}</span></Badge>}
                       </div>
@@ -345,7 +345,7 @@ export function AdminTeams() {
                   </td>
                   <td data-label="مستخدمون" className="tabular px-3 py-3 text-navy">{t.metrics?.users ?? '—'}</td>
                   <td data-label="الحالة" className="px-5 py-3">
-                    {t.status === 'active' ? <Badge tone="green">نشط</Badge> : t.status === 'graduated' ? <Badge tone="navy">متخرج</Badge> : <Badge tone="neutral">لم يعبر {STAGE[t.stage].name}</Badge>}
+                    {t.status === 'active' ? <Badge tone="green">نشط</Badge> : t.status === 'graduated' ? <Badge tone="navy">متخرج</Badge> : <Badge tone="neutral">لم يتأهل من {STAGE[t.stage].name}</Badge>}
                   </td>
                 </tr>
               )
@@ -368,12 +368,12 @@ export function AdminWorkshops() {
     <>
       <PageHeader
         title="الورش"
-        lede={<><span className="tabular">23</span> ورشة عبر المراحل الأربع.{unassigned > 0 && <> <span className="font-semibold text-warn"><span className="tabular">{unassigned}</span> ورشة قادمة بلا خبير.</span></>}</>}
+        lede={unassigned > 0 ? <span className="font-semibold text-warn">ورش قادمة بلا خبير: <span className="tabular">{unassigned}</span></span> : undefined}
       />
       <div className="flex flex-col gap-6">
         {STAGES.map((s) => (
           <Card key={s.id}>
-            <CardHeader title={<span className="flex items-center gap-2"><Star className="size-4" color={s.color} />{s.fullName}</span>} sub={s.steps} />
+            <CardHeader title={<span className="flex items-center gap-2"><Star className="size-4" color={s.color} />{s.fullName}</span>} />
             <table className="rtable w-full text-sm">
               <thead>
                 <tr className="border-b border-line text-slate">
@@ -443,7 +443,7 @@ export function AdminPeople() {
 
   return (
     <>
-      <PageHeader title="المرشدون والخبراء والمحكّمون" lede="الشبكة مصنفة بالمحاور الخمسة، وتُطابق مع احتياج الفرق في كل مرحلة." />
+      <PageHeader title="المرشدون والخبراء والمحكّمون" />
       <div className="mb-4">
         <Segmented
           label="الفئة"
@@ -453,7 +453,7 @@ export function AdminPeople() {
             { value: 'mentor', label: 'المرشدون', count: peopleByRole(state, 'mentor').length },
             { value: 'expert', label: 'الخبراء', count: peopleByRole(state, 'expert').length },
             { value: 'judge', label: 'المحكّمون', count: peopleByRole(state, 'judge').length },
-            { value: 'nominations', label: 'ترشيحات جديدة', count: newNoms.length },
+            { value: 'nominations', label: 'طلبات انضمام', count: newNoms.length },
           ]}
         />
       </div>
@@ -486,7 +486,7 @@ export function AdminPeople() {
               ))}
             </ul>
           ) : (
-            <EmptyState title="لا ترشيحات جديدة">تصل الترشيحات من صفحة «انضم مرشدًا أو خبيرًا» في الموقع العام.</EmptyState>
+            <EmptyState title="لا طلبات انضمام جديدة" />
           )
         ) : (
           <ul className="divide-y divide-line">

@@ -104,12 +104,12 @@ export const teams: Team[] = [
 ]
 
 const TAMKEEN_MILESTONES: [number, string, string][] = [
-  [1, 'تحديد نطاق الـ MVP: ما الذي لن نبنيه؟', '2027-05-01'],
-  [3, 'لوحة نموذج العمل: العملاء ومصادر الإيراد', '2027-05-15'],
+  [1, 'تحديد النسخة الأولى من المنتج (MVP)', '2027-05-01'],
+  [3, 'نموذج العمل: العملاء والإيرادات', '2027-05-15'],
   [4, 'نسخة أولى تعمل من المنتج', '2027-06-05'],
-  [6, 'الهوية: الاسم والشعار والتموضع', '2027-06-17'],
-  [8, 'إطلاق التجربة الميدانية مع 20 مستخدمًا', '2027-07-01'],
-  [9, 'لوحة مؤشرات حيّة وتسعير أولي', '2027-07-10'],
+  [6, 'الهوية: الاسم والشعار', '2027-06-17'],
+  [8, 'تجربة المنتج مع 20 مستخدمًا', '2027-07-01'],
+  [9, 'متابعة الأرقام وتحديد السعر', '2027-07-10'],
   [12, 'عرض المنتج ليوم التحكيم', '2027-07-24'],
 ]
 
@@ -138,15 +138,15 @@ export const milestones: Milestone[] = tamkeen.flatMap((t, ti) =>
 )
 
 const expertFor: Record<string, string> = {
-  'البناء السريع بالذكاء الاصطناعي وبدون كود': 'e-faisal',
-  'الهوية والعلامة التجارية: تطبيق عملي': 'e-nouf',
-  'القياس ووحدة الاقتصاد: المؤشرات والتسعير': 'e-dana',
-  'من منتج إلى شركة: التأسيس والحوكمة واتفاقية المؤسسين': 'e-khalid',
-  'النموذج المالي ووحدة الاقتصاد': 'e-dana',
-  'جاهزية الاستثمار: التقييم وهيكل الجولة والعناية الواجبة': 'e-yasser',
-  'العرض الاستثماري وبروفة الأسئلة الصعبة': 'e-yasser',
-  'النمذجة السريعة': 'e-faisal',
-  'ريادة الأعمال الأكاديمية ونقل التقنية': 'e-khalid',
+  'بناء المنتج بالذكاء الاصطناعي وبدون برمجة': 'e-faisal',
+  'الهوية والعلامة التجارية': 'e-nouf',
+  'الأرقام والتسعير': 'e-dana',
+  'تأسيس الشركة واتفاق المؤسِّسات': 'e-khalid',
+  'النموذج المالي': 'e-dana',
+  'الاستعداد للاستثمار': 'e-yasser',
+  'العرض أمام المستثمرين': 'e-yasser',
+  'بناء نموذج أولي سريع': 'e-faisal',
+  'من البحث العلمي إلى مشروع': 'e-khalid',
 }
 
 const tamkeenIds = tamkeen.map((t) => t.id)
@@ -161,13 +161,13 @@ export const workshops: Workshop[] = WORKSHOPS.map((w, i) => ({
 }))
 
 export const sessions: Session[] = [
-  { id: 's1', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-01', time: '10:00', topic: 'مراجعة النسخة الأولى من المنتج', status: 'done', notes: 'النسخة تعمل. التركيز التالي: اختيار اسم وهوية واضحة قبل التجربة الميدانية.' },
-  { id: 's2', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-08', time: '10:00', topic: 'الهوية والتموضع', status: 'done', notes: 'اتفقنا على اختبار ثلاثة أسماء مع الأمهات وتسليم الهوية قبل 17 يونيو.' },
-  { id: 's3', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-22', time: '10:00', topic: 'خطة التجربة الميدانية', status: 'scheduled' },
+  { id: 's1', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-01', time: '10:00', topic: 'مراجعة النسخة الأولى من المنتج', status: 'done', notes: 'النسخة تعمل. التركيز التالي: اختيار اسم وهوية واضحة قبل تجربة المنتج.' },
+  { id: 's2', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-08', time: '10:00', topic: 'الاسم والهوية', status: 'done', notes: 'اتفقنا على اختبار ثلاثة أسماء مع الأمهات وتسليم الهوية قبل 17 يونيو.' },
+  { id: 's3', teamId: 't1', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-22', time: '10:00', topic: 'خطة تجربة المنتج', status: 'scheduled' },
   { id: 's4', teamId: 't2', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-16', time: '12:00', topic: 'مقاييس الاحتفاظ بالمستخدمات', status: 'scheduled' },
   { id: 's5', teamId: 't9', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-09', time: '13:00', topic: 'تسعير الاشتراك للمدارس', status: 'done', notes: 'نبدأ بتجربة مجانية لمدرستين ثم تسعير لكل معلمة.' },
-  { id: 's6', teamId: 't13', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-17', time: '11:00', topic: 'تضييق نطاق الـ MVP', status: 'scheduled' },
-  { id: 's7', teamId: 't1', hostId: 'e-dana', kind: 'clinic', date: '2027-06-20', time: '14:00', topic: 'عيادة مالية: تكلفة الاشتراك الشهري للعيادات', status: 'requested' },
+  { id: 's6', teamId: 't13', hostId: 'm-haifa', kind: 'mentoring', date: '2027-06-17', time: '11:00', topic: 'تحديد النسخة الأولى (MVP)', status: 'scheduled' },
+  { id: 's7', teamId: 't1', hostId: 'e-dana', kind: 'clinic', date: '2027-06-20', time: '14:00', topic: 'تكلفة الاشتراك الشهري للعيادات', status: 'requested' },
   { id: 's8', teamId: 't5', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-18', time: '13:00', topic: 'ربط الطلبات بخدمة التوصيل دون كود', status: 'requested' },
   { id: 's9', teamId: 't12', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-10', time: '12:00', topic: 'أتمتة إدارة المخزون', status: 'done', notes: 'ربطنا المتجر بجدول مخزون مع تنبيهات نفاد.' },
   { id: 's10', teamId: 't14', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-21', time: '10:00', topic: 'نموذج تصنيف الصور: خيارات بلا خوادم', status: 'requested' },
@@ -227,7 +227,7 @@ export const scores: Score[] = g2Teams.flatMap((teamId, ti) =>
 
 /** The demo judge has already pre-scored two teams for the upcoming gate. */
 scores.push(
-  { id: 'sc-g3-t5-j-amal', eventId: 'g3', teamId: 't5', judgeId: 'j-amal', values: { problem: 5, solution: 4, business: 5, team: 4, pitch: 4 }, comment: 'إيراد فعلي ونمو واضح. أوصي بالعبور.', at: '2027-06-14' },
+  { id: 'sc-g3-t5-j-amal', eventId: 'g3', teamId: 't5', judgeId: 'j-amal', values: { problem: 5, solution: 4, business: 5, team: 4, pitch: 4 }, comment: 'إيراد فعلي ونمو واضح. أوصي بتأهله.', at: '2027-06-14' },
   { id: 'sc-g3-t12-j-amal', eventId: 'g3', teamId: 't12', judgeId: 'j-amal', values: { problem: 4, solution: 4, business: 5, team: 4, pitch: 3 }, comment: 'مبيعات قوية، والعرض يحتاج تركيزًا أكبر على الأثر.', at: '2027-06-14' },
 )
 
@@ -242,13 +242,13 @@ export const applications: Application[] = [
 
 export const nominations: Nomination[] = [
   { id: 'n1', at: '2027-06-07', name: 'أ. غادة الرميح', email: 'ghada@example.com', org: 'مستشارة تسويق رقمي', years: 9, kind: 'mentor', areas: ['التسويق الرقمي وتنمية المشاريع', 'استقطاب العملاء واختبار المنتجات'], note: 'أرشدت 12 مشروعًا ناشئًا في برامج سابقة.', status: 'new' },
-  { id: 'n2', at: '2027-06-10', name: 'م. سلطان العسيري', email: 'sultan@example.com', org: 'مهندس أمن سيبراني', years: 11, kind: 'expert', areas: ['الأمن السيبراني', 'الأنظمة والامتثال'], note: 'متاح لعيادات الامتثال وحماية البيانات.', status: 'new' },
+  { id: 'n2', at: '2027-06-10', name: 'م. سلطان العسيري', email: 'sultan@example.com', org: 'مهندس أمن سيبراني', years: 11, kind: 'expert', areas: ['الأمن السيبراني', 'الأنظمة والامتثال'], note: 'متاح لاستشارات الامتثال وحماية البيانات.', status: 'new' },
   { id: 'n3', at: '2027-06-13', name: 'أ. بدور الفايز', email: 'badour@example.com', org: 'مستثمرة ملائكية', years: 7, kind: 'judge', areas: ['الاستثمار الجريء وتقييم الشركات الناشئة'], note: 'ترغب في المشاركة بيوم العروض الاستثماري.', status: 'new' },
 ]
 
 export const escalations: Escalation[] = [
   { id: 'x1', at: '2027-06-14', level: 1, title: 'اعتذار مرشد عن جلسة الأسبوع 6', detail: 'اعتذر أ. عبدالله الحربي عن جلسات الثلاثاء لظرف طارئ. تحتاج فرق حصّالة ومشغل ودار إلى بديل.', raisedBy: 'a-maha', status: 'open' },
-  { id: 'x2', at: '2027-06-08', level: 2, title: 'تعثر فريق قافلة في إطلاق التجربة الميدانية', detail: 'لم يحصل الفريق على موافقة الجهة المستضيفة للتجربة، والموعد يقترب.', teamId: 't15', raisedBy: 'm-reem', status: 'open' },
+  { id: 'x2', at: '2027-06-08', level: 2, title: 'تأخر فريق قافلة في بدء تجربة المنتج', detail: 'لم يحصل الفريق على موافقة الجهة المستضيفة للتجربة، والموعد يقترب.', teamId: 't15', raisedBy: 'm-reem', status: 'open' },
   { id: 'x3', at: '2027-06-03', level: 1, title: 'نقص تجهيزات قاعة ورشة الهوية', detail: 'الشاشة الثانية غير متاحة.', raisedBy: 'a-maha', status: 'resolved', resolution: 'نُقلت الورشة إلى قاعة الابتكار 2.' },
   { id: 'x4', at: '2027-05-10', level: 3, title: 'تعديل الجدول بسبب إجازة عيد الأضحى', detail: 'تمديد تمكين أسبوعين ليشمل الإجازة دون المساس بيوم التحكيم.', raisedBy: 'a-maha', status: 'resolved', resolution: 'اعتمدت اللجنة التوجيهية التعديل في 12 مايو.' },
 ]

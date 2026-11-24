@@ -54,7 +54,6 @@ export interface Workshop {
   id: string
   stage: StageId
   week: number
-  verb: string
   title: string
   date: string
   expertId?: string

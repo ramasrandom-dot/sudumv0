@@ -29,12 +29,10 @@ export default function Login() {
       <main id="main" className="mx-auto grid w-full max-w-5xl flex-1 items-center gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <h1 className="text-4xl leading-tight font-bold md:text-5xl">منصة سُدُم</h1>
-          <p className="mt-4 max-w-[38ch] text-lg text-white/70">
-            مكان واحد لرحلة كل فريق: المعالم، والورش، والإرشاد، والتحكيم، والقرار.
-          </p>
+          <p className="mt-4 max-w-[38ch] text-lg text-white/70">اختاري دورًا لتجربة المنصة.</p>
           <p className="mt-8 flex max-w-[42ch] gap-3 rounded-xl border border-white/15 bg-white/5 p-4 text-sm text-white/75">
             <Star className="mt-0.5 size-4 shrink-0" color="#2086C2" />
-            هذه نسخة تجريبية بلا كلمات مرور. اختاري دورًا لتجربة المنصة بعينه، ويمكنك التبديل بين الأدوار من أعلى الصفحة في أي وقت.
+            نسخة تجريبية بلا كلمات مرور. يمكنك تبديل الدور من أعلى الصفحة.
           </p>
         </div>
 

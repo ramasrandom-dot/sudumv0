@@ -35,11 +35,21 @@ Sudum is the incubator of the Innovation & Entrepreneurship Center at Princess N
 - Name **سُدُم / SUDUM**, meaning nebulae where stars are born. Tagline: «هنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.»
 - Brand assets are in `src/assets/brand/`: the Sudum logo (colour and white), the PNU logo (white), the star icon, and star backgrounds.
 - The full visual system is in the brand brief and is recorded in DESIGN.md.
-- **Voice:**
-  - Lead with the number and close with the outcome (المخرج).
-  - Use short first-person-plural verbs as step labels, joined with a middle dot.
+- **Voice** (set by the client after the first draft: "nobody reads all this"):
+  - Say it in one line. A screen title needs no explanatory sentence unless the sentence carries a fact (a date, a count, a name).
+  - Plain everyday Arabic. No coined or academic words (for example «تأطير», «نؤطّر»).
   - Formal Arabic with feminine address to participants.
-  - English only for terms of art (MVP, UX/UI, RACI).
+  - English only for terms of art (MVP, UX/UI).
+- **Agreed wording:**
+  - «النتيجة», not «المخرج».
+  - «التأهل / يتأهل», not «بوابة العبور / يعبر».
+  - «المهام», not «المعالم».
+  - «استشارة / جلسات استشارية», not «عيادة / عيادات».
+  - «اتفاق الفريق», not «ميثاق العمل».
+  - «مقابلة القبول», not «مقابلة الفرز».
+  - «قدّمي الآن», not «سجّلي اهتمامك».
+  - Kept as is: stage names, «يوم التحكيم», «الساعات المكتبية», «التصعيد».
+- **Workshop titles** on the site are plain-language versions of the official «عناوين الورش» list (`WORKSHOPS` in `src/data/program.ts`).
 - Stage 4 is named **«مسرعة سنام»** throughout. The source deck also uses «الانطلاق»; this is an open decision for the client.
 
 ## Evidence on Hand
@@ -47,9 +57,9 @@ The source documents are the cohort-1 operating plan deck, the workshop titles P
 
 ## Product Principles
 1. One journey, four stages: every screen shows where a team is on that journey.
-2. Every gate is announced in advance, with its criteria visible to the people it affects.
+2. Every judging day is announced in advance, with its criteria visible to the people it affects.
 3. Each role sees what is theirs to act on first.
-4. Numbers come first and outcomes come last, in copy as well as layout.
+4. Short beats complete: the home page answers what it is, how it works, who it is for and how to start, and nothing else.
 
 ## Accessibility & Inclusion
 Arabic, right to left. WCAG AA contrast. Keyboard reachable. Respects reduced motion.

@@ -23,7 +23,7 @@ function ReviewMilestone({ m, team }: { m: Milestone; team?: Team }) {
       return
     }
     actions.reviewMilestone(m.id, status, feedback.trim() || 'معتمد.')
-    toast(status === 'approved' ? `اعتُمد معلم «${m.title}»` : 'أُعيد المعلم للفريق مع ملاحظاتك')
+    toast(status === 'approved' ? `اعتُمدت مهمة «${m.title}»` : 'أُعيدت المهمة للفريق مع ملاحظاتك')
   }
   return (
     <li className="px-5 py-5">
@@ -88,11 +88,11 @@ export function MentorTeams() {
     <>
       <PageHeader
         title="فرقي"
-        lede={<>تمكين · الأسبوع <span className="tabular">{week}</span> من <span className="tabular">12</span>. جلسة أسبوعية ثابتة مع كل فريق، واعتماد المعالم قبل موعد يوم التحكيم.</>}
+        lede={<>تمكين · الأسبوع <span className="tabular">{week}</span> من <span className="tabular">12</span></>}
         actions={
           pending > 0 && (
             <Link to="/app/mentor/reviews" className="inline-flex h-10 items-center gap-2 rounded-lg bg-tint-blue px-4 text-sm font-semibold text-navy hover:bg-[#cddcff]">
-              <span className="tabular">{pending}</span> معالم بانتظار اعتمادك
+              <span className="tabular">{pending}</span> مهام بانتظار اعتمادك
             </Link>
           )
         }
@@ -124,10 +124,10 @@ export function MentorTeams() {
                   </div>
                   <div>
                     <div className="mb-1.5 flex justify-between text-sm">
-                      <span className="text-slate">المعالم المعتمدة</span>
+                      <span className="text-slate">المهام المعتمدة</span>
                       <span className="tabular font-semibold text-navy">{p.approved} / {p.total}</span>
                     </div>
-                    <Progress value={p.pct} color={STAGE[t.stage].color} label={`معالم ${t.name}`} />
+                    <Progress value={p.pct} color={STAGE[t.stage].color} label={`مهام ${t.name}`} />
                   </div>
                   <div className="mt-auto flex flex-wrap items-center gap-2 text-sm">
                     {waiting > 0 && <Badge tone="blue"><span className="tabular">{waiting}</span> بانتظار الاعتماد</Badge>}
@@ -172,7 +172,7 @@ export function MentorTeamDetail() {
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <div className="flex flex-col gap-6">
           <Card>
-            <CardHeader title="المعالم" sub="اعتمد ما اكتمل، أو أعِده للفريق مع ملاحظة واضحة" />
+            <CardHeader title="المهام" />
             <ul className="divide-y divide-line">
               {ms.map((m) =>
                 m.status === 'submitted' ? (
@@ -192,7 +192,7 @@ export function MentorTeamDetail() {
           </Card>
 
           <Card>
-            <CardHeader title="سجّل جلسة" sub="تظهر ملاحظاتك للفريق في سجل الجلسات" />
+            <CardHeader title="سجّل جلسة" />
             <form
               className="grid gap-4 p-5 sm:grid-cols-[10rem_1fr]"
               onSubmit={(e) => {
@@ -231,7 +231,7 @@ export function MentorTeamDetail() {
               <Meta label="مستخدمون"><span className="tabular">{team.metrics?.users ?? 0}</span></Meta>
               <Meta label="مقابلات"><span className="tabular">{team.metrics?.interviews ?? 0}</span></Meta>
               <Meta label="القطاع">{team.sector}</Meta>
-              <Meta label="نقطة الدخول">{ENTRY_POINTS[team.entry].label}</Meta>
+              <Meta label="الفئة">{ENTRY_POINTS[team.entry].label}</Meta>
             </dl>
           </Card>
           <Card>
@@ -280,7 +280,7 @@ export function MentorReviews() {
     .sort((a, b) => a.due.localeCompare(b.due))
   return (
     <>
-      <PageHeader title="معالم بانتظار الاعتماد" lede="الأقدم أولًا. يرى الفريق قرارك وملاحظاتك فور الحفظ." />
+      <PageHeader title="مهام بانتظار الاعتماد" />
       <Card>
         {queue.length ? (
           <ul className="divide-y divide-line">
@@ -289,7 +289,7 @@ export function MentorReviews() {
             ))}
           </ul>
         ) : (
-          <EmptyState title="لا معالم بانتظارك">اعتمدت كل التسليمات. ستظهر هنا التسليمات الجديدة من فرقك.</EmptyState>
+          <EmptyState title="لا مهام بانتظارك" />
         )}
       </Card>
     </>
@@ -322,14 +322,14 @@ export function MentorSessions() {
   }
   return (
     <>
-      <PageHeader title="الجلسات" lede="جلسات الإرشاد الأسبوعية والساعات المكتبية المحجوزة." />
+      <PageHeader title="الجلسات" />
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader title="القادمة" />
           {upcoming.length ? <ul className="divide-y divide-line">{upcoming.map((s) => <Row key={s.id} s={s} />)}</ul> : <EmptyState title="لا جلسات قادمة" />}
         </Card>
         <Card>
-          <CardHeader title="المنعقدة" sub="سجّل الجلسات الجديدة من صفحة الفريق" />
+          <CardHeader title="المنعقدة" />
           {past.length ? <ul className="divide-y divide-line">{past.map((s) => <Row key={s.id} s={s} />)}</ul> : <EmptyState title="لا جلسات بعد" />}
         </Card>
       </div>
@@ -349,7 +349,7 @@ export function MentorHours() {
 
   return (
     <>
-      <PageHeader title="الساعات المكتبية" lede="أضف مواعيد قصيرة (30 دقيقة) تحجزها فرقك عند الحاجة، خارج الجلسة الأسبوعية." />
+      <PageHeader title="الساعات المكتبية" lede="مواعيد من 30 دقيقة تحجزها فرقك." />
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <Card>
           <CardHeader title="مواعيدك" />

@@ -23,10 +23,10 @@ export interface Stage {
   teamsLabel: string
   gate: string
   gateDate: string
+  /** one line: what the stage does */
   summary: string
+  /** one line: what a team leaves with */
   outcome: string
-  offers: string[]
-  steps: string
 }
 
 export const STAGES: Stage[] = [
@@ -43,17 +43,11 @@ export const STAGES: Stage[] = [
     start: '2027-01-17',
     end: '2027-02-04',
     teams: 25,
-    teamsLabel: '500 مسجّلة · 25 فريقًا متأهلًا',
+    teamsLabel: '500 مسجّلة',
     gate: 'عرض الاختيار',
     gateDate: '2027-02-04',
-    summary: 'تفتح باب المسار للجميع، وتحوّل الاهتمام إلى أفكار وفرق جاهزة للدخول في «تكوين».',
-    outcome: '25 فريقًا متأهلًا بفكرة مؤطَّرة وميثاق عمل، من 80 مشاركة في مختبر الأفكار.',
-    offers: [
-      'أسبوع فعاليات مفتوح لخمسمئة حاضرة، يبدأ بمعرض مشاريع المعمل في يومه الأول.',
-      'فرز بمقابلات من 10 دقائق ولجنة تقييم خارجية.',
-      'مختبر أفكار من ثلاثة أيام لبناء الفرق وعرض الاختيار.',
-    ],
-    steps: 'نستكشف · نؤطّر · نبني الفريق',
+    summary: 'فعاليات مفتوحة ومختبر أفكار لتكوين الفرق.',
+    outcome: 'فكرة واضحة وفريق جاهز.',
   },
   {
     id: 'takween',
@@ -71,14 +65,8 @@ export const STAGES: Stage[] = [
     teamsLabel: '25 فريقًا',
     gate: 'يوم التحكيم',
     gateDate: '2027-04-22',
-    summary: 'يحوّل الفكرة أو مشروع التخرج إلى نموذج أولي اختبره مستخدمون حقيقيون.',
-    outcome: 'نموذج أولي مُختبَر مع 5 مستخدمين، وفهم أولي لنموذج العمل والهوية، وعرض من 3 دقائق.',
-    offers: [
-      '6 ورش أسبوعية تطبيقية، مع احتضان طوال المسار.',
-      '4 جولات إرشاد وساعات مكتبية أسبوعية.',
-      '4 معالم يعتمدها المرشد وتنتهي بيوم التحكيم.',
-    ],
-    steps: 'نفهم · نتحقق ونبني · نختبر ونعرض',
+    summary: 'من الفكرة إلى نموذج أولي.',
+    outcome: 'نموذج أولي جرّبه مستخدمون.',
   },
   {
     id: 'tamkeen',
@@ -93,17 +81,11 @@ export const STAGES: Stage[] = [
     start: '2027-04-25',
     end: '2027-07-29',
     teams: 15,
-    teamsLabel: '15 فريقًا · 10 متأهلة و5 مقاعد مفتوحة',
+    teamsLabel: '15 فريقًا',
     gate: 'يوم التحكيم',
     gateDate: '2027-07-29',
-    summary: 'يبني أصغر منتج قابل للاستخدام ويُطلقه على مستخدمين حقيقيين، ويطبّق نموذج العمل والهوية.',
-    outcome: 'منتج يعمل، ونموذج عمل وهوية مطبَّقان، و20 مستخدمًا أو تجربة ميدانية منفّذة، ولوحة مؤشرات حية.',
-    offers: [
-      '6 ورش: أربع أساسية واثنتان تطبيقيتان للنموذج والهوية، وعيادات عند الحاجة.',
-      'مرشد مرافق بجلسة أسبوعية ثابتة، مع احتضان طوال المسار.',
-      'تجربة ميدانية داخل الجامعة أو خارجها.',
-    ],
-    steps: 'نحدد النطاق · نبني · نقيس · نعرض',
+    summary: 'من النموذج الأولي إلى منتج يعمل.',
+    outcome: 'منتج يعمل وله مستخدمون.',
   },
   {
     id: 'sanam',
@@ -118,17 +100,11 @@ export const STAGES: Stage[] = [
     start: '2027-09-05',
     end: '2027-12-02',
     teams: 8,
-    teamsLabel: '8 شركات · 5 متأهلة و3 مقاعد مفتوحة',
+    teamsLabel: '8 شركات',
     gate: 'يوم العروض الاستثماري',
     gateDate: '2027-12-02',
-    summary: 'مسرّعة تحوّل المنتج إلى شركة مسجّلة لها عملاء وجاهزية استثمارية.',
-    outcome: 'كيان مسجّل، وعميل أو تجربة مدفوعة، وعرض استثماري جاهز.',
-    offers: [
-      '5 ورش أساسية وعيادات قانونية ومالية وتسويقية، مع احتضان طوال المسار.',
-      'مرشد رئيسي بجلسة أسبوعية: العمود الفقري للمسار.',
-      'ساعات إرشادية قبل يوم العروض على المستثمرين.',
-    ],
-    steps: 'نؤسّس · نبيع · نحسب · نستعد · نعرض',
+    summary: 'من المنتج إلى شركة.',
+    outcome: 'شركة جاهزة للاستثمار.',
   },
 ]
 
@@ -142,67 +118,54 @@ export const nextStage = (id: StageId): StageId | undefined => STAGES[STAGE[id].
 /** Calendar pauses shown on timelines. Ramadan 1448 dates are approximate. */
 export const PAUSES = [
   { label: 'رمضان والعيد', title: 'رمضان وإجازة عيد الفطر', start: '2027-02-07', end: '2027-03-12', color: '#FF8A4C' },
-  { label: 'الأضحى', title: 'إجازة عيد الأضحى: أسبوعان', start: '2027-05-13', end: '2027-05-27', color: '#CFD0DC' },
-  { label: 'الفاصل الصيفي', title: 'الفاصل الصيفي: بناء خط المستثمرين وتأمين التمويل', start: '2027-07-30', end: '2027-09-04', color: '#DCE8FF' },
+  { label: 'الأضحى', title: 'إجازة عيد الأضحى', start: '2027-05-13', end: '2027-05-27', color: '#CFD0DC' },
+  { label: 'الفاصل الصيفي', title: 'الفاصل الصيفي', start: '2027-07-30', end: '2027-09-04', color: '#DCE8FF' },
 ]
 
-export const ENTRY_POINTS: Record<EntryPoint, { label: string; who: string; detail: string }> = {
-  research: {
-    label: 'أبحاث ومخرجات بحثية',
-    who: 'أعضاء هيئة التدريس والباحثات',
-    detail: 'مخرجات بحثية قابلة للتحويل إلى منتج أو خدمة، عبر نقل التقنية.',
-  },
-  student: {
-    label: 'مشاريع طلابية واعدة',
-    who: 'الطالبات وطالبات الدراسات العليا',
-    detail: 'أفكار ومشاريع تخرج تبحث عن طريقها إلى مستخدمين حقيقيين.',
-  },
-  founder: {
-    label: 'رائدات أعمال بمنتج قائم',
-    who: 'رائدات الأعمال والمنشآت الناشئة',
-    detail: 'مشاريع قائمة لديها منتج أولي وتبحث عن النمو والاستثمار.',
-  },
+export const ENTRY_POINTS: Record<EntryPoint, { label: string; detail: string }> = {
+  student: { label: 'طالبات', detail: 'فكرة أو مشروع تخرج.' },
+  research: { label: 'باحثات', detail: 'بحث علمي يمكن تحويله إلى منتج.' },
+  founder: { label: 'رائدات أعمال', detail: 'منتج قائم يبحث عن النمو.' },
 }
 
 export const TRACKS: Record<Track, { label: string; detail: string }> = {
-  ilham: { label: 'الإلهام', detail: 'لديكِ فكرة أو مشروع تخرج وتبحثين عن فريق وطريق.' },
-  'tamkeen-seat': { label: 'مقعد مفتوح في تمكين', detail: 'لديكِ نموذج أولي مُختبَر وتريدين بناء الـ MVP.' },
-  'sanam-seat': { label: 'مقعد مفتوح في مسرعة سنام', detail: 'لديكِ منتج يعمل ومستخدمون وتستعدين للتأسيس والاستثمار.' },
+  ilham: { label: 'الإلهام', detail: 'لديكِ فكرة أو مشروع تخرج.' },
+  'tamkeen-seat': { label: 'مقعد مفتوح في تمكين', detail: 'لديكِ نموذج أولي مجرَّب.' },
+  'sanam-seat': { label: 'مقعد مفتوح في مسرعة سنام', detail: 'لديكِ منتج يعمل وله مستخدمون.' },
 }
 
 export interface WorkshopDef {
   stage: StageId
   week: number
-  verb: string
   title: string
   date: string
 }
 
-/** The 23 workshop titles, word for word from «عناوين الورش». */
+/** The 23 workshops. Titles are plain-language versions of the official «عناوين الورش» list. */
 export const WORKSHOPS: WorkshopDef[] = [
-  { stage: 'ilham', week: 1, verb: 'نستكشف', title: 'اكتشاف المشكلات من حولك', date: '2027-01-18' },
-  { stage: 'ilham', week: 1, verb: 'نؤطّر', title: 'إعادة تأطير المشكلة: «كيف يمكننا أن…؟»', date: '2027-01-20' },
-  { stage: 'ilham', week: 1, verb: 'ننقل المعرفة', title: 'ريادة الأعمال الأكاديمية ونقل التقنية', date: '2027-01-21' },
-  { stage: 'ilham', week: 2, verb: 'نبتكر', title: 'مختبر الأفكار: من الفكرة الفردية إلى المفهوم', date: '2027-01-26' },
-  { stage: 'ilham', week: 2, verb: 'نبني الفريق', title: 'بناء الفريق: الأدوار المتكاملة وميثاق العمل', date: '2027-01-27' },
-  { stage: 'ilham', week: 3, verb: 'نعرض', title: 'اعرضي فكرتك في دقيقتين', date: '2027-02-01' },
-  { stage: 'takween', week: 1, verb: 'نفهم', title: 'التفكير التصميمي: من التحدي إلى الفرصة', date: '2027-03-15' },
-  { stage: 'takween', week: 2, verb: 'نفهم', title: 'التحقق من المشكلة', date: '2027-03-22' },
-  { stage: 'takween', week: 3, verb: 'نتحقق', title: 'إثبات المفهوم: أرخص اختبار ممكن', date: '2027-03-29' },
-  { stage: 'takween', week: 4, verb: 'نبني', title: 'النمذجة السريعة', date: '2027-04-05' },
-  { stage: 'takween', week: 5, verb: 'نختبر', title: 'اختبار قابلية الاستخدام', date: '2027-04-12' },
-  { stage: 'takween', week: 6, verb: 'نعرض', title: 'فن عرض الفكرة (Pitch Craft)', date: '2027-04-19' },
-  { stage: 'tamkeen', week: 1, verb: 'نحدد النطاق', title: 'نطاق المنتج الأدنى القابل للتطبيق (MVP)', date: '2027-04-27' },
-  { stage: 'tamkeen', week: 2, verb: 'نبني', title: 'البناء السريع بالذكاء الاصطناعي وبدون كود', date: '2027-05-04' },
-  { stage: 'tamkeen', week: 3, verb: 'نموذج العمل', title: 'نموذج العمل التجاري: تطبيق عملي', date: '2027-05-11' },
-  { stage: 'tamkeen', week: 5, verb: 'الهوية', title: 'الهوية والعلامة التجارية: تطبيق عملي', date: '2027-06-08' },
-  { stage: 'tamkeen', week: 9, verb: 'نقيس', title: 'القياس ووحدة الاقتصاد: المؤشرات والتسعير', date: '2027-07-06' },
-  { stage: 'tamkeen', week: 12, verb: 'نعرض', title: 'من التجربة الميدانية إلى عرض المنتج', date: '2027-07-27' },
-  { stage: 'sanam', week: 1, verb: 'نؤسّس', title: 'من منتج إلى شركة: التأسيس والحوكمة واتفاقية المؤسسين', date: '2027-09-06' },
-  { stage: 'sanam', week: 3, verb: 'نبيع', title: 'الذهاب إلى السوق: القنوات والمبيعات ودورة الصفقة', date: '2027-09-20' },
-  { stage: 'sanam', week: 5, verb: 'نحسب', title: 'النموذج المالي ووحدة الاقتصاد', date: '2027-10-04' },
-  { stage: 'sanam', week: 8, verb: 'نستعد', title: 'جاهزية الاستثمار: التقييم وهيكل الجولة والعناية الواجبة', date: '2027-10-25' },
-  { stage: 'sanam', week: 11, verb: 'نعرض', title: 'العرض الاستثماري وبروفة الأسئلة الصعبة', date: '2027-11-15' },
+  { stage: 'ilham', week: 1, title: 'اكتشاف المشكلات من حولك', date: '2027-01-18' },
+  { stage: 'ilham', week: 1, title: 'صياغة المشكلة بوضوح', date: '2027-01-20' },
+  { stage: 'ilham', week: 1, title: 'من البحث العلمي إلى مشروع', date: '2027-01-21' },
+  { stage: 'ilham', week: 2, title: 'مختبر الأفكار: طوّري فكرتك', date: '2027-01-26' },
+  { stage: 'ilham', week: 2, title: 'بناء الفريق وتوزيع الأدوار', date: '2027-01-27' },
+  { stage: 'ilham', week: 3, title: 'اعرضي فكرتك في دقيقتين', date: '2027-02-01' },
+  { stage: 'takween', week: 1, title: 'التفكير التصميمي', date: '2027-03-15' },
+  { stage: 'takween', week: 2, title: 'التحقق من المشكلة', date: '2027-03-22' },
+  { stage: 'takween', week: 3, title: 'اختبار الفكرة بأقل تكلفة', date: '2027-03-29' },
+  { stage: 'takween', week: 4, title: 'بناء نموذج أولي سريع', date: '2027-04-05' },
+  { stage: 'takween', week: 5, title: 'تجربة النموذج مع المستخدمين', date: '2027-04-12' },
+  { stage: 'takween', week: 6, title: 'فن عرض الفكرة', date: '2027-04-19' },
+  { stage: 'tamkeen', week: 1, title: 'تحديد النسخة الأولى من المنتج (MVP)', date: '2027-04-27' },
+  { stage: 'tamkeen', week: 2, title: 'بناء المنتج بالذكاء الاصطناعي وبدون برمجة', date: '2027-05-04' },
+  { stage: 'tamkeen', week: 3, title: 'نموذج العمل التجاري', date: '2027-05-11' },
+  { stage: 'tamkeen', week: 5, title: 'الهوية والعلامة التجارية', date: '2027-06-08' },
+  { stage: 'tamkeen', week: 9, title: 'الأرقام والتسعير', date: '2027-07-06' },
+  { stage: 'tamkeen', week: 12, title: 'عرض المنتج بعد التجربة', date: '2027-07-27' },
+  { stage: 'sanam', week: 1, title: 'تأسيس الشركة واتفاق المؤسِّسات', date: '2027-09-06' },
+  { stage: 'sanam', week: 3, title: 'دخول السوق والمبيعات', date: '2027-09-20' },
+  { stage: 'sanam', week: 5, title: 'النموذج المالي', date: '2027-10-04' },
+  { stage: 'sanam', week: 8, title: 'الاستعداد للاستثمار', date: '2027-10-25' },
+  { stage: 'sanam', week: 11, title: 'العرض أمام المستثمرين', date: '2027-11-15' },
 ]
 
 /** The five expertise areas, word for word from «مجالات المرشدين والخبراء». */
@@ -283,11 +246,11 @@ export const ROLE_LABEL: Record<Role, string> = {
 }
 
 export const ROLE_DESCRIPTION: Record<Role, string> = {
-  participant: 'تابعي رحلة فريقك، وسلّمي المعالم، واحجزي جلسات الإرشاد.',
-  mentor: 'تابع فرقك، واعتمد المعالم، وسجّل جلسات الإرشاد.',
-  expert: 'ورشك القادمة، وطلبات العيادات من الفرق.',
-  judge: 'أيام التحكيم، وملفات الفرق، وبطاقة التقييم الموحدة.',
-  admin: 'المؤشرات، والقبول، وبوابات العبور، والتصعيد.',
+  participant: 'مهام فريقك وجلسات الإرشاد.',
+  mentor: 'فرقك واعتماد المهام.',
+  expert: 'ورشك وطلبات الاستشارات.',
+  judge: 'تقييم الفرق في أيام التحكيم.',
+  admin: 'متابعة البرنامج كاملًا.',
 }
 
 export const ESCALATION_LEVELS = {

@@ -19,7 +19,7 @@ export function ExpertWorkshops() {
 
   return (
     <>
-      <PageHeader title="ورشي" lede="كل ورشة في أسبوعها من المرحلة. البناء هو العمل، والورشة خدمة مساندة له." />
+      <PageHeader title="ورشي" />
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader title="القادمة" />
@@ -31,7 +31,7 @@ export function ExpertWorkshops() {
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-navy">{w.title}</p>
                     <p className="text-sm text-slate">
-                      الأسبوع <span className="tabular">{w.week}</span> · {w.verb}
+                      الأسبوع <span className="tabular">{w.week}</span>
                       {w.stage === 'tamkeen' && <> · <span className="tabular">{activeTeams}</span> فريقًا متوقعًا</>}
                     </p>
                   </div>
@@ -41,7 +41,7 @@ export function ExpertWorkshops() {
               ))}
             </ul>
           ) : (
-            <EmptyState title="لا ورش قادمة مسندة إليك" />
+            <EmptyState title="لا ورش قادمة" />
           )}
         </Card>
         <Card>
@@ -89,7 +89,7 @@ function ClinicRow({ s }: { s: Session }) {
         <SessionBadge s={s} />
         {s.status === 'requested' && (
           <div className="flex gap-2">
-            <Button size="sm" onClick={() => { actions.updateSession(s.id, { status: 'scheduled' }); toast(`أُكّدت العيادة مع فريق ${team?.name}`) }}>
+            <Button size="sm" onClick={() => { actions.updateSession(s.id, { status: 'scheduled' }); toast(`أُكّدت الاستشارة مع فريق ${team?.name}`) }}>
               <Check className="size-4" aria-hidden />
               قبول
             </Button>
@@ -111,12 +111,12 @@ function ClinicRow({ s }: { s: Session }) {
           className="mt-3 flex flex-col gap-3 rounded-lg bg-canvas p-4"
           onSubmit={(e) => {
             e.preventDefault()
-            actions.updateSession(s.id, { status: 'done', notes: notes.trim() || 'انعقدت العيادة.' })
-            toast('سُجّلت العيادة')
+            actions.updateSession(s.id, { status: 'done', notes: notes.trim() || 'انعقدت الاستشارة.' })
+            toast('سُجّلت الاستشارة')
             setClosing(false)
           }}
         >
-          <Field label="خلاصة العيادة للفريق" htmlFor={`cn-${s.id}`}>
+          <Field label="خلاصة الاستشارة للفريق" htmlFor={`cn-${s.id}`}>
             <Textarea id={`cn-${s.id}`} className="min-h-20" value={notes} onChange={(e) => setNotes(e.target.value)} />
           </Field>
           <div className="flex gap-2">
@@ -138,7 +138,7 @@ export function ExpertClinics() {
   const done = mine.filter((s) => s.status === 'done' || s.status === 'declined')
   return (
     <>
-      <PageHeader title="طلبات العيادات" lede="جلسات متخصصة قصيرة تطلبها الفرق عند الحاجة. يصل ردّك للفريق مباشرة." />
+      <PageHeader title="طلبات الاستشارات" />
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader title="طلبات جديدة" action={requested.length > 0 && <Badge tone="warn"><span className="tabular">{requested.length}</span></Badge>} />
@@ -146,11 +146,11 @@ export function ExpertClinics() {
         </Card>
         <Card>
           <CardHeader title="مجدولة" />
-          {scheduled.length ? <ul className="divide-y divide-line">{scheduled.map((s) => <ClinicRow key={s.id} s={s} />)}</ul> : <EmptyState title="لا عيادات مجدولة" />}
+          {scheduled.length ? <ul className="divide-y divide-line">{scheduled.map((s) => <ClinicRow key={s.id} s={s} />)}</ul> : <EmptyState title="لا استشارات مجدولة" />}
         </Card>
         <Card>
           <CardHeader title="السجل" />
-          {done.length ? <ul className="divide-y divide-line">{done.map((s) => <ClinicRow key={s.id} s={s} />)}</ul> : <EmptyState title="لا عيادات سابقة" />}
+          {done.length ? <ul className="divide-y divide-line">{done.map((s) => <ClinicRow key={s.id} s={s} />)}</ul> : <EmptyState title="لا استشارات سابقة" />}
         </Card>
       </div>
     </>
@@ -164,7 +164,7 @@ export function ExpertProfile() {
   const clinics = state.sessions.filter((s) => s.hostId === me.id && s.status === 'done').length
   return (
     <>
-      <PageHeader title="ملفي" lede="تستخدم إدارة البرنامج مجالاتك لمطابقتك مع الورش واحتياج الفرق." />
+      <PageHeader title="ملفي" />
       <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
         <Card className="p-6">
           <p className="text-2xl font-bold text-navy">{me.name}</p>
@@ -182,7 +182,7 @@ export function ExpertProfile() {
         <Card className="p-6">
           <dl className="grid grid-cols-2 gap-6">
             <Meta label="ورش مسندة"><span className="tabular text-2xl">{workshops}</span></Meta>
-            <Meta label="عيادات منعقدة"><span className="tabular text-2xl">{clinics}</span></Meta>
+            <Meta label="استشارات منعقدة"><span className="tabular text-2xl">{clinics}</span></Meta>
             <Meta label="الجهة">{me.org}</Meta>
             <Meta label="آخر تحديث"><span className="tabular">{fmtDay(TODAY)}</span></Meta>
           </dl>

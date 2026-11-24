@@ -113,14 +113,13 @@ function SiteFooter() {
             <PnuLogo className="h-11" />
           </div>
           <p className="mt-6 max-w-[42ch] text-white/70">
-            هنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.
+            هنا تتشكّل الأفكار.
           </p>
         </div>
         <nav aria-label="روابط البرنامج">
           <h2 className="text-sm font-semibold text-white/50">البرنامج</h2>
           <ul className="mt-3 space-y-2">
             <li><Link className="text-white/85 hover:text-white" to="/program">المراحل الأربع</Link></li>
-            <li><Link className="text-white/85 hover:text-white" to="/program#workshops">الورش</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/apply">التقديم</Link></li>
           </ul>
         </nav>
@@ -136,7 +135,7 @@ function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-sm text-white/55 sm:px-6 lg:px-10">
           <p>مركز الابتكار وريادة الأعمال | جامعة الأميرة نورة بنت عبد الرحمن</p>
-          <p>نسخة أولى تجريبية · جميع الأسماء والبيانات في المنصة افتراضية</p>
+          <p>نسخة تجريبية · البيانات افتراضية</p>
         </div>
       </div>
     </footer>

@@ -19,7 +19,7 @@ export function AdminJudging() {
   const { state } = useStore()
   return (
     <>
-      <PageHeader title="التحكيم وبوابات العبور" lede="لكل بوابة لجنة خارجية وبطاقة تقييم موحدة. تُعلن النتائج بعد اكتمال بطاقات المحكّمين." />
+      <PageHeader title="التحكيم والتأهل" />
       <ul className="flex flex-col gap-3">
         {state.events.map((ev) => {
           const expected = ev.teamIds.length * ev.judgeIds.length
@@ -37,7 +37,7 @@ export function AdminJudging() {
                     <StageBadge stage={ev.stage} full />
                   </div>
                   <p className="text-sm text-slate">
-                    <span className="tabular">{ev.teamIds.length || '—'}</span> فرق · <span className="tabular">{ev.judgeIds.length}</span> محكّمين · يعبر{' '}
+                    <span className="tabular">{ev.teamIds.length || '—'}</span> فرق · <span className="tabular">{ev.judgeIds.length}</span> محكّمين · يتأهل{' '}
                     <span className="tabular">{ev.capacity}</span> · {relativeDays(ev.date)}
                   </p>
                 </div>
@@ -84,11 +84,11 @@ export function AdminJudgingEvent() {
     <>
       <Link to="/app/admin/judging" className="mb-4 inline-flex items-center gap-1 text-sm font-semibold text-slate hover:text-navy">
         <ArrowRight className="size-4" aria-hidden />
-        التحكيم وبوابات العبور
+        التحكيم والتأهل
       </Link>
       <PageHeader
         title={ev.title}
-        lede={<><span className="tabular">{fmtDate(ev.date)}</span> · يعبر <span className="tabular">{ev.capacity}</span> {next ? `إلى ${STAGE[next].fullName}` : 'إلى المستثمرين'}</>}
+        lede={<><span className="tabular">{fmtDate(ev.date)}</span> · يتأهل <span className="tabular">{ev.capacity}</span> {next ? `إلى ${STAGE[next].fullName}` : 'إلى المستثمرين'}</>}
         actions={<StageBadge stage={ev.stage} full />}
       />
 
@@ -96,8 +96,7 @@ export function AdminJudgingEvent() {
         <Card>
           <CardHeader
             title="الترتيب"
-            sub="متوسط الدرجات الموزونة من بطاقات المحكّمين"
-            action={!ev.published && <span className="text-sm text-slate">المحدد للعبور: <span className="tabular font-bold text-navy">{selected.length}</span> / <span className="tabular">{ev.capacity}</span></span>}
+            action={!ev.published && <span className="text-sm text-slate">المتأهلون: <span className="tabular font-bold text-navy">{selected.length}</span> / <span className="tabular">{ev.capacity}</span></span>}
           />
           {results.length ? (
             <table className="rtable w-full text-sm">
@@ -107,7 +106,7 @@ export function AdminJudgingEvent() {
                   <th className="px-3 py-2.5 text-start font-semibold">الفريق</th>
                   <th className="px-3 py-2.5 text-start font-semibold">المتوسط</th>
                   <th className="px-3 py-2.5 text-start font-semibold">البطاقات</th>
-                  <th className="px-5 py-2.5 text-start font-semibold">العبور</th>
+                  <th className="px-5 py-2.5 text-start font-semibold">التأهل</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
@@ -128,13 +127,13 @@ export function AdminJudgingEvent() {
                         </div>
                       </td>
                       <td data-label="البطاقات" className="tabular px-3 py-3 text-slate">{r.sheets} / {ev.judgeIds.length}</td>
-                      <td data-label="العبور" className="px-5 py-3">
+                      <td data-label="التأهل" className="px-5 py-3">
                         {ev.published ? (
-                          on ? <Badge tone="green">عبر</Badge> : <Badge tone="neutral">لم يعبر</Badge>
+                          on ? <Badge tone="green">تأهل</Badge> : <Badge tone="neutral">لم يتأهل</Badge>
                         ) : (
                           <label className="inline-flex cursor-pointer items-center gap-2">
                             <input type="checkbox" className="size-4 accent-navy" checked={on} onChange={() => toggle(r.teamId)} />
-                            <span className="text-navy">يعبر</span>
+                            <span className="text-navy">يتأهل</span>
                           </label>
                         )}
                       </td>
@@ -144,7 +143,7 @@ export function AdminJudgingEvent() {
               </tbody>
             </table>
           ) : (
-            <EmptyState title="لم تُحدَّد فرق هذه البوابة بعد">تُضاف الشركات تلقائيًا عند إعلان نتائج البوابة السابقة.</EmptyState>
+            <EmptyState title="لم تُحدَّد الفرق بعد">تُضاف بعد إعلان نتائج المرحلة السابقة.</EmptyState>
           )}
         </Card>
 
@@ -172,8 +171,7 @@ export function AdminJudgingEvent() {
           {!ev.published && results.length > 0 && (
             <Card className="p-5">
               <p className="text-sm text-navy">
-                عند الإعلان ينتقل <span className="tabular font-bold">{selected.length}</span> فرق إلى {next ? STAGE[next].fullName : 'المستثمرين'}، ويرى كل فريق
-                نتيجته وملاحظات المحكّمين.
+                يتأهل <span className="tabular font-bold">{selected.length}</span> فرق إلى {next ? STAGE[next].fullName : 'المستثمرين'}، ويرى كل فريق نتيجته.
               </p>
               {got < expected && (
                 <p className="mt-2 text-sm font-semibold text-warn">
@@ -182,7 +180,7 @@ export function AdminJudgingEvent() {
               )}
               <ConfirmAction
                 className="mt-4"
-                question={<>إعلان النتائج وعبور <span className="tabular">{selected.length}</span> فرق؟</>}
+                question={<>إعلان النتائج وتأهل <span className="tabular">{selected.length}</span> فرق؟</>}
                 confirmLabel="نعم، أعلن"
                 onConfirm={() => {
                   actions.publishResults(ev.id, selected)
@@ -294,8 +292,7 @@ export function AdminEscalations() {
   return (
     <>
       <PageHeader
-        title="مصفوفة التصعيد"
-        lede="يُتخذ القرار عند المستوى المختص ويُوثَّق في سجل موحّد. ما لا يُعالج في حدّه الزمني يُرفع إلى المستوى التالي."
+        title="التصعيد"
         actions={!adding && <Button onClick={() => setAdding(true)}><Plus className="size-4" aria-hidden />تسجيل تحدٍّ</Button>}
       />
 
@@ -388,7 +385,7 @@ export function AdminTimeline() {
     .slice(0, 10)
   return (
     <>
-      <PageHeader title="الجدول الزمني" lede="33 أسبوعًا من البرنامج على امتداد 2027، مع بوابات العبور والتوقفات." />
+      <PageHeader title="الجدول الزمني" />
       <Card className="p-5">
         <TimelineChart today={TODAY} />
       </Card>

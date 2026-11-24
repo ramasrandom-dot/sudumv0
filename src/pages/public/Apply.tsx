@@ -42,8 +42,8 @@ type Errors = Partial<Record<keyof FormState, string>>
 const validate = (step: number, f: FormState): Errors => {
   const e: Errors = {}
   if (step === 0) {
-    if (!f.track) e.track = 'اختاري المسار المناسب لمرحلة مشروعك.'
-    if (!f.entry) e.entry = 'اختاري نقطة الدخول.'
+    if (!f.track) e.track = 'اختاري المسار.'
+    if (!f.entry) e.entry = 'اختاري فئتك.'
   }
   if (step === 1) {
     if (f.leadName.trim().length < 3) e.leadName = 'اكتبي اسمك الكامل.'
@@ -52,8 +52,8 @@ const validate = (step: number, f: FormState): Errors => {
     if (!f.college.trim()) e.college = 'اكتبي الكلية أو الجهة.'
   }
   if (step === 2) {
-    if (f.problem.trim().length < 15) e.problem = 'صفي المشكلة في جملة أو جملتين على الأقل.'
-    if (f.idea.trim().length < 15) e.idea = 'صفي فكرتك أو منتجك في جملة أو جملتين على الأقل.'
+    if (f.problem.trim().length < 15) e.problem = 'اكتبي المشكلة في جملة على الأقل.'
+    if (f.idea.trim().length < 15) e.idea = 'اكتبي فكرتك في جملة على الأقل.'
   }
   return e
 }
@@ -89,8 +89,8 @@ export default function Apply() {
   return (
     <>
       <PageHero
-        title="سجّلي اهتمامك في سُدُم"
-        lede="أربع خطوات قصيرة. نراجع كل طلب خلال أسبوع، ونتواصل معكِ بموعد مقابلة الفرز (10 دقائق) أو بالمرحلة الأنسب لمشروعك."
+        title="قدّمي على سُدُم"
+        lede="أربع خطوات قصيرة، ونرد خلال أسبوع."
       />
       <section className="bg-canvas">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 md:py-20">
@@ -99,10 +99,10 @@ export default function Apply() {
               <Star className="size-10" color="#39B67E" />
               <h2 className="mt-5 text-2xl font-bold text-navy">استلمنا طلبك، {f.leadName.split(' ')[0]}</h2>
               <p className="mt-3 text-slate">
-                سيصلك بريد على <span className="font-semibold text-navy" dir="ltr">{f.email}</span> خلال أسبوع بالخطوة التالية.
+                سيصلك بريد على <span className="font-semibold text-navy" dir="ltr">{f.email}</span> خلال أسبوع.
               </p>
               <div className="mt-6 rounded-lg bg-tint-blue px-4 py-3 text-sm text-navy">
-                هذه نسخة تجريبية: ادخلي المنصة بصفة «إدارة البرنامج» لتري طلبك في قائمة الطلبات الجديدة.
+                نسخة تجريبية: طلبك يظهر الآن عند «إدارة البرنامج».
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink to="/login">جرّبي المنصة</ButtonLink>
@@ -160,7 +160,7 @@ export default function Apply() {
                       </div>
                       {errors.track && <p className="mt-2 text-sm text-danger" role="alert">{errors.track}</p>}
                     </fieldset>
-                    <Field label="نقطة الدخول" htmlFor="entry" error={errors.entry} required>
+                    <Field label="الفئة" htmlFor="entry" error={errors.entry} required>
                       <Select id="entry" value={f.entry} onChange={(e) => set('entry', e.target.value as EntryPoint)} aria-invalid={!!errors.entry}>
                         <option value="">اختاري…</option>
                         {(Object.keys(ENTRY_POINTS) as EntryPoint[]).map((k) => (
@@ -186,7 +186,7 @@ export default function Apply() {
                         <Input id="phone" type="tel" dir="ltr" inputMode="numeric" autoComplete="tel" placeholder="05XXXXXXXX" value={f.phone} onChange={(e) => set('phone', e.target.value)} aria-invalid={!!errors.phone} />
                       </Field>
                     </div>
-                    <Field label="الكلية أو الجهة" htmlFor="college" error={errors.college} hint="مثال: كلية علوم الحاسب والمعلومات، أو اسم منشأتك" required>
+                    <Field label="الكلية أو الجهة" htmlFor="college" error={errors.college} hint="مثال: كلية علوم الحاسب والمعلومات" required>
                       <Input id="college" value={f.college} onChange={(e) => set('college', e.target.value)} aria-invalid={!!errors.college} />
                     </Field>
                   </>
@@ -195,17 +195,17 @@ export default function Apply() {
                 {step === 2 && (
                   <>
                     <div className="grid gap-6 sm:grid-cols-[1fr_10rem]">
-                      <Field label="اسم الفريق أو المشروع" htmlFor="team" hint="اتركيه فارغًا إن لم يكن لديكِ فريق بعد">
+                      <Field label="اسم الفريق أو المشروع" htmlFor="team" hint="اختياري">
                         <Input id="team" value={f.teamName} onChange={(e) => set('teamName', e.target.value)} />
                       </Field>
                       <Field label="عدد أعضاء الفريق" htmlFor="size">
                         <Input id="size" type="number" min={1} max={6} value={f.teamSize} onChange={(e) => set('teamSize', Number(e.target.value) || 1)} />
                       </Field>
                     </div>
-                    <Field label="ما المشكلة التي تحلّينها؟ ولمن؟" htmlFor="problem" error={errors.problem} required>
+                    <Field label="ما المشكلة التي تحلّينها؟" htmlFor="problem" error={errors.problem} required>
                       <Textarea id="problem" value={f.problem} onChange={(e) => set('problem', e.target.value)} aria-invalid={!!errors.problem} />
                     </Field>
-                    <Field label="ما فكرتك أو منتجك؟ وأين وصلتِ؟" htmlFor="idea" error={errors.idea} required>
+                    <Field label="ما فكرتك أو منتجك؟" htmlFor="idea" error={errors.idea} required>
                       <Textarea id="idea" value={f.idea} onChange={(e) => set('idea', e.target.value)} aria-invalid={!!errors.idea} />
                     </Field>
                   </>
@@ -215,7 +215,7 @@ export default function Apply() {
                   <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
                     {[
                       ['المسار', f.track ? TRACKS[f.track].label : ''],
-                      ['نقطة الدخول', f.entry ? ENTRY_POINTS[f.entry].label : ''],
+                      ['الفئة', f.entry ? ENTRY_POINTS[f.entry].label : ''],
                       ['الاسم', f.leadName],
                       ['البريد', f.email],
                       ['الجوال', f.phone],
@@ -247,7 +247,7 @@ export default function Apply() {
                   </Button>
                 ) : (
                   <Link to="/program" className="text-sm font-semibold text-blue-ink hover:underline">
-                    لم تقرري بعد؟ تعرّفي على المراحل
+                    تعرّفي على المراحل
                   </Link>
                 )}
                 <Button type="submit">
