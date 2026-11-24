@@ -11,7 +11,9 @@ npm run dev
 
 Open the local URL that `npm run dev` prints.
 
-To share a preview without a server, run `npm run build:single`. It writes `dist-single/index.html`, a single self-contained file (about 1 MB) that opens directly in a browser. Use **دخول المنصة** to try the platform as any of the five roles, and switch roles at any time from the top bar.
+To share a preview without a server, run `npm run build:single`. It writes `dist-single/index.html`, a single self-contained file (about 1 MB) that opens directly in a browser.
+
+`npm run build:artifact` writes `dist-artifact/sudum.html`, the version hosted as a private claude.ai artifact. Use **دخول المنصة** to try the platform as any of the five roles, and switch roles at any time from the top bar.
 
 ## What's inside
 

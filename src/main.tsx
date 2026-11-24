@@ -45,9 +45,14 @@ const section = (role: Role, children: { path?: string; index?: boolean; element
 
 // The single-file preview opens from a file or inside an embedded viewer: it routes with the
 // URL hash where the page has a real address, and in memory where it does not (about:srcdoc).
+// VITE_ROUTER=memory forces in-memory routing, for hosts whose links carry no page path.
 const hasAddress = /^(https?|file):$/.test(window.location.protocol)
 const createRouter =
-  import.meta.env.MODE !== 'single' ? createBrowserRouter : hasAddress ? createHashRouter : createMemoryRouter
+  import.meta.env.MODE !== 'single'
+    ? createBrowserRouter
+    : hasAddress && import.meta.env.VITE_ROUTER !== 'memory'
+      ? createHashRouter
+      : createMemoryRouter
 
 const router = createRouter([
   {

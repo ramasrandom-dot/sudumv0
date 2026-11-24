@@ -79,7 +79,7 @@ function Topbar({ onMenu }: { onMenu: () => void }) {
   const toast = useToast()
   if (!me) return null
   return (
-    <div className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-line bg-canvas/90 px-4 backdrop-blur-md sm:px-6">
+    <div style={{ top: 'env(safe-area-inset-top, 0px)' }} className="sticky z-30 flex h-16 items-center gap-3 border-b border-line bg-canvas/90 px-4 backdrop-blur-md sm:px-6">
       <button
         type="button"
         onClick={onMenu}

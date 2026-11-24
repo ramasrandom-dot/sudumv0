@@ -1,6 +1,3 @@
-import { useRef } from 'react'
-import { gsap } from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { Star } from '@/components/brand'
 import { PAUSES, STAGES } from '@/data/program'
 import { fmtDay, fmtMonth, yearFraction } from '@/lib/dates'
@@ -13,36 +10,8 @@ const pos = (start: string, end: string) => {
 
 /** The 2027 cohort as a Gantt: stages, pauses and the four gates. */
 export default function Timeline() {
-  const root = useRef<HTMLElement>(null)
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('.tl-bar', {
-          scaleX: 0,
-          transformOrigin: 'right center',
-          duration: 1.2,
-          ease: 'expo.out',
-          stagger: 0.12,
-          scrollTrigger: { trigger: '.tl-chart', start: 'top 80%', once: true },
-        })
-        gsap.from('.tl-gate', {
-          scale: 0,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'back.out(2)',
-          stagger: 0.12,
-          delay: 0.5,
-          scrollTrigger: { trigger: '.tl-chart', start: 'top 80%', once: true },
-        })
-      })
-    },
-    { scope: root },
-  )
-
   return (
-    <section ref={root} className="bg-white" aria-labelledby="timeline-title">
+    <section className="bg-white" aria-labelledby="timeline-title">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <h2 id="timeline-title" className="text-3xl font-bold text-navy md:text-4xl">

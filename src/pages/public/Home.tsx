@@ -200,7 +200,7 @@ function Journey() {
               >
                 <div>
                   <p className="tabular text-6xl leading-none font-bold" style={{ color: s.ink }}>
-                    <CountUp to={c.n} duration={1.6} separator="," trigger="view" />
+                    <CountUp to={c.n} duration={1.6} separator="," trigger="load" />
                   </p>
                   <p className="mt-2 font-semibold text-navy">{c.unit}</p>
                   <p className="text-sm text-slate">{c.note}</p>

@@ -30,6 +30,7 @@ function SiteHeader() {
 
   return (
     <header
+      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
       className={cn(
         'fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-300',
         scrolled || open ? 'bg-navy-900/95 shadow-[0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-md' : 'bg-transparent',

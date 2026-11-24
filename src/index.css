@@ -44,6 +44,8 @@
   }
 
   body {
+    background: var(--color-canvas);
+    color: var(--color-navy);
     -webkit-tap-highlight-color: rgb(32 134 194 / 0.15);
     touch-action: manipulation;
     font-family: var(--font-sans);
