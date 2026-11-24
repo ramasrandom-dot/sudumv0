@@ -319,3 +319,64 @@ export function Meta({ label, children }: { label: ReactNode; children: ReactNod
     </div>
   )
 }
+
+/* ───────────── Skip link ───────────── */
+
+/** Jumps keyboard focus to <main>. Uses a click handler so it also works under hash routing. */
+export function SkipLink() {
+  return (
+    <a
+      href="#main"
+      onClick={(e) => {
+        e.preventDefault()
+        const main = document.getElementById('main')
+        main?.focus()
+        main?.scrollIntoView()
+      }}
+      className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2"
+    >
+      تخطَّ إلى المحتوى
+    </a>
+  )
+}
+
+/* ───────────── Inline confirmation ───────────── */
+
+/**
+ * A two-step action: the first click asks, the second confirms. Replaces window.confirm,
+ * which embedded viewers often block.
+ */
+export function ConfirmAction({
+  question,
+  confirmLabel,
+  onConfirm,
+  children,
+  className,
+}: {
+  question: ReactNode
+  confirmLabel: string
+  onConfirm: () => void
+  children: (ask: () => void) => ReactNode
+  className?: string
+}) {
+  const [asking, setAsking] = useState(false)
+  if (!asking) return <>{children(() => setAsking(true))}</>
+  return (
+    <div role="alertdialog" aria-label="تأكيد" className={cn('flex flex-wrap items-center gap-2 rounded-lg bg-warn-tint px-3 py-2 text-sm text-navy', className)}>
+      <span className="flex-1">{question}</span>
+      <Button
+        size="sm"
+        autoFocus
+        onClick={() => {
+          setAsking(false)
+          onConfirm()
+        }}
+      >
+        {confirmLabel}
+      </Button>
+      <Button size="sm" variant="ghost" onClick={() => setAsking(false)}>
+        إلغاء
+      </Button>
+    </div>
+  )
+}

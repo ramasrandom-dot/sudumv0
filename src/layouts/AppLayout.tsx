@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { CalendarDays, LogOut, Menu, RotateCcw, X } from 'lucide-react'
 import { Logo } from '@/components/brand'
-import { Avatar, Select, useToast } from '@/components/ui'
+import { Avatar, ConfirmAction, Select, SkipLink, useToast } from '@/components/ui'
 import { ROLE_LABEL, TODAY } from '@/data/program'
 import { DEMO_USERS } from '@/data/seed'
 import type { Role } from '@/data/types'
@@ -114,20 +114,27 @@ function Topbar({ onMenu }: { onMenu: () => void }) {
             </option>
           ))}
         </Select>
-        <button
-          type="button"
-          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap text-slate hover:bg-navy/5 hover:text-navy"
-          onClick={() => {
-            if (window.confirm('إعادة البيانات التجريبية إلى حالتها الأصلية؟ ستُحذف كل التغييرات التي أجريتها.')) {
-              actions.resetDemo()
-              toast('أُعيدت البيانات التجريبية إلى حالتها الأصلية')
-            }
+        <ConfirmAction
+          className="absolute top-full left-4 mt-2 shadow-raised"
+          question="إعادة البيانات التجريبية؟ تُحذف تغييراتك."
+          confirmLabel="إعادة الضبط"
+          onConfirm={() => {
+            actions.resetDemo()
+            toast('أُعيدت البيانات التجريبية إلى حالتها الأصلية')
           }}
-          title="إعادة ضبط البيانات التجريبية"
         >
-          <RotateCcw className="size-4" aria-hidden />
-          <span className="hidden xl:inline">إعادة الضبط</span>
-        </button>
+          {(ask) => (
+            <button
+              type="button"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm whitespace-nowrap text-slate hover:bg-navy/5 hover:text-navy"
+              onClick={ask}
+              title="إعادة ضبط البيانات التجريبية"
+            >
+              <RotateCcw className="size-4" aria-hidden />
+              <span className="hidden xl:inline">إعادة الضبط</span>
+            </button>
+          )}
+        </ConfirmAction>
       </div>
     </div>
   )
@@ -153,9 +160,7 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-dvh bg-canvas">
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
-        تخطَّ إلى المحتوى
-      </a>
+      <SkipLink />
       <aside className="fixed inset-y-0 right-0 z-40 hidden w-64 lg:block">
         <Sidebar role={me.role} />
       </aside>
@@ -179,7 +184,7 @@ export default function AppLayout() {
 
       <div className="lg:pr-64">
         <Topbar onMenu={() => setDrawer(true)} />
-        <main id="main" className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+        <main id="main" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-8 outline-none sm:px-6 lg:px-8">
           <Outlet />
         </main>
       </div>

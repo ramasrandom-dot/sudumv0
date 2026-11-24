@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, ArrowUpCircle, CheckCircle2, Plus } from 'lucide-react'
 import { StageBadge } from '@/components/brand'
-import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, PageHeader, Progress, Segmented, Select, Textarea, useToast } from '@/components/ui'
+import { Avatar, Badge, Button, Card, CardHeader, ConfirmAction, EmptyState, Field, Input, PageHeader, Progress, Segmented, Select, Textarea, useToast } from '@/components/ui'
 import { ESCALATION_LEVELS, STAGE, STAGES, TODAY, nextStage } from '@/data/program'
 import type { Escalation } from '@/data/types'
 import { addWorkingDays, fmtDate, fmtDay, relativeDays } from '@/lib/dates'
@@ -180,18 +180,21 @@ export function AdminJudgingEvent() {
                   <span className="tabular">{expected - got}</span> بطاقة لم تصل بعد.
                 </p>
               )}
-              <Button
-                className="mt-4 w-full"
-                disabled={selected.length === 0}
-                onClick={() => {
-                  if (window.confirm(`إعلان النتائج وعبور ${selected.length} فرق؟ لا يمكن التراجع في هذه النسخة.`)) {
-                    actions.publishResults(ev.id, selected)
-                    toast('أُعلنت النتائج ووصلت إلى الفرق')
-                  }
+              <ConfirmAction
+                className="mt-4"
+                question={<>إعلان النتائج وعبور <span className="tabular">{selected.length}</span> فرق؟</>}
+                confirmLabel="نعم، أعلن"
+                onConfirm={() => {
+                  actions.publishResults(ev.id, selected)
+                  toast('أُعلنت النتائج ووصلت إلى الفرق')
                 }}
               >
-                إعلان النتائج
-              </Button>
+                {(ask) => (
+                  <Button className="mt-4 w-full" disabled={selected.length === 0} onClick={ask}>
+                    إعلان النتائج
+                  </Button>
+                )}
+              </ConfirmAction>
             </Card>
           )}
         </div>

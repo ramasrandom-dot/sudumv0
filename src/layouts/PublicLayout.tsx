@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import SmoothScroll, { scrollToTop } from '@/lib/SmoothScroll'
 import { Logo, PnuLogo } from '@/components/brand'
-import { ButtonLink } from '@/components/ui'
+import { ButtonLink, SkipLink } from '@/components/ui'
 import { cn } from '@/lib/cn'
 
 const links = [
@@ -145,16 +145,20 @@ function SiteFooter() {
 export default function PublicLayout() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
-    if (!hash) scrollToTop()
+    if (!hash) {
+      scrollToTop()
+      return
+    }
+    // Scroll to an in-page section, e.g. /program#workshops.
+    const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' }), 80)
+    return () => clearTimeout(t)
   }, [pathname, hash])
 
   return (
     <SmoothScroll>
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
-        تخطَّ إلى المحتوى
-      </a>
+      <SkipLink />
       <SiteHeader />
-      <main id="main" className="bg-canvas">
+      <main id="main" tabIndex={-1} className="bg-canvas outline-none">
         <Outlet />
       </main>
       <SiteFooter />

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Navigate, Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Navigate, Outlet, RouterProvider, createBrowserRouter, createHashRouter, createMemoryRouter } from 'react-router-dom'
 import './index.css'
 import { AppStoreProvider, useStore } from '@/store/AppStore'
 import { ToastProvider } from '@/components/ui'
@@ -43,7 +43,13 @@ const section = (role: Role, children: { path?: string; index?: boolean; element
 })
 
 
-const router = createBrowserRouter([
+// The single-file preview opens from a file or inside an embedded viewer: it routes with the
+// URL hash where the page has a real address, and in memory where it does not (about:srcdoc).
+const hasAddress = /^(https?|file):$/.test(window.location.protocol)
+const createRouter =
+  import.meta.env.MODE !== 'single' ? createBrowserRouter : hasAddress ? createHashRouter : createMemoryRouter
+
+const router = createRouter([
   {
     element: <PublicLayout />,
     children: [
