@@ -1,32 +1,44 @@
-# React + TypeScript + Vite
+# سُدُم: منصة حاضنة جامعة الأميرة نورة
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The first draft of the Sudum incubator platform. It is a **clickable prototype**: frontend only, with fictional sample data saved in the browser.
 
-Currently, two official plugins are available:
+## Run it
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open the local URL that `npm run dev` prints. Use **دخول المنصة** to try the platform as any of the five roles, and switch roles at any time from the top bar.
+
+## What's inside
+
+- **Public site** (`/`, `/program`, `/apply`, `/join`)
+  - The program story, the four stages, the 2027 timeline and the 23 workshops.
+  - A participant application form.
+  - A mentor / expert / judge nomination form.
+- **Platform** (`/app/...`), with one area per role:
+  - **Participant:** overview, milestones, workshops, mentoring and clinics, judging results, team.
+  - **Mentor:** teams, milestone approval, sessions, office hours.
+  - **Expert:** workshops, clinic requests, profile.
+  - **Judge:** judging days and the standard scorecard.
+  - **Admin:** dashboard, applications, teams and mentor matching, workshops, people and nominations, judging and publishing gate results, escalations, timeline.
+
+All roles share one store, so an action in one role shows up for the others. For example: an application from `/apply` appears in admin; a mentor's approval reaches the participant; judges' scores reach admin, who publishes the results to the teams. Use **إعادة الضبط** in the top bar to restore the sample data.
+
+The prototype's "today" is fixed at **15 June 2027**, in week 6 of Tamkeen (see `TODAY` in `src/data/program.ts`).
+
+## Where things live
+
+| Path | What |
+|---|---|
+| `src/data/program.ts` | Program facts: stages, dates, the 23 workshop titles, expertise areas, scorecard criteria |
+| `src/data/seed.ts` | Fictional people, teams, scores and requests |
+| `src/store/` | Shared state (localStorage) and selectors |
+| `src/pages/public/`, `src/pages/app/<role>/` | Screens |
+| `src/components/brand/` | Star motif, logos, stage badges |
+| `PRODUCT.md`, `DESIGN.md` | Product and design records, from the brand brief |
+
+## Stack
+
+Vite, React 19, TypeScript, Tailwind v4, React Router, GSAP and ScrollTrigger, Lenis (public pages only), and React Bits (SplitText, CountUp). To add more React Bits components, run `npm run reactbits -- <Name>`.

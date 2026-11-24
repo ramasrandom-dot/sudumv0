@@ -1,1 +1,145 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Arabic", "Noto Sans Arabic", system-ui, sans-serif;
+
+  --color-navy: #0a0f3c;
+  --color-navy-deep: #090e3b;
+  --color-navy-900: #060a2b;
+  --color-blue: #2086c2;
+  --color-blue-ink: #17699b;
+  --color-green: #39b67e;
+  --color-green-ink: #1c7a50;
+  --color-teal: #00535c;
+  --color-slate: #5b6480;
+  --color-canvas: #f3f2f3;
+  --color-line: #e2e2ea;
+  --color-line-strong: #cfd0dc;
+  --color-tint-blue: #dce8ff;
+  --color-tint-ice: #d2eeff;
+  --color-tint-mint: #d5ffde;
+  --color-tint-teal: #d9ecee;
+  --color-tint-navy: #e3e4ee;
+  --color-orange: #ff8a4c;
+  --color-orange-ink: #a8481a;
+  --color-danger: #b42335;
+  --color-danger-tint: #fbe6e9;
+  --color-warn: #8a5a00;
+  --color-warn-tint: #fff1d1;
+
+  --shadow-card: 0 1px 2px rgb(10 15 60 / 0.04), 0 2px 8px rgb(10 15 60 / 0.04);
+  --shadow-raised: 0 2px 4px rgb(10 15 60 / 0.06), 0 12px 32px -8px rgb(10 15 60 / 0.18);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    color: var(--color-navy);
+    background: var(--color-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern";
+  }
+
+  body {
+    -webkit-tap-highlight-color: rgb(32 134 194 / 0.15);
+    touch-action: manipulation;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3, h4 {
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-blue);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  input, textarea, select {
+    caret-color: var(--color-blue);
+  }
+
+  a {
+    text-underline-offset: 0.3em;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+/* Tables that become stacked rows on narrow screens. Cells carry data-label. */
+@media (max-width: 767px) {
+  .rtable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .rtable,
+  .rtable tbody,
+  .rtable tr,
+  .rtable td {
+    display: block;
+    width: 100%;
+  }
+  .rtable tr {
+    padding: 0.75rem 1.25rem;
+  }
+  .rtable td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.35rem 0 !important;
+  }
+  .rtable td[data-label]::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    color: var(--color-slate);
+  }
+}
