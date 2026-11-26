@@ -1,11 +1,16 @@
-import { ArrowLeft, ChevronDown } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { ButtonLink } from '@/components/ui'
 import { STAGES, WORKSHOPS } from '@/data/program'
 import { fmtDay } from '@/lib/dates'
+import { cn } from '@/lib/cn'
 import PageHero from './PageHero'
 import Timeline from './Timeline'
 
+/**
+ * The program as four chapters. Each stage is a full screen in its own colour with a ghost
+ * numeral behind it; on desktop a chapter holds the screen while the next slides over it.
+ */
 export default function Program() {
   return (
     <>
@@ -28,66 +33,77 @@ export default function Program() {
         </nav>
       </PageHero>
 
-      <Timeline />
+      <div className="relative bg-[#03050a]">
+        {STAGES.map((s, i) => {
+          const workshops = WORKSHOPS.filter((w) => w.stage === s.id)
+          const [count, ...unit] = s.teamsLabel.split(' ')
+          const facts = [
+            { value: String(s.weeks), label: s.weeks > 10 ? 'أسبوعًا' : 'أسابيع' },
+            { value: count, label: unit.join(' ') },
+            { value: fmtDay(s.gateDate), label: s.gate },
+          ]
+          return (
+            <div key={s.id} className="contents">
+              {/* A plain anchor: a held (sticky) chapter cannot be scrolled to directly. */}
+              <div id={s.id} aria-hidden className="h-0" />
+              <section
+                aria-labelledby={`${s.id}-title`}
+                className={cn(
+                  'chapter relative isolate flex flex-col justify-center overflow-hidden',
+                  i > 0 && 'rounded-t-[2rem] shadow-[0_-24px_60px_rgb(0_0_0/0.28)] md:rounded-t-[3rem]',
+                )}
+                style={{ background: s.color, color: s.on }}
+              >
+                <span
+                  aria-hidden
+                  className="tabular pointer-events-none absolute top-4 left-[4%] -z-10 text-[9rem] leading-none font-bold opacity-[0.08] select-none lg:top-auto lg:bottom-[-5svh] lg:text-[58svh]"
+                >
+                  {s.index}
+                </span>
 
-      {STAGES.map((s, i) => {
-        const workshops = WORKSHOPS.filter((w) => w.stage === s.id)
-        return (
-          <section
-            key={s.id}
-            id={s.id}
-            className={i % 2 ? 'scroll-mt-20 bg-white' : 'scroll-mt-20 bg-canvas'}
-            aria-labelledby={`${s.id}-title`}
-          >
-            <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 md:py-20 lg:grid-cols-[1fr_1.4fr] lg:gap-12 lg:px-10">
-              <div>
-                <h2 id={`${s.id}-title`} className="flex items-center gap-3 text-4xl font-bold text-navy md:text-5xl">
-                  <Star className="size-8 shrink-0" color={s.color} />
-                  {s.fullName}
-                </h2>
-                <p className="mt-3 text-lg text-slate">{s.summary}</p>
-              </div>
+                <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-14 lg:px-10 lg:pt-28 lg:pb-16">
+                  <div>
+                    <h2 id={`${s.id}-title`} className="text-[clamp(3.5rem,10vw,8rem)] leading-[1.1] font-bold">
+                      {s.fullName}
+                    </h2>
+                    <p className="mt-3 text-xl opacity-85 md:text-2xl">{s.summary}</p>
+                    <p className="mt-8 flex items-start gap-3 text-2xl leading-snug font-semibold md:text-3xl">
+                      <Star className="mt-2 size-5 shrink-0" />
+                      <span>
+                        <span className="font-normal opacity-80">النتيجة: </span>
+                        {s.outcome}
+                      </span>
+                    </p>
+                  </div>
 
-              <div className="flex flex-col gap-4">
-                <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
-                  {[
-                    ['المدة', `${s.weeks} ${s.weeks > 10 ? 'أسبوعًا' : 'أسابيع'}`],
-                    ['العدد', s.teamsLabel],
-                    [s.gate, fmtDay(s.gateDate)],
-                  ].map(([k, v]) => (
-                    <div key={k} className="bg-white px-4 py-4">
-                      <dt className="text-xs text-slate">{k}</dt>
-                      <dd className="tabular mt-1 text-lg font-bold text-navy">{v}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                <p className="rounded-xl px-5 py-4 text-lg font-semibold" style={{ background: s.color, color: s.on }}>
-                  <span className="font-normal opacity-80">النتيجة: </span>
-                  {s.outcome}
-                </p>
-
-                <details className="group rounded-xl border border-line bg-white">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3.5 font-semibold text-navy [&::-webkit-details-marker]:hidden">
-                    <span>
-                      الورش <span className="tabular font-normal text-slate">({workshops.length})</span>
-                    </span>
-                    <ChevronDown className="size-5 text-slate transition-transform duration-200 group-open:rotate-180" aria-hidden />
-                  </summary>
-                  <ol className="border-t border-line px-5 py-2">
-                    {workshops.map((w) => (
-                      <li key={w.title} className="flex items-baseline gap-4 border-b border-line py-2.5 last:border-b-0">
-                        <span className="tabular w-16 shrink-0 text-sm text-slate">أسبوع {w.week}</span>
-                        <span className="text-navy">{w.title}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </details>
-              </div>
+                  <div>
+                    <ul className="grid grid-cols-3 gap-2 md:gap-3">
+                      {facts.map((f) => (
+                        <li key={f.label} className="rounded-2xl bg-black/15 p-4 md:p-5">
+                          <p className="tabular text-xl leading-tight font-bold whitespace-nowrap md:text-3xl">{f.value}</p>
+                          <p className="mt-1.5 text-sm opacity-85 md:text-base">{f.label}</p>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-8 text-sm font-semibold opacity-80">
+                      الورش · <span className="tabular">{workshops.length}</span>
+                    </p>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {workshops.map((w) => (
+                        <li key={w.title} className="rounded-full bg-black/15 px-4 py-2 text-sm font-medium md:text-base">
+                          {w.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </section>
             </div>
-          </section>
-        )
-      })}
+          )
+        })}
+      </div>
+
+      <Timeline />
 
       <section className="bg-navy-deep text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">

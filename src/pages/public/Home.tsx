@@ -116,12 +116,12 @@ function Audience() {
 
   return (
     <section ref={root} className="bg-canvas" aria-labelledby="audience-title">
-      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 md:pt-28 lg:px-10">
+      <div className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 md:pt-20 lg:px-10">
         <h2 id="audience-title" className="text-3xl font-bold text-navy md:text-4xl">
           لمن سُدُم؟
         </h2>
       </div>
-      <ul className="mt-10 border-t border-line-strong">
+      <ul className="mt-8 border-t border-line-strong">
         {(Object.keys(ENTRY_POINTS) as EntryPoint[]).map((k) => {
           const tone = AUDIENCE_TONE[k]
           return (
@@ -131,14 +131,14 @@ function Audience() {
               style={{ '--tone': tone.color, '--on': tone.on } as React.CSSProperties}
             >
               <span aria-hidden className="aud-fill absolute inset-0 -z-10" />
-              <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-10 gap-y-1 px-4 py-7 sm:px-6 md:py-9 lg:px-10">
-                <h3 className="aud-ink flex items-center gap-[0.3em] text-[clamp(2.75rem,10vw,7.5rem)] leading-[1.15] font-bold text-navy">
+              <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-10 gap-y-0.5 px-4 py-4 sm:px-6 md:py-5 lg:px-10">
+                <h3 className="aud-ink flex items-center gap-[0.3em] text-[clamp(1.875rem,4.4vw,3.25rem)] leading-[1.25] font-bold text-navy">
                   <span className="aud-star" aria-hidden>
                     <Star className="size-[0.42em]" />
                   </span>
                   {ENTRY_POINTS[k].label}
                 </h3>
-                <p className="aud-ink text-xl text-slate md:text-2xl">{ENTRY_POINTS[k].detail}</p>
+                <p className="aud-ink text-lg text-slate md:text-xl">{ENTRY_POINTS[k].detail}</p>
               </div>
             </li>
           )
