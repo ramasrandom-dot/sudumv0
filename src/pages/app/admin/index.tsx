@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { AlertTriangle, ArrowLeft, Check, ChevronDown, X } from 'lucide-react'
+import { AlertTriangle, Check, ChevronDown, Inbox, Users, UsersRound, X } from 'lucide-react'
 import { StageBadge, Star } from '@/components/brand'
 import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, PageHeader, Progress, Segmented, Select, Textarea, useToast } from '@/components/ui'
 import { ENTRY_POINTS, ESCALATION_LEVELS, STAGE, STAGES, TODAY, TRACKS } from '@/data/program'
 import type { Application, ApplicationStatus, Role } from '@/data/types'
-import { addWorkingDays, daysFromToday, fmtDate, fmtDay } from '@/lib/dates'
-import { cn } from '@/lib/cn'
-import { useStore } from '@/store/AppStore'
-import { byId, isOverdue, milestoneProgress, peopleByRole, stageWeek, teamMilestones } from '@/store/selectors'
-import { DateChip, ListRow, Rel, Stat, sessionKind } from '../shared'
+import { addWorkingDays, daysFromToday, fmtDay } from '@/lib/dates'
+import { cn, firstName } from '@/lib/cn'
+import { TimelineChart } from '@/pages/public/Timeline'
+import { useMe, useStore } from '@/store/AppStore'
+import { activeStage, byId, isOverdue, milestoneProgress, peopleByRole, stageWeek, teamMilestones } from '@/store/selectors'
+import { Chip, Hero, ListRow, Rel, SectionTitle, Tile } from '../shared'
 
-/* ───────────── Dashboard ───────────── */
+/* ───────────── Home ───────────── */
 
 const FUNNEL = [
   { label: 'مسجّلات في الإلهام', n: 500, color: '#2086C2' },
@@ -22,152 +22,74 @@ const FUNNEL = [
 ]
 
 export function AdminDashboard() {
+  const me = useMe()
   const { state } = useStore()
+  const stage = STAGE[activeStage() ?? 'tamkeen']
+  const week = stageWeek(stage.id)
   const active = state.teams.filter((t) => t.status === 'active')
-  const stage = STAGE.tamkeen
-  const week = stageWeek('tamkeen')
-  const awaiting = state.milestones.filter((m) => m.status === 'submitted').length
   const newApps = state.applications.filter((a) => a.status === 'new').length
+  const newJoins = state.nominations.filter((n) => n.status === 'new').length
   const openEsc = state.escalations.filter((e) => e.status === 'open')
   const overdueEsc = openEsc.filter((e) => addWorkingDays(e.at, ESCALATION_LEVELS[e.level].days) < TODAY).length
-  const newNoms = state.nominations.filter((n) => n.status === 'new').length
-
-  const atRisk = active
-    .map((t) => {
-      const ms = teamMilestones(state, t.id)
-      const late = ms.filter(isOverdue)
-      const changes = ms.filter((m) => m.status === 'changes' && !isOverdue(m))
-      return { t, late, changes }
-    })
-    .filter((x) => x.late.length || x.changes.length)
-
-  const allMs = state.milestones.filter((m) => active.some((t) => t.id === m.teamId))
-  const progress = milestoneProgress(allMs)
-  const mentors = peopleByRole(state, 'mentor')
-  const weekAhead = [
-    ...state.workshops.filter((w) => w.date >= TODAY && daysFromToday(w.date) <= 14).map((w) => ({ id: w.id, date: w.date, title: w.title, sub: `ورشة · ${STAGE[w.stage].fullName}` })),
-    ...state.sessions
-      .filter((s) => s.status === 'scheduled' && s.date >= TODAY && daysFromToday(s.date) <= 7)
-      .map((s) => ({ id: s.id, date: s.date, title: s.topic, sub: `${sessionKind(s.kind)} · ${byId(state.teams, s.teamId)?.name}` })),
-  ].sort((a, b) => a.date.localeCompare(b.date))
-
+  const lateTeams = active.filter((t) => teamMilestones(state, t.id).some(isOverdue)).length
   const max = FUNNEL[0].n
 
   return (
     <>
-      <PageHeader
-        title="لوحة المؤشرات"
-        lede={<>الدفعة الأولى 2027 · {stage.fullName}، الأسبوع <span className="tabular">{week}</span> من <span className="tabular">{stage.weeks}</span></>}
-      />
-
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="فرق نشطة في تمكين" value={active.length} note={<>يتأهل <span className="tabular">5</span> منها إلى سنام</>} accent={stage.ink} />
-        <Stat label="مهام بانتظار المرشدين" value={awaiting} />
-        <Stat label="طلبات تقديم جديدة" value={newApps} note={<Link className="text-blue-ink hover:underline" to="/app/admin/applications">مراجعة الطلبات</Link>} />
-        <Stat
-          label="تحديات مفتوحة"
-          value={openEsc.length}
-          note={overdueEsc ? <span className="font-semibold text-danger"><span className="tabular">{overdueEsc}</span> تجاوز حد المعالجة</span> : 'ضمن حدود المعالجة'}
-          accent={overdueEsc ? '#B42335' : undefined}
-        />
-      </div>
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <Card>
-          <CardHeader title="رحلة الدفعة" />
-          <ul className="flex flex-col gap-4 p-5">
-            {FUNNEL.map((f) => (
-              <li key={f.label} className="grid grid-cols-[minmax(0,9.5rem)_1fr_3rem] items-center gap-3 text-sm">
-                <span className="text-navy">{f.label}</span>
-                <span className="h-6 overflow-hidden rounded-md bg-canvas">
-                  <span className="block h-full rounded-md" style={{ width: `${Math.max((f.n / max) * 100, 1.5)}%`, background: f.color }} />
-                </span>
-                <span className="tabular text-end font-bold text-navy">{f.n}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
-        <Card className="flex flex-col">
-          <CardHeader title={`${stage.fullName}: يوم التحكيم`} sub={<span className="tabular">{fmtDate(stage.gateDate)}</span>} action={<StageBadge stage="tamkeen" solid />} />
-          <div className="flex flex-1 flex-col justify-between gap-5 p-5">
-            <p className="tabular text-5xl font-bold" style={{ color: stage.ink }}>
-              {daysFromToday(stage.gateDate)}
-              <span className="ms-2 text-base font-normal text-slate">يومًا متبقيًا</span>
-            </p>
-            <div>
-              <div className="mb-1.5 flex justify-between text-sm">
-                <span className="text-slate">المهام المعتمدة</span>
-                <span className="tabular font-semibold text-navy">{progress.approved} / {progress.total}</span>
-              </div>
-              <Progress value={progress.pct} color={stage.color} label="المهام المعتمدة" />
-            </div>
-            <Link to="/app/admin/judging" className="inline-flex items-center gap-1 text-sm font-semibold text-blue-ink hover:underline">
-              إعداد يوم التحكيم
-              <ArrowLeft className="size-4" aria-hidden />
-            </Link>
-          </div>
-        </Card>
-      </div>
-
-      <div className="mt-6 grid items-start gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader title="فرق تحتاج متابعة" />
-          {atRisk.length ? (
-            <ul className="divide-y divide-line">
-              {atRisk.map(({ t, late, changes }) => (
-                <ListRow key={t.id}>
-                  <AlertTriangle className={cn('size-4 shrink-0', late.length ? 'text-danger' : 'text-warn')} aria-hidden />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-navy">{t.name}</p>
-                    <p className="truncate text-sm text-slate">{[...late, ...changes][0]?.title}</p>
-                  </div>
-                  {late.length > 0 && <Badge tone="danger"><span className="tabular">{late.length}</span> متأخر</Badge>}
-                  {changes.length > 0 && <Badge tone="warn"><span className="tabular">{changes.length}</span> للتعديل</Badge>}
-                  <span className="text-sm text-slate">{byId(state.people, t.mentorId)?.name}</span>
-                </ListRow>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState title="كل الفرق في موعدها" />
-          )}
-        </Card>
-
-        <div className="flex flex-col gap-6">
-          <Card>
-            <CardHeader title="الأسبوعان القادمان" />
-            <ul className="divide-y divide-line">
-              {weekAhead.slice(0, 6).map((x) => (
-                <ListRow key={x.id}>
-                  <DateChip iso={x.date} />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-navy">{x.title}</p>
-                    <p className="truncate text-xs text-slate">{x.sub}</p>
-                  </div>
-                </ListRow>
-              ))}
-            </ul>
-          </Card>
-          <Card>
-            <CardHeader
-              title="أحمال المرشدين"
-              action={newNoms > 0 && <Link to="/app/admin/people" className="text-sm font-semibold text-blue-ink hover:underline"><span className="tabular">{newNoms}</span> طلبات انضمام</Link>}
-            />
-            <ul className="divide-y divide-line">
-              {mentors.map((m) => {
-                const n = active.filter((t) => t.mentorId === m.id).length
-                return (
-                  <ListRow key={m.id} className="py-3">
-                    <Avatar name={m.name} size="sm" />
-                    <span className="flex-1 text-sm font-semibold text-navy">{m.name}</span>
-                    <span className={cn('tabular text-sm', n > 3 ? 'font-bold text-warn' : 'text-slate')}>{n} فرق</span>
-                  </ListRow>
-                )
-              })}
-            </ul>
-          </Card>
+      <Hero
+        hello={`أهلًا ${firstName(me.name)}`}
+        line={
+          <>
+            {stage.fullName} · الأسبوع <span className="tabular">{week}</span> من <span className="tabular">{stage.weeks}</span>
+          </>
+        }
+        color={stage.color}
+        on={stage.on}
+      >
+        <div className="flex flex-wrap gap-2">
+          <Chip>
+            <span className="tabular">{daysFromToday(stage.gateDate)}</span> يومًا على {stage.gate}
+          </Chip>
+          <Chip>
+            <span className="tabular">{active.length}</span> فريقًا نشطًا
+          </Chip>
         </div>
+      </Hero>
+
+      <SectionTitle>يحتاج قرارك</SectionTitle>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Tile to="/app/admin/applications" icon={Inbox} label="طلبات تقديم جديدة" count={newApps} alert={newApps > 0} />
+        <Tile to="/app/admin/people" icon={Users} label="طلبات انضمام" count={newJoins} alert={newJoins > 0} />
+        <Tile
+          to="/app/admin/escalations"
+          icon={AlertTriangle}
+          label="مشكلات مفتوحة"
+          value={overdueEsc ? `${overdueEsc} تجاوز حد المعالجة` : undefined}
+          count={openEsc.length}
+          alert={overdueEsc > 0}
+        />
+        <Tile to="/app/admin/teams" icon={UsersRound} label="فرق متأخرة في مهامها" count={lateTeams} alert={lateTeams > 0} />
       </div>
+
+      <SectionTitle>رحلة الدفعة</SectionTitle>
+      <Card>
+        <ul className="flex flex-col gap-4 p-5">
+          {FUNNEL.map((f) => (
+            <li key={f.label} className="grid grid-cols-[minmax(0,9.5rem)_1fr_3rem] items-center gap-3 text-sm">
+              <span className="text-navy">{f.label}</span>
+              <span className="h-6 overflow-hidden rounded-md bg-canvas">
+                <span className="block h-full rounded-md" style={{ width: `${Math.max((f.n / max) * 100, 1.5)}%`, background: f.color }} />
+              </span>
+              <span className="tabular text-end font-bold text-navy">{f.n}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+
+      <SectionTitle>الجدول الزمني</SectionTitle>
+      <Card className="p-5">
+        <TimelineChart today={TODAY} />
+      </Card>
     </>
   )
 }

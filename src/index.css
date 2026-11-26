@@ -95,6 +95,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -144,4 +145,14 @@
     font-size: 0.8125rem;
     color: var(--color-slate);
   }
+}
+
+/* A slow turn for the large decorative star behind each role's greeting. */
+@keyframes spin-slow {
+  to {
+    rotate: 360deg;
+  }
+}
+.spin-slow {
+  animation: spin-slow 90s linear infinite;
 }

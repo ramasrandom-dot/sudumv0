@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { ArrowRight, Check, ExternalLink, Plus, Trash2, Undo2 } from 'lucide-react'
+import { ArrowRight, Check, ClipboardCheck, ExternalLink, Plus, Trash2, Undo2 } from 'lucide-react'
 import { StageBadge } from '@/components/brand'
-import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, Meta, PageHeader, Progress, Select, Textarea, useToast } from '@/components/ui'
+import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, Meta, PageHeader, Progress, Select, Textarea, buttonClass, useToast } from '@/components/ui'
 import { ENTRY_POINTS, STAGE, TODAY } from '@/data/program'
 import type { Milestone, Team } from '@/data/types'
 import { fmtDay } from '@/lib/dates'
+import { firstName } from '@/lib/cn'
 import { useMe, useStore } from '@/store/AppStore'
 import { byId, isOverdue, milestoneProgress, stageWeek, teamMilestones, teamsOf } from '@/store/selectors'
-import { DateChip, ListRow, MilestoneBadge, Rel, SessionBadge, sessionKind } from '../shared'
+import { DateChip, Hero, ListRow, MilestoneBadge, NextStep, Rel, SectionTitle, SessionBadge, sessionKind } from '../shared'
 
 /* ───────────── Review widget (shared with the reviews queue) ───────────── */
 
@@ -81,24 +82,51 @@ export function MentorTeams() {
   const me = useMe()
   const { state } = useStore()
   const teams = teamsOf(state, me)
-  const pending = state.milestones.filter((m) => m.status === 'submitted' && teams.some((t) => t.id === m.teamId)).length
+  const queue = state.milestones
+    .filter((m) => m.status === 'submitted' && teams.some((t) => t.id === m.teamId))
+    .sort((a, b) => a.due.localeCompare(b.due))
   const week = stageWeek('tamkeen')
 
   return (
     <>
-      <PageHeader
-        title="فرقي"
-        lede={<>تمكين · الأسبوع <span className="tabular">{week}</span> من <span className="tabular">12</span></>}
-        actions={
-          pending > 0 && (
-            <Link to="/app/mentor/reviews" className="inline-flex h-10 items-center gap-2 rounded-lg bg-tint-blue px-4 text-sm font-semibold text-navy hover:bg-[#cddcff]">
-              <span className="tabular">{pending}</span> مهام بانتظار اعتمادك
-            </Link>
-          )
+      <Hero
+        hello={`أهلًا ${firstName(me.name)}`}
+        line={
+          <>
+            <span className="tabular">{teams.length}</span> فرق · تمكين، الأسبوع <span className="tabular">{week}</span> من <span className="tabular">12</span>
+          </>
         }
-      />
+      >
+        <NextStep
+          icon={ClipboardCheck}
+          title={queue.length ? <><span className="tabular">{queue.length}</span> مهام بانتظار اعتمادك</> : 'لا مهام بانتظارك'}
+          hint={queue.length ? 'اعتمدها أو أعدها للفريق بملاحظة.' : 'تظهر هنا تسليمات فرقك الجديدة.'}
+          action={
+            queue.length > 0 && (
+              <a href="#queue" className={buttonClass('primary', 'lg')}>
+                ابدأ الاعتماد
+              </a>
+            )
+          }
+        />
+      </Hero>
+
+      {queue.length > 0 && (
+        <>
+          <SectionTitle>بانتظار اعتمادك</SectionTitle>
+          <Card>
+            <ul id="queue" className="scroll-mt-24 divide-y divide-line">
+              {queue.map((m) => (
+                <ReviewMilestone key={m.id} m={m} team={byId(state.teams, m.teamId)} />
+              ))}
+            </ul>
+          </Card>
+        </>
+      )}
+
+      <SectionTitle>فرقي</SectionTitle>
       {teams.length === 0 ? (
-        <Card><EmptyState title="لم تُسند إليك فرق بعد">تطابق إدارة البرنامج المرشدين مع الفرق في أسبوع التجهيز.</EmptyState></Card>
+        <Card><EmptyState title="لم تُسند إليك فرق بعد" /></Card>
       ) : (
         <ul className="grid gap-4 md:grid-cols-2">
           {teams.map((t) => {
@@ -269,36 +297,9 @@ export function MentorTeamDetail() {
   )
 }
 
-/* ───────────── Reviews queue ───────────── */
-
-export function MentorReviews() {
-  const me = useMe()
-  const { state } = useStore()
-  const teams = teamsOf(state, me)
-  const queue = state.milestones
-    .filter((m) => m.status === 'submitted' && teams.some((t) => t.id === m.teamId))
-    .sort((a, b) => a.due.localeCompare(b.due))
-  return (
-    <>
-      <PageHeader title="مهام بانتظار الاعتماد" />
-      <Card>
-        {queue.length ? (
-          <ul className="divide-y divide-line">
-            {queue.map((m) => (
-              <ReviewMilestone key={m.id} m={m} team={byId(state.teams, m.teamId)} />
-            ))}
-          </ul>
-        ) : (
-          <EmptyState title="لا مهام بانتظارك" />
-        )}
-      </Card>
-    </>
-  )
-}
-
 /* ───────────── Sessions ───────────── */
 
-export function MentorSessions() {
+export function MentorDates() {
   const me = useMe()
   const { state } = useStore()
   const mine = state.sessions.filter((s) => s.hostId === me.id)
@@ -322,7 +323,7 @@ export function MentorSessions() {
   }
   return (
     <>
-      <PageHeader title="الجلسات" />
+      <PageHeader title="مواعيدي" />
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader title="القادمة" />
@@ -333,13 +334,14 @@ export function MentorSessions() {
           {past.length ? <ul className="divide-y divide-line">{past.map((s) => <Row key={s.id} s={s} />)}</ul> : <EmptyState title="لا جلسات بعد" />}
         </Card>
       </div>
+      <MentorHours />
     </>
   )
 }
 
 /* ───────────── Office hours ───────────── */
 
-export function MentorHours() {
+function MentorHours() {
   const me = useMe()
   const { state, actions } = useStore()
   const toast = useToast()
@@ -349,7 +351,7 @@ export function MentorHours() {
 
   return (
     <>
-      <PageHeader title="الساعات المكتبية" lede="مواعيد من 30 دقيقة تحجزها فرقك." />
+      <SectionTitle>الساعات المكتبية</SectionTitle>
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <Card>
           <CardHeader title="مواعيدك" />

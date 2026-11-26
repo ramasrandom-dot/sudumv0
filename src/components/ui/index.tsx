@@ -69,7 +69,7 @@ export function Card({
   children: ReactNode
   as?: 'section' | 'div' | 'article' | 'li'
 }) {
-  return <Tag className={cn('rounded-xl border border-line bg-white shadow-card', className)}>{children}</Tag>
+  return <Tag className={cn('rounded-2xl border border-line bg-white shadow-card', className)}>{children}</Tag>
 }
 
 export function CardHeader({ title, action, sub }: { title: ReactNode; action?: ReactNode; sub?: ReactNode }) {
@@ -88,7 +88,7 @@ export function PageHeader({ title, lede, actions }: { title: ReactNode; lede?: 
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="text-2xl font-bold text-navy">{title}</h1>
+        <h1 className="text-2xl font-bold text-navy md:text-3xl">{title}</h1>
         {lede && <p className="mt-1 max-w-[65ch] text-slate">{lede}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}

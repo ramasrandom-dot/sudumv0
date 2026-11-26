@@ -91,7 +91,7 @@ export const STAGES: Stage[] = [
     id: 'sanam',
     index: 4,
     name: 'سنام',
-    fullName: 'مسرعة سنام',
+    fullName: 'سنام',
     color: '#090E3B',
     on: '#FFFFFF',
     tint: '#E3E4EE',
@@ -104,7 +104,7 @@ export const STAGES: Stage[] = [
     gate: 'يوم العروض الاستثماري',
     gateDate: '2027-12-02',
     summary: 'من المنتج إلى شركة.',
-    outcome: 'شركة جاهزة للاستثمار.',
+    outcome: 'شركة جاهزة لدخول المسرعة.',
   },
 ]
 
@@ -114,6 +114,15 @@ export const STAGE: Record<StageId, Stage> = Object.fromEntries(STAGES.map((s) =
 >
 
 export const nextStage = (id: StageId): StageId | undefined => STAGES[STAGE[id].index]?.id
+
+/** Sanam is the fourth and last stage. Teams that finish it move on to the accelerator. */
+export const AFTER_PROGRAM = 'المسرعة'
+
+/** Where a team goes after a stage: the next stage's name, or the accelerator after Sanam. */
+export const nextLabel = (id: StageId) => {
+  const next = nextStage(id)
+  return next ? STAGE[next].fullName : AFTER_PROGRAM
+}
 
 /** Calendar pauses shown on timelines. Ramadan 1448 dates are approximate. */
 export const PAUSES = [
@@ -131,7 +140,7 @@ export const ENTRY_POINTS: Record<EntryPoint, { label: string; detail: string }>
 export const TRACKS: Record<Track, { label: string; detail: string }> = {
   ilham: { label: 'الإلهام', detail: 'لديكِ فكرة أو مشروع تخرج.' },
   'tamkeen-seat': { label: 'مقعد مفتوح في تمكين', detail: 'لديكِ نموذج أولي مجرَّب.' },
-  'sanam-seat': { label: 'مقعد مفتوح في مسرعة سنام', detail: 'لديكِ منتج يعمل وله مستخدمون.' },
+  'sanam-seat': { label: 'مقعد مفتوح في سنام', detail: 'لديكِ منتج يعمل وله مستخدمون.' },
 }
 
 export interface WorkshopDef {

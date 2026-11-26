@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, ExternalLink, Lock } from 'lucide-react'
-import { StageBadge } from '@/components/brand'
+import { StageBadge, Star } from '@/components/brand'
 import { Badge, Card, CardHeader, EmptyState, Field, Meta, PageHeader, Progress, Textarea, buttonClass, useToast } from '@/components/ui'
 import { CRITERIA, ENTRY_POINTS, STAGE } from '@/data/program'
 import type { JudgingEvent } from '@/data/types'
 import { fmtDate, fmtDay, relativeDays } from '@/lib/dates'
-import { cn } from '@/lib/cn'
+import { cn, firstName } from '@/lib/cn'
 import { weightedTotal } from '@/lib/scoring'
 import { useMe, useStore } from '@/store/AppStore'
 import { byId, teamMilestones } from '@/store/selectors'
+import { Hero, NextStep, SectionTitle } from '../shared'
 
 function useMyEvents() {
   const me = useMe()
@@ -60,13 +61,50 @@ export function JudgeEvents() {
   }
 
   const open = events.filter((e) => !e.published)
+  const current = open.find((e) => e.teamIds.length > 0)
+  const scored = new Set(state.scores.filter((s) => s.eventId === current?.id && s.judgeId === me.id).map((s) => s.teamId))
+  const nextTeamId = current?.teamIds.find((id) => !scored.has(id))
   const closed = events.filter((e) => e.published)
   return (
     <>
-      <PageHeader title="أيام التحكيم" lede="درجاتك سرية، ويرى الفريق ملاحظاتك دون اسمك." />
-      <h2 className="mb-3 text-sm font-semibold text-slate">القادمة</h2>
+      <Hero
+        hello={`أهلًا ${firstName(me.name)}`}
+        line={
+          current ? (
+            <>
+              {current.title} · <span className="tabular">{fmtDate(current.date)}</span>
+            </>
+          ) : (
+            'لا أيام تحكيم قادمة'
+          )
+        }
+      >
+        {current && (
+          <NextStep
+            icon={Star}
+            title={
+              nextTeamId ? (
+                <>
+                  قيّمت <span className="tabular">{scored.size}</span> من <span className="tabular">{current.teamIds.length}</span> فريقًا
+                </>
+              ) : (
+                'أكملت تقييم كل الفرق'
+              )
+            }
+            hint="درجاتك سرية، ويرى الفريق ملاحظاتك دون اسمك."
+            action={
+              nextTeamId && (
+                <Link to={`/app/judge/events/${current.id}/${nextTeamId}`} className={buttonClass('primary', 'lg')}>
+                  {scored.size ? 'أكمل التقييم' : 'ابدأ التقييم'}
+                </Link>
+              )
+            }
+          />
+        )}
+      </Hero>
+      <SectionTitle>القادمة</SectionTitle>
       {open.length ? <ul className="flex flex-col gap-3">{open.map((e) => <Item key={e.id} ev={e} />)}</ul> : <Card><EmptyState title="لا أيام تحكيم قادمة" /></Card>}
-      <h2 className="mb-3 mt-8 text-sm font-semibold text-slate">السابقة</h2>
+      <SectionTitle>السابقة</SectionTitle>
       <ul className="flex flex-col gap-3">{closed.map((e) => <Item key={e.id} ev={e} />)}</ul>
     </>
   )
@@ -180,7 +218,7 @@ export function JudgeEvent() {
               <Card>
                 <CardHeader
                   title="بطاقة التقييم"
-                  sub="من 1 (ضعيف) إلى 5 (متميز) لكل معيار"
+                  sub="من نجمة إلى خمس نجوم لكل معيار"
                   action={
                     <span className="tabular text-2xl font-bold text-navy" aria-live="polite">
                       {complete ? total : '—'}
@@ -226,8 +264,9 @@ export function JudgeEvent() {
                                   setError('')
                                 }}
                               />
-                              <span className="tabular flex size-10 items-center justify-center rounded-lg border border-line-strong font-semibold text-navy transition-colors peer-checked:border-navy peer-checked:bg-navy peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-blue hover:border-navy/50">
-                                {n}
+                              <span className="block rounded-lg p-0.5 transition-transform duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-blue hover:scale-110">
+                                <Star className={cn('size-9', (values[c.id] ?? 0) >= n ? 'text-blue' : 'text-line-strong')} />
+                                <span className="sr-only">{n}</span>
                               </span>
                             </label>
                           ))}

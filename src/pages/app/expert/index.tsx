@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { Check, X } from 'lucide-react'
-import { StageBadge, Star } from '@/components/brand'
-import { Badge, Button, Card, CardHeader, EmptyState, Field, Meta, PageHeader, Textarea, useToast } from '@/components/ui'
+import { Link } from 'react-router-dom'
+import { Check, Stethoscope, X } from 'lucide-react'
+import { StageBadge } from '@/components/brand'
+import { Badge, Button, Card, CardHeader, EmptyState, Field, PageHeader, Textarea, buttonClass, useToast } from '@/components/ui'
 import { TODAY } from '@/data/program'
 import type { Session } from '@/data/types'
-import { fmtDay } from '@/lib/dates'
+import { firstName } from '@/lib/cn'
 import { useMe, useStore } from '@/store/AppStore'
 import { byId } from '@/store/selectors'
-import { DateChip, ListRow, Rel, SessionBadge } from '../shared'
+import { DateChip, Hero, ListRow, NextStep, Rel, SessionBadge } from '../shared'
 
 export function ExpertWorkshops() {
   const me = useMe()
@@ -16,11 +17,31 @@ export function ExpertWorkshops() {
   const upcoming = mine.filter((w) => w.date >= TODAY)
   const past = mine.filter((w) => w.date < TODAY)
   const activeTeams = state.teams.filter((t) => t.status === 'active').length
+  const requests = state.sessions.filter((s) => s.hostId === me.id && s.kind === 'clinic' && s.status === 'requested').length
 
   return (
     <>
-      <PageHeader title="ورشي" />
-      <div className="flex flex-col gap-6">
+      <Hero
+        hello={`أهلًا ${firstName(me.name)}`}
+        line={
+          <>
+            ورشك القادمة: <span className="tabular">{upcoming.length}</span>
+          </>
+        }
+      >
+        <NextStep
+          icon={Stethoscope}
+          title={requests ? <><span className="tabular">{requests}</span> طلبات استشارة جديدة</> : 'لا طلبات استشارة جديدة'}
+          action={
+            requests > 0 && (
+              <Link to="/app/expert/clinics" className={buttonClass('primary', 'lg')}>
+                ردّ على الطلبات
+              </Link>
+            )
+          }
+        />
+      </Hero>
+      <div className="mt-6 flex flex-col gap-6">
         <Card>
           <CardHeader title="القادمة" />
           {upcoming.length ? (
@@ -151,41 +172,6 @@ export function ExpertClinics() {
         <Card>
           <CardHeader title="السجل" />
           {done.length ? <ul className="divide-y divide-line">{done.map((s) => <ClinicRow key={s.id} s={s} />)}</ul> : <EmptyState title="لا استشارات سابقة" />}
-        </Card>
-      </div>
-    </>
-  )
-}
-
-export function ExpertProfile() {
-  const me = useMe()
-  const { state } = useStore()
-  const workshops = state.workshops.filter((w) => w.expertId === me.id).length
-  const clinics = state.sessions.filter((s) => s.hostId === me.id && s.status === 'done').length
-  return (
-    <>
-      <PageHeader title="ملفي" />
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-        <Card className="p-6">
-          <p className="text-2xl font-bold text-navy">{me.name}</p>
-          <p className="text-slate">{me.title}</p>
-          <h2 className="mt-6 text-sm font-semibold text-navy">مجالات الخبرة</h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            {me.areas?.map((a) => (
-              <li key={a} className="flex items-center gap-2 text-navy">
-                <Star className="size-3" color="#2086C2" />
-                {a}
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <Card className="p-6">
-          <dl className="grid grid-cols-2 gap-6">
-            <Meta label="ورش مسندة"><span className="tabular text-2xl">{workshops}</span></Meta>
-            <Meta label="استشارات منعقدة"><span className="tabular text-2xl">{clinics}</span></Meta>
-            <Meta label="الجهة">{me.org}</Meta>
-            <Meta label="آخر تحديث"><span className="tabular">{fmtDay(TODAY)}</span></Meta>
-          </dl>
         </Card>
       </div>
     </>

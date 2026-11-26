@@ -3,14 +3,13 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, ArrowUpCircle, CheckCircle2, Plus } from 'lucide-react'
 import { StageBadge } from '@/components/brand'
 import { Avatar, Badge, Button, Card, CardHeader, ConfirmAction, EmptyState, Field, Input, PageHeader, Progress, Segmented, Select, Textarea, useToast } from '@/components/ui'
-import { ESCALATION_LEVELS, STAGE, STAGES, TODAY, nextStage } from '@/data/program'
+import { ESCALATION_LEVELS, STAGE, TODAY, nextLabel } from '@/data/program'
 import type { Escalation } from '@/data/types'
 import { addWorkingDays, fmtDate, fmtDay, relativeDays } from '@/lib/dates'
 import { cn } from '@/lib/cn'
 import { eventResults } from '@/lib/scoring'
 import { useMe, useStore } from '@/store/AppStore'
 import { byId } from '@/store/selectors'
-import { TimelineChart } from '@/pages/public/Timeline'
 import { DateChip, ListRow } from '../shared'
 
 /* ───────────── Judging events ───────────── */
@@ -74,7 +73,6 @@ export function AdminJudgingEvent() {
   )
   if (!ev) return <Navigate to="/app/admin/judging" replace />
 
-  const next = nextStage(ev.stage)
   const toggle = (id: string) =>
     setSelected((xs) => (xs.includes(id) ? xs.filter((x) => x !== id) : [...xs, id]))
   const expected = ev.teamIds.length * ev.judgeIds.length
@@ -88,7 +86,7 @@ export function AdminJudgingEvent() {
       </Link>
       <PageHeader
         title={ev.title}
-        lede={<><span className="tabular">{fmtDate(ev.date)}</span> · يتأهل <span className="tabular">{ev.capacity}</span> {next ? `إلى ${STAGE[next].fullName}` : 'إلى المستثمرين'}</>}
+        lede={<><span className="tabular">{fmtDate(ev.date)}</span> · يتأهل <span className="tabular">{ev.capacity}</span> إلى {nextLabel(ev.stage)}</>}
         actions={<StageBadge stage={ev.stage} full />}
       />
 
@@ -171,7 +169,7 @@ export function AdminJudgingEvent() {
           {!ev.published && results.length > 0 && (
             <Card className="p-5">
               <p className="text-sm text-navy">
-                يتأهل <span className="tabular font-bold">{selected.length}</span> فرق إلى {next ? STAGE[next].fullName : 'المستثمرين'}، ويرى كل فريق نتيجته.
+                يتأهل <span className="tabular font-bold">{selected.length}</span> فرق إلى {nextLabel(ev.stage)}، ويرى كل فريق نتيجته.
               </p>
               {got < expected && (
                 <p className="mt-2 text-sm font-semibold text-warn">
@@ -367,42 +365,6 @@ export function AdminEscalations() {
       </div>
       <Card>
         {list.length ? <ul className="divide-y divide-line">{list.map((e) => <EscalationRow key={e.id} e={e} />)}</ul> : <EmptyState title="لا تحديات في هذه الحالة" />}
-      </Card>
-    </>
-  )
-}
-
-/* ───────────── Timeline ───────────── */
-
-export function AdminTimeline() {
-  const { state } = useStore()
-  const upcoming = [
-    ...STAGES.map((s) => ({ date: s.gateDate, title: s.gate, sub: s.fullName, stage: s.id })),
-    ...state.workshops.map((w) => ({ date: w.date, title: w.title, sub: `ورشة الأسبوع ${w.week}`, stage: w.stage })),
-  ]
-    .filter((x) => x.date >= TODAY)
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(0, 10)
-  return (
-    <>
-      <PageHeader title="الجدول الزمني" />
-      <Card className="p-5">
-        <TimelineChart today={TODAY} />
-      </Card>
-      <Card className="mt-6">
-        <CardHeader title="المحطات القادمة" />
-        <ul className="divide-y divide-line">
-          {upcoming.map((x) => (
-            <ListRow key={x.date + x.title}>
-              <DateChip iso={x.date} />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-navy">{x.title}</p>
-                <p className="text-sm text-slate">{x.sub}</p>
-              </div>
-              <StageBadge stage={x.stage} />
-            </ListRow>
-          ))}
-        </ul>
       </Card>
     </>
   )

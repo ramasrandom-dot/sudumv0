@@ -12,19 +12,12 @@ import Apply from '@/pages/public/Apply'
 import Join from '@/pages/public/Join'
 import Login from '@/pages/public/Login'
 import NotFound from '@/pages/public/NotFound'
-import {
-  ParticipantMentoring,
-  ParticipantMilestones,
-  ParticipantOverview,
-  ParticipantResults,
-  ParticipantTeam,
-  ParticipantWorkshops,
-} from '@/pages/app/participant'
-import { MentorHours, MentorReviews, MentorSessions, MentorTeamDetail, MentorTeams } from '@/pages/app/mentor'
-import { ExpertClinics, ExpertProfile, ExpertWorkshops } from '@/pages/app/expert'
+import { ParticipantDates, ParticipantHome, ParticipantTeam } from '@/pages/app/participant'
+import { MentorDates, MentorTeamDetail, MentorTeams } from '@/pages/app/mentor'
+import { ExpertClinics, ExpertWorkshops } from '@/pages/app/expert'
 import { JudgeEvent, JudgeEvents, JudgeScores } from '@/pages/app/judge'
 import { AdminApplications, AdminDashboard, AdminPeople, AdminTeams, AdminWorkshops } from '@/pages/app/admin'
-import { AdminEscalations, AdminJudging, AdminJudgingEvent, AdminTimeline } from '@/pages/app/admin/operations'
+import { AdminEscalations, AdminJudging, AdminJudgingEvent } from '@/pages/app/admin/operations'
 import type { Role } from '@/data/types'
 
 function AppHome() {
@@ -72,24 +65,18 @@ const router = createRouter([
     children: [
       { index: true, element: <AppHome /> },
       section('participant', [
-        { index: true, element: <ParticipantOverview /> },
-        { path: 'milestones', element: <ParticipantMilestones /> },
-        { path: 'workshops', element: <ParticipantWorkshops /> },
-        { path: 'mentoring', element: <ParticipantMentoring /> },
-        { path: 'results', element: <ParticipantResults /> },
+        { index: true, element: <ParticipantHome /> },
+        { path: 'dates', element: <ParticipantDates /> },
         { path: 'team', element: <ParticipantTeam /> },
       ]),
       section('mentor', [
         { index: true, element: <MentorTeams /> },
         { path: 'teams/:teamId', element: <MentorTeamDetail /> },
-        { path: 'reviews', element: <MentorReviews /> },
-        { path: 'sessions', element: <MentorSessions /> },
-        { path: 'hours', element: <MentorHours /> },
+        { path: 'dates', element: <MentorDates /> },
       ]),
       section('expert', [
         { index: true, element: <ExpertWorkshops /> },
         { path: 'clinics', element: <ExpertClinics /> },
-        { path: 'profile', element: <ExpertProfile /> },
       ]),
       section('judge', [
         { index: true, element: <JudgeEvents /> },
@@ -106,8 +93,9 @@ const router = createRouter([
         { path: 'judging', element: <AdminJudging /> },
         { path: 'judging/:eventId', element: <AdminJudgingEvent /> },
         { path: 'escalations', element: <AdminEscalations /> },
-        { path: 'timeline', element: <AdminTimeline /> },
       ]),
+      // Old or mistyped platform addresses land on the role's home.
+      { path: '*', element: <AppHome /> },
     ],
   },
 ])

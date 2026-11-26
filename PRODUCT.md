@@ -25,7 +25,7 @@ Sudum is the incubator of the Innovation & Entrepreneurship Center at Princess N
   - **Ilham (الإلهام):** 3 weeks, Jan 17 – Feb 4 2027. 500 registrants → an 80-person ideas lab → 25 teams. Ends with Selection Day (Feb 4).
   - **Takween (تكوين):** 6 weeks, Mar 14 – Apr 22. 25 teams. Output: a prototype tested with 5 users and a 3-minute pitch. Ends with Judging Day (Apr 22); target pass rate 50%.
   - **Tamkeen (تمكين):** 12 weeks, Apr 25 – Jul 29. 15 teams (10 advanced + 5 open seats). Output: a working MVP, an applied business model and identity, 20 users or a field trial, and a live metrics dashboard. Ends with Judging Day (Jul 29).
-  - **Sanam Accelerator (مسرعة سنام):** 12 weeks, Sep 5 – Dec 2. 8 companies (5 advanced + 3 open seats). Output: a registered company, a paying customer and an investor pitch. Ends with Demo Day (Dec 2).
+  - **Sanam (سنام), the fourth and last stage:** 12 weeks, Sep 5 – Dec 2. 8 companies (5 advanced + 3 open seats). Output: a registered company, a paying customer and an investor pitch. Ends with Demo Day (Dec 2).
 - **Pauses and breaks:** workshops pause for Ramadan and Eid al-Fitr, and for two weeks at Eid al-Adha. The summer break is used to build the investor pipeline.
 - **Governance:** steering committee → program manager → delivery teams. Escalation has three levels, with 3, 5 and 7 working-day deadlines.
 - **Workshops:** 23 titles across the four stages.
@@ -50,7 +50,7 @@ Sudum is the incubator of the Innovation & Entrepreneurship Center at Princess N
   - «قدّمي الآن», not «سجّلي اهتمامك».
   - Kept as is: stage names, «يوم التحكيم», «الساعات المكتبية», «التصعيد».
 - **Workshop titles** on the site are plain-language versions of the official «عناوين الورش» list (`WORKSHOPS` in `src/data/program.ts`).
-- Stage 4 is named **«مسرعة سنام»** throughout. The source deck also uses «الانطلاق»; this is an open decision for the client.
+- Stage 4 is named **«سنام»**. It is a stage, not the accelerator: teams that finish Sanam move on to the accelerator («المسرعة»). Confirmed by the client; the source deck's «مسرعة سنام» and «الانطلاق» are not used.
 
 ## Evidence on Hand
 The source documents are the cohort-1 operating plan deck, the workshop titles PDF, the mentor and expert areas PDF, and the brand brief. All people, teams and scores in the prototype are fictional sample data and must be labelled as such. There are no real testimonials, partners or results yet, so none may be invented.
