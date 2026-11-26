@@ -132,9 +132,9 @@ export const PAUSES = [
 ]
 
 export const ENTRY_POINTS: Record<EntryPoint, { label: string; detail: string }> = {
-  student: { label: 'طالبات', detail: 'فكرة أو مشروع تخرج.' },
-  research: { label: 'باحثات', detail: 'بحث علمي يمكن تحويله إلى منتج.' },
-  founder: { label: 'رائدات أعمال', detail: 'منتج قائم يبحث عن النمو.' },
+  student: { label: 'طالبات', detail: 'طالبات الجامعة بفكرة أو مشروع تخرج.' },
+  research: { label: 'باحثات', detail: 'عضوات هيئة التدريس والباحثات ببحث قابل للتطبيق.' },
+  founder: { label: 'رائدات أعمال', detail: 'صاحبات منتج قائم يبحثن عن النمو.' },
 }
 
 export const TRACKS: Record<Track, { label: string; detail: string }> = {
