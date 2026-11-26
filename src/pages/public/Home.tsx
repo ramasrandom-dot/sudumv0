@@ -8,11 +8,10 @@ import { ButtonLink } from '@/components/ui'
 import { ENTRY_POINTS, STAGES } from '@/data/program'
 import type { EntryPoint } from '@/data/types'
 import cover from '@/assets/brand/cover-background-stars.webp'
-import starsOutline from '@/assets/brand/stars-outline-transparent.png'
+import Partners from './Partners'
+import StageJourney from './StageJourney'
 
 gsap.registerPlugin(useGSAP)
-
-const weeksLabel = (n: number) => `${n} ${n > 10 ? 'أسبوعًا' : 'أسابيع'}`
 
 /* What is it? */
 function Hero() {
@@ -94,61 +93,6 @@ function Hero() {
   )
 }
 
-function Meaning() {
-  return (
-    <section className="relative overflow-hidden bg-canvas" aria-labelledby="meaning-title">
-      <img
-        src={starsOutline}
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute -left-24 top-0 h-full w-auto max-w-none opacity-60"
-        width={2000}
-        height={1125}
-        loading="lazy"
-      />
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-10">
-        <h2 id="meaning-title" className="max-w-[20ch] text-[clamp(2rem,4.4vw,3.5rem)] leading-[1.35] font-bold text-navy">
-          السُّدُم سحبٌ كونية <span className="text-blue-ink">تولد فيها النجوم.</span>
-        </h2>
-      </div>
-    </section>
-  )
-}
-
-/* How does it work? */
-function Stages() {
-  return (
-    <section className="bg-white" aria-labelledby="stages-title">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-10">
-        <h2 id="stages-title" className="text-3xl font-bold text-navy md:text-4xl">
-          أربع مراحل من الفكرة إلى الشركة
-        </h2>
-        <ol className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-          {STAGES.map((s) => (
-            <li key={s.id} className="flex flex-col gap-3">
-              <span className="h-1.5 rounded-full" style={{ background: s.color }} aria-hidden />
-              <h3 className="mt-2 flex items-center gap-2 text-2xl font-bold text-navy">
-                <Star className="size-5 shrink-0" color={s.color} />
-                {s.fullName}
-              </h3>
-              <p className="tabular text-sm font-semibold" style={{ color: s.ink }}>
-                {weeksLabel(s.weeks)}
-              </p>
-              <p className="text-lg text-navy">{s.outcome}</p>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-12">
-          <ButtonLink to="/program" variant="secondary">
-            تفاصيل البرنامج
-            <ArrowLeft className="size-4" aria-hidden />
-          </ButtonLink>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 /* Who is it for? */
 function Audience() {
   return (
@@ -200,8 +144,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Meaning />
-      <Stages />
+      <Partners />
+      <StageJourney />
       <Audience />
       <Closing />
     </>

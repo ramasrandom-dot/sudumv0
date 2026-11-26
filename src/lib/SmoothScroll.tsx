@@ -15,6 +15,13 @@ export const scrollToTop = () => {
   else window.scrollTo(0, 0)
 }
 
+/** Glide to a vertical scroll position, through Lenis when it is running. */
+// eslint-disable-next-line react-refresh/only-export-components
+export const scrollToY = (y: number, duration = 0.9) => {
+  if (current) current.scrollTo(y, { duration })
+  else window.scrollTo({ top: y, behavior: 'smooth' })
+}
+
 /**
  * Smooth scrolling with Lenis, driven by GSAP's ticker so ScrollTrigger
  * animations stay in sync. Skipped entirely when the visitor prefers reduced motion.
