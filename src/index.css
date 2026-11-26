@@ -204,12 +204,3 @@
 .orbit-b {
   animation: spin-slow 32s linear infinite reverse;
 }
-
-/* Program page: on roomy screens each stage holds the screen and the next one slides over it. */
-@media (min-width: 1024px) and (min-height: 700px) {
-  .chapter {
-    position: sticky;
-    top: 0;
-    min-height: 100svh;
-  }
-}
