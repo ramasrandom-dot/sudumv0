@@ -156,3 +156,51 @@
 .spin-slow {
   animation: spin-slow 90s linear infinite;
 }
+
+/* Home, «لمن سُدُم؟»: a row fills with its colour, right to left, when lit by scroll or pointer. */
+.aud-fill {
+  background: var(--tone);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 700ms var(--ease-out-expo);
+}
+.aud-ink {
+  transition: color 450ms ease;
+}
+.aud-star {
+  display: inline-flex;
+  color: var(--tone);
+  transition:
+    color 450ms ease,
+    rotate 700ms var(--ease-out-expo);
+}
+.aud-row.is-lit .aud-fill {
+  transform: scaleX(1);
+}
+.aud-row.is-lit .aud-ink,
+.aud-row.is-lit .aud-star {
+  color: var(--on);
+}
+.aud-row.is-lit .aud-star {
+  rotate: 90deg;
+}
+@media (hover: hover) {
+  .aud-row:hover .aud-fill {
+    transform: scaleX(1);
+  }
+  .aud-row:hover .aud-ink,
+  .aud-row:hover .aud-star {
+    color: var(--on);
+  }
+  .aud-row:hover .aud-star {
+    rotate: 90deg;
+  }
+}
+
+/* Home closing: stars circling on their orbits. */
+.orbit-a {
+  animation: spin-slow 46s linear infinite;
+}
+.orbit-b {
+  animation: spin-slow 32s linear infinite reverse;
+}

@@ -124,15 +124,10 @@ export default function Network() {
       <section className="bg-navy-deep text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">
           <h2 className="text-2xl font-bold md:text-3xl">مكانك بينهم؟</h2>
-          <div className="flex flex-wrap gap-3">
-            <ButtonLink to="/apply?as=mentor" variant="light" size="lg">
-              انضم مرشدًا
-              <ArrowLeft className="size-4" aria-hidden />
-            </ButtonLink>
-            <ButtonLink to="/apply?as=expert" variant="outline-light" size="lg">
-              انضم خبيرًا
-            </ButtonLink>
-          </div>
+          <ButtonLink to="/apply" variant="light" size="lg">
+            قدّم الآن
+            <ArrowLeft className="size-4" aria-hidden />
+          </ButtonLink>
         </div>
       </section>
     </>

@@ -116,18 +116,11 @@ function SiteFooter() {
             هنا تولد الشركات.
           </p>
         </div>
-        <nav aria-label="روابط البرنامج">
-          <h2 className="text-sm font-semibold text-white/50">البرنامج</h2>
-          <ul className="mt-3 space-y-2">
-            <li><Link className="text-white/85 hover:text-white" to="/program">المراحل الأربع</Link></li>
+        <nav aria-label="روابط الموقع" className="md:col-span-2 md:justify-self-end">
+          <ul className="flex flex-wrap gap-x-8 gap-y-2 md:flex-col">
+            <li><Link className="text-white/85 hover:text-white" to="/program">البرنامج</Link></li>
+            <li><Link className="text-white/85 hover:text-white" to="/mentors">المرشدون والخبراء</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/apply">التقديم</Link></li>
-          </ul>
-        </nav>
-        <nav aria-label="روابط المشاركة">
-          <h2 className="text-sm font-semibold text-white/50">شاركونا</h2>
-          <ul className="mt-3 space-y-2">
-            <li><Link className="text-white/85 hover:text-white" to="/apply">انضم مرشدًا أو خبيرًا</Link></li>
-            <li><Link className="text-white/85 hover:text-white" to="/apply?as=judge">انضم محكّمًا</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/login">دخول المنصة</Link></li>
           </ul>
         </nav>

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { ArrowLeft } from 'lucide-react'
 import SplitText from '@/components/reactbits/SplitText/SplitText'
@@ -8,10 +9,11 @@ import { ButtonLink } from '@/components/ui'
 import { ENTRY_POINTS, STAGES } from '@/data/program'
 import type { EntryPoint } from '@/data/types'
 import cover from '@/assets/brand/cover-background-stars.webp'
+import darkStars from '@/assets/brand/dark-background-stars-2.webp'
 import Partners from './Partners'
 import StageJourney from './StageJourney'
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 /* What is it? */
 function Hero() {
@@ -65,13 +67,10 @@ function Hero() {
         <p className="hero-sub mt-6 max-w-[38ch] text-xl leading-relaxed text-white/75 sm:text-2xl">
           حاضنة جامعة الأميرة نورة لمشاريع الطالبات والباحثات ورائدات الأعمال.
         </p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <ButtonLink to="/apply?as=participant" variant="light" size="lg" className="hero-cta">
-            قدّمي الآن
+        <div className="mt-10">
+          <ButtonLink to="/apply" variant="light" size="lg" className="hero-cta">
+            قدّم الآن
             <ArrowLeft className="size-4" aria-hidden />
-          </ButtonLink>
-          <ButtonLink to="/apply" variant="outline-light" size="lg" className="hero-cta">
-            انضم مرشدًا أو خبيرًا
           </ButtonLink>
         </div>
       </div>
@@ -93,48 +92,87 @@ function Hero() {
   )
 }
 
-/* Who is it for? */
+/* Who is it for? Three words set very large; each lights up in its own colour as it crosses the screen. */
+const AUDIENCE_TONE: Record<EntryPoint, { color: string; on: string }> = {
+  student: { color: '#2086C2', on: '#FFFFFF' },
+  research: { color: '#39B67E', on: '#0A0F3C' },
+  founder: { color: '#00535C', on: '#FFFFFF' },
+}
+
 function Audience() {
+  const root = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.utils.toArray<HTMLElement>('.aud-row').forEach((row) => {
+          ScrollTrigger.create({ trigger: row, start: 'top 50%', end: 'bottom 50%', toggleClass: { targets: row, className: 'is-lit' } })
+        })
+      })
+    },
+    { scope: root },
+  )
+
   return (
-    <section className="bg-canvas" aria-labelledby="audience-title">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-10">
+    <section ref={root} className="bg-canvas" aria-labelledby="audience-title">
+      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 md:pt-28 lg:px-10">
         <h2 id="audience-title" className="text-3xl font-bold text-navy md:text-4xl">
           لمن سُدُم؟
         </h2>
-        <ul className="mt-10 grid divide-y divide-line-strong border-y border-line-strong md:grid-cols-3 md:divide-x md:divide-y-0">
-          {(Object.keys(ENTRY_POINTS) as EntryPoint[]).map((k) => (
-            <li key={k} className="py-7 md:px-8 md:first:pr-0 md:last:pl-0">
-              <h3 className="text-xl font-bold text-navy">{ENTRY_POINTS[k].label}</h3>
-              <p className="mt-1 text-slate">{ENTRY_POINTS[k].detail}</p>
-            </li>
-          ))}
-        </ul>
       </div>
+      <ul className="mt-10 border-t border-line-strong">
+        {(Object.keys(ENTRY_POINTS) as EntryPoint[]).map((k) => {
+          const tone = AUDIENCE_TONE[k]
+          return (
+            <li
+              key={k}
+              className="aud-row relative isolate overflow-hidden border-b border-line-strong"
+              style={{ '--tone': tone.color, '--on': tone.on } as React.CSSProperties}
+            >
+              <span aria-hidden className="aud-fill absolute inset-0 -z-10" />
+              <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-10 gap-y-1 px-4 py-7 sm:px-6 md:py-9 lg:px-10">
+                <h3 className="aud-ink flex items-center gap-[0.3em] text-[clamp(2.75rem,10vw,7.5rem)] leading-[1.15] font-bold text-navy">
+                  <span className="aud-star" aria-hidden>
+                    <Star className="size-[0.42em]" />
+                  </span>
+                  {ENTRY_POINTS[k].label}
+                </h3>
+                <p className="aud-ink text-xl text-slate md:text-2xl">{ENTRY_POINTS[k].detail}</p>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
     </section>
   )
 }
 
-/* How do I start? */
+/* How do I start? One invitation, one button, and the star keeps circling. */
 function Closing() {
   return (
-    <section className="bg-navy-deep text-white" aria-labelledby="closing-title">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1.4fr_1fr] md:items-end md:py-24 lg:px-10">
-        <div>
-          <h2 id="closing-title" className="text-4xl font-bold md:text-5xl">
-            فكرتك تنتظر مكانها
-          </h2>
-          <ButtonLink to="/apply?as=participant" variant="light" size="lg" className="mt-8">
-            قدّمي الآن
-            <ArrowLeft className="size-4" aria-hidden />
-          </ButtonLink>
+    <section className="relative isolate overflow-hidden bg-[#03050a] text-white" aria-labelledby="closing-title">
+      <img src={darkStars} alt="" aria-hidden width={2000} height={1125} loading="lazy" className="absolute inset-0 -z-20 size-full object-cover object-left opacity-80" />
+      <div aria-hidden className="pointer-events-none absolute top-1/2 -left-44 -z-10 size-[30rem] -translate-y-1/2 md:left-[7%] md:size-[36rem]">
+        <div className="orbit-a absolute inset-0 rounded-full border border-white/20">
+          <Star className="absolute -top-6 left-1/2 size-12 -translate-x-1/2 text-blue" />
         </div>
-        <div className="border-t border-white/15 pt-8 md:border-t-0 md:border-s md:ps-10 md:pt-0">
-          <h3 className="text-xl font-bold">مرشد أو خبير أو محكّم؟</h3>
-          <p className="mt-1 text-white/70">شارك خبرتك مع الفرق.</p>
-          <ButtonLink to="/apply" variant="outline-light" className="mt-5">
-            انضم إلينا
-          </ButtonLink>
+        <div className="orbit-b absolute inset-[18%] rounded-full border border-white/15">
+          <Star className="absolute -bottom-4 left-1/2 size-8 -translate-x-1/2 text-green" />
         </div>
+        <div className="orbit-a absolute inset-[36%] rounded-full border border-white/10">
+          <Star className="absolute top-1/2 -right-2.5 size-5 -translate-y-1/2 text-white" />
+        </div>
+      </div>
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 md:py-36 lg:px-10">
+        <h2 id="closing-title" className="max-w-[11ch] text-[clamp(2.75rem,7.5vw,6rem)] leading-[1.15] font-bold">
+          مكانك في سُدُم ينتظرك
+        </h2>
+        <p className="mt-5 max-w-[30ch] text-xl text-white/70 md:text-2xl">بفكرتك، أو بخبرتك.</p>
+        <ButtonLink to="/apply" variant="light" size="lg" className="mt-10">
+          قدّم الآن
+          <ArrowLeft className="size-4" aria-hidden />
+        </ButtonLink>
       </div>
     </section>
   )
