@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn'
 const links = [
   { to: '/', label: 'الرئيسية', end: true },
   { to: '/program', label: 'البرنامج' },
-  { to: '/join', label: 'المرشدون والخبراء' },
+  { to: '/mentors', label: 'المرشدون والخبراء' },
   { to: '/apply', label: 'التقديم' },
 ]
 
@@ -113,7 +113,7 @@ function SiteFooter() {
             <PnuLogo className="h-11" />
           </div>
           <p className="mt-6 max-w-[42ch] text-white/70">
-            هنا تتشكّل الأفكار.
+            هنا تولد الشركات.
           </p>
         </div>
         <nav aria-label="روابط البرنامج">
@@ -126,8 +126,8 @@ function SiteFooter() {
         <nav aria-label="روابط المشاركة">
           <h2 className="text-sm font-semibold text-white/50">شاركونا</h2>
           <ul className="mt-3 space-y-2">
-            <li><Link className="text-white/85 hover:text-white" to="/join">انضم مرشدًا أو خبيرًا</Link></li>
-            <li><Link className="text-white/85 hover:text-white" to="/join?kind=judge">انضم محكّمًا</Link></li>
+            <li><Link className="text-white/85 hover:text-white" to="/apply">انضم مرشدًا أو خبيرًا</Link></li>
+            <li><Link className="text-white/85 hover:text-white" to="/apply?as=judge">انضم محكّمًا</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/login">دخول المنصة</Link></li>
           </ul>
         </nav>

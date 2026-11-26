@@ -9,7 +9,7 @@ import AppLayout, { RequireRole } from '@/layouts/AppLayout'
 import Home from '@/pages/public/Home'
 import Program from '@/pages/public/Program'
 import Apply from '@/pages/public/Apply'
-import Join from '@/pages/public/Join'
+import Network from '@/pages/public/Network'
 import Login from '@/pages/public/Login'
 import NotFound from '@/pages/public/NotFound'
 import { ParticipantDates, ParticipantHome, ParticipantTeam } from '@/pages/app/participant'
@@ -54,7 +54,8 @@ const router = createRouter([
       { path: '/', element: <Home /> },
       { path: '/program', element: <Program /> },
       { path: '/apply', element: <Apply /> },
-      { path: '/join', element: <Join /> },
+      { path: '/mentors', element: <Network /> },
+      { path: '/join', element: <Navigate to="/apply" replace /> },
       { path: '*', element: <NotFound /> },
     ],
   },

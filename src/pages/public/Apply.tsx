@@ -1,12 +1,14 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { ArrowLeft, ArrowRight, Check, Gavel, MessagesSquare, Presentation, Rocket, type LucideIcon } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { Button, ButtonLink, Field, Input, Select, Textarea } from '@/components/ui'
 import { ENTRY_POINTS, TRACKS } from '@/data/program'
-import type { EntryPoint, Track } from '@/data/types'
+import type { EntryPoint, NominationKind, Track } from '@/data/types'
 import { cn } from '@/lib/cn'
 import { useStore } from '@/store/AppStore'
+import cover from '@/assets/brand/cover-background-stars.webp'
+import JoinForm from './JoinForm'
 import PageHero from './PageHero'
 
 const STEPS = ['المسار', 'بياناتك', 'الفكرة', 'المراجعة']
@@ -58,7 +60,7 @@ const validate = (step: number, f: FormState): Errors => {
   return e
 }
 
-export default function Apply() {
+function ParticipantApplication() {
   const { actions } = useStore()
   const [step, setStep] = useState(0)
   const [f, setF] = useState<FormState>(empty)
@@ -88,10 +90,9 @@ export default function Apply() {
 
   return (
     <>
-      <PageHero
-        title="قدّمي على سُدُم"
-        lede="أربع خطوات قصيرة، ونرد خلال أسبوع."
-      />
+      <PageHero title="قدّمي على سُدُم" lede="أربع خطوات قصيرة، ونرد خلال أسبوع.">
+        <ChangePersona />
+      </PageHero>
       <section className="bg-canvas">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 md:py-20">
           {done ? (
@@ -261,4 +262,97 @@ export default function Apply() {
       </section>
     </>
   )
+}
+
+/* ───────────── Who is applying? ───────────── */
+
+type Persona = 'participant' | NominationKind
+
+const PERSONAS: { as: Persona; label: string; line: string; color: string; on: string; icon: LucideIcon }[] = [
+  { as: 'participant', label: 'رائدة أعمال', line: 'لديكِ فكرة أو مشروع.', color: '#2086C2', on: '#FFFFFF', icon: Rocket },
+  { as: 'mentor', label: 'مرشد/ة', line: 'ترافق فريقًا بجلسة أسبوعية.', color: '#39B67E', on: '#0A0F3C', icon: MessagesSquare },
+  { as: 'expert', label: 'خبير/ة', line: 'تقدّم ورشة أو استشارة.', color: '#00535C', on: '#FFFFFF', icon: Presentation },
+  { as: 'judge', label: 'محكّم/ة', line: 'تقيّم الفرق في أيام التحكيم.', color: '#14229E', on: '#FFFFFF', icon: Gavel },
+]
+
+const JOIN_TITLE: Record<NominationKind, string> = {
+  mentor: 'انضم مرشدًا',
+  expert: 'انضم خبيرًا',
+  judge: 'انضم محكّمًا',
+}
+
+function ChangePersona() {
+  return (
+    <Link to="/apply" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white">
+      <ArrowRight className="size-4" aria-hidden />
+      تغيير الصفة
+    </Link>
+  )
+}
+
+/**
+ * Four colour panels, one per way of joining. The one under the pointer (or focus) opens
+ * wider, like the stage colours taking over on the home page.
+ */
+function PersonaPicker() {
+  return (
+    <section className="relative isolate flex min-h-svh flex-col bg-[#03050a] text-white" aria-labelledby="persona-title">
+      <img src={cover} alt="" aria-hidden width={2000} height={1125} fetchPriority="high" className="absolute inset-0 -z-10 size-full object-cover object-left" />
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-32 pb-12 sm:px-6 lg:px-10">
+        <h1 id="persona-title" className="text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.2] font-bold">
+          بأي صفة تنضم إلى سُدُم؟
+        </h1>
+        <ul className="mt-10 flex flex-1 flex-col gap-3 md:min-h-[26rem] md:flex-row">
+          {PERSONAS.map((p) => (
+            <li key={p.as} className="flex min-h-32 min-w-0 flex-1 transition-[flex-grow] duration-500 ease-[var(--ease-out-expo)] md:hover:grow-[2.4] md:focus-within:grow-[2.4]">
+              <Link
+                to={`/apply?as=${p.as}`}
+                className="group relative flex w-full flex-col justify-end overflow-hidden rounded-3xl p-6 md:p-7"
+                style={{ background: p.color, color: p.on }}
+              >
+                <Star
+                  outline
+                  strokeWidth={1.5}
+                  className="pointer-events-none absolute -top-10 -left-10 size-52 opacity-30 transition-transform duration-700 ease-out group-hover:rotate-45 group-focus-visible:rotate-45 md:size-72"
+                />
+                <span className="absolute top-7 right-7 hidden size-14 place-items-center rounded-full bg-black/15 md:grid">
+                  <p.icon className="size-7" aria-hidden />
+                </span>
+                <span className="relative text-3xl font-bold whitespace-nowrap">{p.label}</span>
+                <span className="relative mt-1 flex items-center justify-between gap-4 text-base opacity-90 md:text-lg">
+                  <span className="overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-500 ease-[var(--ease-out-expo)] md:max-w-0 md:opacity-0 md:group-hover:max-w-80 md:group-hover:opacity-100 md:group-focus-visible:max-w-80 md:group-focus-visible:opacity-100">
+                    {p.line}
+                  </span>
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-navy transition-transform duration-300 group-hover:-translate-x-1.5">
+                    <ArrowLeft className="size-5" aria-hidden />
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+export default function Apply() {
+  const [params] = useSearchParams()
+  const as = params.get('as')
+  if (as === 'participant') return <ParticipantApplication />
+  if (as === 'mentor' || as === 'expert' || as === 'judge') {
+    return (
+      <>
+        <PageHero title={JOIN_TITLE[as]} lede="اختر مجالاتك، ونتواصل معك.">
+          <ChangePersona />
+        </PageHero>
+        <section className="bg-canvas">
+          <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6 md:py-20">
+            <JoinForm key={as} kind={as} />
+          </div>
+        </section>
+      </>
+    )
+  }
+  return <PersonaPicker />
 }

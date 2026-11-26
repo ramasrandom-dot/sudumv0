@@ -49,7 +49,7 @@ function Hero() {
       <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 pb-10 pt-32 sm:px-6 lg:px-10">
         <h1 id="hero-title" className="max-w-[14ch] text-[clamp(2.75rem,8vw,6rem)] leading-[1.15] font-bold tracking-[-0.01em]">
           <SplitText
-            text="هنا تتشكّل الأفكار"
+            text="هنا تولد الشركات"
             tag="span"
             splitType="words"
             trigger="load"
@@ -66,11 +66,11 @@ function Hero() {
           حاضنة جامعة الأميرة نورة لمشاريع الطالبات والباحثات ورائدات الأعمال.
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
-          <ButtonLink to="/apply" variant="light" size="lg" className="hero-cta">
+          <ButtonLink to="/apply?as=participant" variant="light" size="lg" className="hero-cta">
             قدّمي الآن
             <ArrowLeft className="size-4" aria-hidden />
           </ButtonLink>
-          <ButtonLink to="/join" variant="outline-light" size="lg" className="hero-cta">
+          <ButtonLink to="/apply" variant="outline-light" size="lg" className="hero-cta">
             انضم مرشدًا أو خبيرًا
           </ButtonLink>
         </div>
@@ -123,7 +123,7 @@ function Closing() {
           <h2 id="closing-title" className="text-4xl font-bold md:text-5xl">
             فكرتك تنتظر مكانها
           </h2>
-          <ButtonLink to="/apply" variant="light" size="lg" className="mt-8">
+          <ButtonLink to="/apply?as=participant" variant="light" size="lg" className="mt-8">
             قدّمي الآن
             <ArrowLeft className="size-4" aria-hidden />
           </ButtonLink>
@@ -131,7 +131,7 @@ function Closing() {
         <div className="border-t border-white/15 pt-8 md:border-t-0 md:border-s md:ps-10 md:pt-0">
           <h3 className="text-xl font-bold">مرشد أو خبير أو محكّم؟</h3>
           <p className="mt-1 text-white/70">شارك خبرتك مع الفرق.</p>
-          <ButtonLink to="/join" variant="outline-light" className="mt-5">
+          <ButtonLink to="/apply" variant="outline-light" className="mt-5">
             انضم إلينا
           </ButtonLink>
         </div>

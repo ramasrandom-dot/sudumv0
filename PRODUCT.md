@@ -32,7 +32,7 @@ Sudum is the incubator of the Innovation & Entrepreneurship Center at Princess N
 - **Expertise:** 5 areas that experts and mentors are nominated in.
 
 ## Brand Commitments
-- Name **سُدُم / SUDUM**, meaning nebulae where stars are born. Tagline: «هنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.»
+- Name **سُدُم / SUDUM**, meaning nebulae where stars are born. Home headline (chosen by the client): «هنا تولد الشركات». Earlier tagline from the deck: «هنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.»
 - Brand assets are in `src/assets/brand/`: the Sudum logo (colour and white), the PNU logo (white), the star icon, and star backgrounds.
 - The full visual system is in the brand brief and is recorded in DESIGN.md.
 - **Voice** (set by the client after the first draft: "nobody reads all this"):

@@ -92,7 +92,7 @@ export default function Program() {
       <section className="bg-navy-deep text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">
           <h2 className="text-2xl font-bold md:text-3xl">جاهزة لأول خطوة؟</h2>
-          <ButtonLink to="/apply" variant="light" size="lg">
+          <ButtonLink to="/apply?as=participant" variant="light" size="lg">
             قدّمي الآن
             <ArrowLeft className="size-4" aria-hidden />
           </ButtonLink>
