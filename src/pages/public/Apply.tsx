@@ -65,10 +65,6 @@ function DoorPicker() {
                     <span className="flex flex-1 flex-col p-6">
                       <span className="text-2xl font-bold text-navy">{track.door}</span>
                       <span className="mt-2 text-lg text-slate">{track.detail}</span>
-                      <span className="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-navy">
-                        <span className="tabular font-medium">{track.seats}</span>
-                        
-                      </span>
                       <span className="mt-auto flex items-center justify-between pt-6 font-semibold" style={{ color: stage.ink }}>
                         التسجيل {SOON}
                       </span>
