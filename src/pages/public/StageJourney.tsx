@@ -74,7 +74,7 @@ function StageCopy({ stage, index, pinned }: { stage: Stage; index: number; pinn
           </span>
         </p>
         <div className={cn('journey-copy', pinned ? 'mt-[7svh] md:mt-[9svh]' : 'mt-8')}>
-          <p className="text-[clamp(3.5rem,11vw,8.5rem)] leading-[1.15] font-bold">{stage.fullName}</p>
+          <p className="font-display text-[clamp(3.5rem,11vw,8.5rem)] leading-[1.15] font-bold">{stage.fullName}</p>
           <p className="tabular mt-3 text-xl font-semibold opacity-80 md:mt-5 md:text-2xl">
             {weeksLabel(stage.weeks)} · {stage.teamsLabel}
           </p>

@@ -202,7 +202,7 @@ function Audience() {
             <li key={k} className="aud-row relative isolate overflow-hidden border-b border-line-strong" style={{ '--tone': tone.color, '--on': tone.on } as React.CSSProperties}>
               <span aria-hidden className="aud-fill absolute inset-0 -z-10" />
               <div className={cn(shell, 'flex flex-wrap items-center justify-between gap-x-10 gap-y-0.5 py-4 md:py-5')}>
-                <h3 className="aud-ink flex items-center gap-[0.3em] text-[clamp(1.875rem,4.4vw,3.25rem)] leading-[1.3] font-bold text-navy">
+                <h3 className="font-display aud-ink flex items-center gap-[0.3em] text-[clamp(1.875rem,4.4vw,3.25rem)] leading-[1.3] font-bold text-navy">
                   <span className="aud-star" aria-hidden>
                     <Star className="size-[0.42em]" />
                   </span>

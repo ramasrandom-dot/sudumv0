@@ -26,7 +26,7 @@ Role colours are fixed too (`ROLE_COLOR`): mentors teal · experts blue · judge
 Contrast: body text pairs pass 4.5:1. White on blue (#3E84BE) is 4.0:1, so it is used for large or bold text only.
 
 ## Type
-- Arabic: GE SS Text (Light for body, Medium for headings and emphasis). The kit names GE SS Two Medium for headlines, but the file was not supplied, so GE SS Text Medium stands in.
+- Arabic headlines (h1, h2 and display names): GE SS Two Medium. Subheads: GE SS Text Medium. Body: GE SS Text Light.
 - Latin and numerals: Gotham (Book and Medium).
 - The fonts are licensed files from the client's kit, in `src/assets/fonts/`.
 - Hierarchy comes from weight and size only. Public display headings may go up to 6rem.
