@@ -1,33 +1,41 @@
 # Design
 
-This is the Sudum visual system, taken from the brand brief (sampled from the cohort-1 deck). It is the authority for every surface.
+This is the Sudum visual system, taken from the official identity kit supplied by the client (colours, typefaces, logo). It is the authority for every surface.
 
 ## World
-The system is navy on off-white, colour-coded by program stage. The four-point concave star (the nebula sparkle) is the one motif used everywhere. Public pages open on the deck's dark cover: a gradient from black to navy, with outline stars and a white logo lockup. Platform screens are calm working surfaces on the off-white canvas.
+Navy on a cool off-white, colour-coded by program stage. The four-point concave star (the nebula sparkle) is the one motif used everywhere. Public pages open on a dark starry cover with the white Sudum logo beside the PNU lockup. Section titles carry a short two-colour bar (blue and green). Platform screens are calm working surfaces on the canvas.
 
 ## Colour tokens (`src/index.css` `@theme`)
 | Token | Hex | Role |
 |---|---|---|
-| navy | #0A0F3C | Text, headings, primary actions |
-| navy-deep | #090E3B | Sanam stage, dark panels, sidebar |
-| blue | #2086C2 | Ilham stage, stars, links accent |
-| green | #39B67E | Takween stage (fills only; text uses green-ink #1C7A50) |
-| teal | #00535C | Tamkeen stage |
-| slate | #5B6480 | Secondary text |
-| canvas | #F3F2F3 | Page background |
-| tint-blue / tint-ice / tint-mint | #DCE8FF / #D2EEFF / #D5FFDE | Highlight fills, icon tiles |
-| orange | #FF8A4C | The Ramadan pause on timelines only |
+| navy | #031330 | Text, headings, primary actions, الانطلاق stage |
+| blue | #3E84BE | الإلهام stage, experts |
+| green | #60B382 | تكوين stage, judges (fills only; text uses green-ink #2A6E4A) |
+| teal | #20525B | تمكين stage, mentors |
+| mint | #8FDD90 | رائدة الأعمال panel, the Ramadan pause on timelines |
+| blue-ink | #2A6496 | Blue text and links on light surfaces |
+| slate | #55637A | Secondary text |
+| canvas | #F4F6F6 | Page background |
+| line / line-strong | #E0E5E8 / #C9D1D6 | Hairlines and field borders |
+| tints | #DCEAF6 / #DDF2E4 / #DCE9EB / #E1E4EA | Highlight fills, chips |
 
-Stage colours are fixed: Ilham blue · Takween green · Tamkeen teal · Sanam deep navy. Each stage also defines an "ink" colour for text on its tint and an "on" colour for text on its solid fill (see `STAGES` in `src/data/program.ts`).
+Stage colours are fixed: الإلهام blue · تكوين green · تمكين teal · الانطلاق navy. Each stage defines an "ink" colour for text on its tint and an "on" colour for text on its solid fill (`STAGES` in `src/data/program.ts`).
+
+Role colours are fixed too (`ROLE_COLOR`): mentors teal · experts blue · judges green. Every profile card, form header and home screen of a role uses its colour and nothing else.
+
+Contrast: body text pairs pass 4.5:1. White on blue (#3E84BE) is 4.0:1, so it is used for large or bold text only.
 
 ## Type
-- IBM Plex Sans Arabic stands in for the licensed Frutiger LT Arabic 55.
-- Hierarchy comes from weight and size only.
-- Platform scale is a fixed rem scale.
-- Public display headings may go larger, up to 6rem.
+- Arabic: GE SS Text (Light for body, Medium for headings and emphasis). The kit names GE SS Two Medium for headlines, but the file was not supplied, so GE SS Text Medium stands in.
+- Latin and numerals: Gotham (Book and Medium).
+- The fonts are licensed files from the client's kit, in `src/assets/fonts/`.
+- Hierarchy comes from weight and size only. Public display headings may go up to 6rem.
+
+## Logos
+- Sudum logo (official SVG, colour and white) with the PNU lockup beside it: white on dark surfaces, colour on light ones.
 
 ## Shape and depth
-- Cards are white, with a 12px radius and a 1px hairline (#E2E2EA).
+- Cards are white, with a 16px radius and a 1px hairline (#E0E5E8).
 - Raised cards add a soft navy shadow with an offset.
 - Stage cards may carry a header band in the stage colour.
 
@@ -40,4 +48,4 @@ Stage colours are fixed: Ilham blue · Takween green · Tamkeen teal · Sanam de
 
 ## Layout
 - Right to left, using logical properties.
-- Platform: a navy sidebar on the right and the content on the canvas. On phones the sidebar becomes a drawer, and tables become stacked rows.
+- Platform: a top bar with the role's few places, and bottom tabs on phones. Tables become stacked rows.

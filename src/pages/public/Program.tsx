@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { ArrowLeft, Check, GraduationCap } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { ButtonLink } from '@/components/ui'
-import { AFTER_PROGRAM, STAGE, STAGES, STAGE_PARTNER_SLOTS, WORKSHOPS } from '@/data/program'
+import { AFTER_PROGRAM, STAGE, STAGES, SOON, STAGE_PARTNER_SLOTS, WORKSHOPS } from '@/data/program'
 import type { StageId } from '@/data/types'
 import { fmtDay } from '@/lib/dates'
 import { cn } from '@/lib/cn'
@@ -192,13 +192,17 @@ function StageExplorer() {
           <div className="stage-rise flex flex-wrap items-center justify-between gap-4 border-t border-current/15 p-6 md:px-10 lg:px-14">
             <div>
               <p className="text-sm opacity-75">التسجيل في هذه المرحلة</p>
-              <p className="mt-0.5 text-lg font-semibold">{stage.registration.window}</p>
+              <p className="mt-0.5 text-lg font-semibold">{stage.registration.open ? stage.registration.window : SOON}</p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <ButtonLink to={`/apply?as=participant&stage=${stage.registration.track}`} variant="light" size="lg">
-                {stage.registration.label}
-                <ArrowLeft className="size-4" aria-hidden />
-              </ButtonLink>
+              {stage.registration.open ? (
+                <ButtonLink to={`/apply?as=participant&stage=${stage.registration.track}`} variant="light" size="lg">
+                  {stage.registration.label}
+                  <ArrowLeft className="size-4" aria-hidden />
+                </ButtonLink>
+              ) : (
+                <p className="inline-flex h-12 items-center rounded-xl border border-dashed border-current/50 px-5 font-semibold">التسجيل {SOON}</p>
+              )}
               {next ? (
                 <button
                   type="button"

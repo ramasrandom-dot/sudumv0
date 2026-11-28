@@ -30,8 +30,11 @@ export interface Stage {
   /** who gets in: the stage's own acceptance criteria */
   criteria: string[]
   /** each stage has its own way in */
-  registration: { label: string; window: string; track: Track }
+  registration: { label: string; window: string; track: Track; open: boolean }
 }
+
+/** Shown wherever a stage's registration has not opened yet. */
+export const SOON = 'قريبًا'
 
 /** Placeholder partner slots shown with each stage until real partners are confirmed. */
 export const STAGE_PARTNER_SLOTS = 3
@@ -60,7 +63,7 @@ export const STAGES: Stage[] = [
       'التقديم فردي أو بفريق من 2 إلى 5 أعضاء.',
       'الفعاليات مفتوحة للجميع بلا تسجيل مسبق.',
     ],
-    registration: { label: 'التسجيل في الحاضنة', window: 'من 24 ديسمبر إلى 4 فبراير', track: 'ilham' },
+    registration: { label: 'التسجيل في الحاضنة', window: 'من 24 ديسمبر إلى 4 فبراير', track: 'ilham', open: true },
   },
   {
     id: 'takween',
@@ -70,7 +73,7 @@ export const STAGES: Stage[] = [
     color: '#60B382',
     on: '#031330',
     tint: '#DDF2E4',
-    ink: '#2F7A52',
+    ink: '#2A6E4A',
     weeks: 6,
     start: '2027-03-14',
     end: '2027-04-22',
@@ -87,7 +90,7 @@ export const STAGES: Stage[] = [
       'الأثر المحتمل: 10 درجات.',
       'يُقبل أعلى 25 فريقًا بعد مقابلة من 10 دقائق.',
     ],
-    registration: { label: 'التسجيل في الحاضنة', window: 'بالتسجيل في الحاضنة، ثم مقابلات الفرق من 7 إلى 11 فبراير', track: 'ilham' },
+    registration: { label: 'التسجيل في الحاضنة', window: 'بالتسجيل في الحاضنة، ثم مقابلات الفرق من 7 إلى 11 فبراير', track: 'ilham', open: false },
   },
   {
     id: 'tamkeen',
@@ -112,7 +115,7 @@ export const STAGES: Stage[] = [
       'عرض من 3 دقائق في يوم التحكيم.',
       '10 فرق متأهلة من تكوين، و5 مقاعد مفتوحة.',
     ],
-    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 25 أبريل', track: 'tamkeen-seat' },
+    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 25 أبريل', track: 'tamkeen-seat', open: false },
   },
   {
     id: 'intilaq',
@@ -137,7 +140,7 @@ export const STAGES: Stage[] = [
       'نموذج عمل وهوية مطبّقان.',
       '5 فرق متأهلة من تمكين، و3 مقاعد مفتوحة.',
     ],
-    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 5 سبتمبر', track: 'intilaq-seat' },
+    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 5 سبتمبر', track: 'intilaq-seat', open: false },
   },
 ]
 
@@ -312,8 +315,8 @@ export const SECTORS = ['الصحة', 'التعليم', 'التقنية الما
 export const ROLE_COLOR: Record<'mentor' | 'expert' | 'judge', { color: string; on: string; tint: string; ink: string }> = {
   mentor: { color: '#20525B', on: '#FFFFFF', tint: '#DCE9EB', ink: '#20525B' },
   expert: { color: '#3E84BE', on: '#FFFFFF', tint: '#DCEAF6', ink: '#2A6496' },
-  judge: { color: '#60B382', on: '#031330', tint: '#DDF2E4', ink: '#2F7A52' },
+  judge: { color: '#60B382', on: '#031330', tint: '#DDF2E4', ink: '#2A6E4A' },
 }
 
-/** Where questions go. The address is not set yet. */
-export const HELP_EMAIL = ''
+/** Where questions go. */
+export const HELP_EMAIL = 'bsdc-eu@pnu.edu.sa'

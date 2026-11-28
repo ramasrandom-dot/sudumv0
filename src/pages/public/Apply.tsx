@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Gavel, MessagesSquare, Presentation, Rocket, type LucideIcon } from 'lucide-react'
 import { Star } from '@/components/brand'
-import { ROLE_COLOR, STAGE, TRACKS } from '@/data/program'
+import { ROLE_COLOR, SOON, STAGE, TRACKS } from '@/data/program'
 import type { NominationKind, Track } from '@/data/types'
 import cover from '@/assets/brand/cover-background-stars.webp'
 import JoinForm from './JoinForm'
@@ -15,7 +15,7 @@ const DOORS = Object.keys(TRACKS) as Track[]
 function DoorPicker() {
   return (
     <>
-      <PageHero title="من أين تبدئين؟" lede="لكل مرحلة تسجيلها. اختاري ما يناسب مشروعك.">
+      <PageHero title="من أين تبدئين؟" lede="التسجيل مفتوح الآن لمرحلة الإلهام. بقية المراحل قريبًا.">
         <ChangePersona />
       </PageHero>
       <section className="bg-canvas">
@@ -23,34 +23,58 @@ function DoorPicker() {
           {DOORS.map((t) => {
             const track = TRACKS[t]
             const stage = STAGE[track.stage]
+            const open = stage.registration.open
             return (
               <li key={t} className="flex">
-                <Link
-                  to={`/apply?as=participant&stage=${t}`}
-                  className="group flex w-full flex-col overflow-hidden rounded-3xl bg-white shadow-card transition-[translate,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-raised"
-                >
+                {open ? (
+                  <Link
+                    to={`/apply?as=participant&stage=${t}`}
+                    className="group flex w-full flex-col overflow-hidden rounded-3xl bg-white shadow-card transition-[translate,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-raised"
+                  >
                   <span className="relative flex h-28 items-end overflow-hidden p-6" style={{ background: stage.color, color: stage.on }}>
-                    <Star outline strokeWidth={1.5} className="pointer-events-none absolute -top-10 -left-8 size-44 opacity-30 transition-transform duration-700 ease-out group-hover:rotate-45" />
-                    <span className="relative flex items-center gap-2 text-sm font-medium">
-                      <Star className="size-3.5" />
-                      مرحلة {stage.name}
-                    </span>
-                  </span>
-                  <span className="flex flex-1 flex-col p-6">
-                    <span className="text-2xl font-bold text-navy">{track.door}</span>
-                    <span className="mt-2 text-lg text-slate">{track.detail}</span>
-                    <span className="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-navy">
-                      <span className="tabular font-medium">{track.seats}</span>
-                      <span className="tabular text-sm text-slate">{stage.registration.window}</span>
-                    </span>
-                    <span className="mt-auto flex items-center justify-between pt-6 font-semibold" style={{ color: stage.ink }}>
-                      ابدئي التسجيل
-                      <span className="grid size-10 place-items-center rounded-full text-white transition-transform duration-300 group-hover:-translate-x-1.5" style={{ background: stage.color, color: stage.on }}>
-                        <ArrowLeft className="size-5" aria-hidden />
+                      <Star outline strokeWidth={1.5} className="pointer-events-none absolute -top-10 -left-8 size-44 opacity-30 transition-transform duration-700 ease-out group-hover:rotate-45" />
+                      <span className="relative flex items-center gap-2 text-sm font-medium">
+                        <Star className="size-3.5" />
+                        مرحلة {stage.name}
                       </span>
                     </span>
-                  </span>
-                </Link>
+                    <span className="flex flex-1 flex-col p-6">
+                      <span className="text-2xl font-bold text-navy">{track.door}</span>
+                      <span className="mt-2 text-lg text-slate">{track.detail}</span>
+                      <span className="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-navy">
+                        <span className="tabular font-medium">{track.seats}</span>
+                        <span className="tabular text-sm text-slate">{stage.registration.window}</span>
+                      </span>
+                      <span className="mt-auto flex items-center justify-between pt-6 font-semibold" style={{ color: stage.ink }}>
+                        ابدئي التسجيل
+                        <span className="grid size-10 place-items-center rounded-full text-white transition-transform duration-300 group-hover:-translate-x-1.5" style={{ background: stage.color, color: stage.on }}>
+                          <ArrowLeft className="size-5" aria-hidden />
+                        </span>
+                      </span>
+                    </span>
+  </Link>
+                ) : (
+                  <div className="group flex w-full flex-col overflow-hidden rounded-3xl bg-white opacity-70 shadow-card" aria-disabled="true">
+                  <span className="relative flex h-28 items-end overflow-hidden p-6" style={{ background: stage.color, color: stage.on }}>
+                      <Star outline strokeWidth={1.5} className="pointer-events-none absolute -top-10 -left-8 size-44 opacity-30 transition-transform duration-700 ease-out group-hover:rotate-45" />
+                      <span className="relative flex items-center gap-2 text-sm font-medium">
+                        <Star className="size-3.5" />
+                        مرحلة {stage.name}
+                      </span>
+                    </span>
+                    <span className="flex flex-1 flex-col p-6">
+                      <span className="text-2xl font-bold text-navy">{track.door}</span>
+                      <span className="mt-2 text-lg text-slate">{track.detail}</span>
+                      <span className="mt-6 flex flex-col gap-1 border-t border-line pt-4 text-navy">
+                        <span className="tabular font-medium">{track.seats}</span>
+                        
+                      </span>
+                      <span className="mt-auto flex items-center justify-between pt-6 font-semibold" style={{ color: stage.ink }}>
+                        التسجيل {SOON}
+                      </span>
+                    </span>
+  </div>
+                )}
               </li>
             )
           })}
@@ -138,7 +162,7 @@ export default function Apply() {
   const as = params.get('as')
   const stage = params.get('stage')
   if (as === 'participant') {
-    return stage && stage in TRACKS ? <StageApplication key={stage} door={stage as Track} /> : <DoorPicker />
+    return stage && stage in TRACKS && STAGE[TRACKS[stage as Track].stage].registration.open ? <StageApplication key={stage} door={stage as Track} /> : <DoorPicker />
   }
   if (as === 'mentor' || as === 'expert' || as === 'judge') {
     return (

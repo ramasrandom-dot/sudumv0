@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react'
 import { ArrowLeft } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { ButtonLink } from '@/components/ui'
-import { AFTER_PROGRAM, STAGES, type Stage } from '@/data/program'
+import { AFTER_PROGRAM, SOON, STAGES, type Stage } from '@/data/program'
 import { cn } from '@/lib/cn'
 import { scrollToY } from '@/lib/SmoothScroll'
 
@@ -68,6 +68,9 @@ function StageCopy({ stage, index, pinned }: { stage: Stage; index: number; pinn
           {(pinned || index === 0) && TITLE}
           <span className="tabular rounded-full border border-current/30 px-2.5 py-0.5 text-sm" dir="ltr">
             {index + 1} / {STAGES.length}
+          </span>
+          <span className={cn('rounded-full px-3 py-0.5 text-sm', stage.registration.open ? 'bg-white font-bold text-navy' : 'bg-black/20 font-medium')}>
+            {stage.registration.open ? 'التسجيل مفتوح' : SOON}
           </span>
         </p>
         <div className={cn('journey-copy', pinned ? 'mt-[7svh] md:mt-[9svh]' : 'mt-8')}>
@@ -206,6 +209,8 @@ function PinnedJourney() {
         if (Math.abs(p - nearest) > 0.004) scrollToY(yFor(nearest), 0.55)
       }
       ScrollTrigger.addEventListener('scrollEnd', settle)
+      // The brand fonts load after first paint and reflow the sections above, so measure again once they are in.
+      document.fonts?.ready.then(() => ScrollTrigger.refresh())
       goTo.current = (i) => scrollToY(yFor(i / LAST))
 
       return () => ScrollTrigger.removeEventListener('scrollEnd', settle)

@@ -2,11 +2,11 @@ import { useRef, useState, type ReactNode } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { ArrowLeft, Check, Mail, Plus } from 'lucide-react'
+import { ArrowLeft, Check, GraduationCap, Mail, Plus } from 'lucide-react'
 import SplitText from '@/components/reactbits/SplitText/SplitText'
 import { Star } from '@/components/brand'
 import { ButtonLink, Segmented } from '@/components/ui'
-import { ENTRY_POINTS, HELP_EMAIL, STAGE, STAGES } from '@/data/program'
+import { AFTER_PROGRAM, ENTRY_POINTS, HELP_EMAIL, SOON, STAGE, STAGES } from '@/data/program'
 import { PRESIDENT } from '@/data/president'
 import type { EntryPoint, StageId } from '@/data/types'
 import { cn } from '@/lib/cn'
@@ -99,13 +99,6 @@ function Hero() {
 }
 
 /* 1. عن سُدُم */
-const NUMBERS = [
-  { n: '4', label: 'مراحل ثم التخرّج' },
-  { n: '500', label: 'حاضرة في الإلهام' },
-  { n: '25', label: 'فريقًا في تكوين' },
-  { n: '8', label: 'شركات في الانطلاق' },
-]
-
 function About() {
   return (
     <section id="about" className="scroll-mt-20 bg-white" aria-labelledby="about-title">
@@ -113,22 +106,36 @@ function About() {
         <div>
           <Heading id="about-title">عن سُدُم</Heading>
           <p className="mt-8 max-w-[52ch] text-xl leading-loose text-navy">
-            سُدُم حاضنة مركز الابتكار وريادة الأعمال في جامعة الأميرة نورة بنت عبدالرحمن. ترافق المشروع من الفكرة إلى شركة ناشئة عبر أربع مراحل.
+            سُدُم حاضنة مركز الابتكار وريادة الأعمال في جامعة الأميرة نورة بنت عبدالرحمن. رحلة من أربع مراحل، تبدأ بالإلهام وتنتهي بالتخرّج.
           </p>
           <p className="mt-4 max-w-[52ch] text-lg leading-loose text-slate">
             السُّدُم سحبٌ كونية تولد فيها النجوم. وهنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.
           </p>
         </div>
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line">
-          {NUMBERS.map((x) => (
-            <div key={x.label} className="bg-canvas p-6 md:p-8">
-              <dd className="tabular text-5xl leading-none font-bold text-teal md:text-6xl">{x.n}</dd>
-              <dt className="mt-3 text-navy">{x.label}</dt>
-            </div>
+        <ol className="flex flex-col gap-2" aria-label="مراحل سُدُم">
+          {STAGES.map((s) => (
+            <li key={s.id} className="flex items-center gap-4 rounded-2xl px-5 py-4" style={{ background: s.color, color: s.on }}>
+              <Star className="size-5 shrink-0" />
+              <span className="flex-1 text-xl font-bold">{s.fullName}</span>
+              <RegTag open={s.registration.open} />
+            </li>
           ))}
-        </dl>
+          <li className="flex items-center gap-4 rounded-2xl border border-dashed border-line-strong px-5 py-4 text-slate">
+            <GraduationCap className="size-5 shrink-0" aria-hidden />
+            <span className="text-xl font-bold">{AFTER_PROGRAM}</span>
+          </li>
+        </ol>
       </div>
     </section>
+  )
+}
+
+/** Whether a stage is taking registrations now. Sits on the stage's own colour. */
+function RegTag({ open }: { open: boolean }) {
+  return open ? (
+    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-navy">التسجيل مفتوح</span>
+  ) : (
+    <span className="rounded-full bg-black/20 px-3 py-1 text-sm font-medium">{SOON}</span>
   )
 }
 
@@ -251,7 +258,7 @@ function Criteria() {
       <div className={cn(shell, 'grid gap-10 py-20 md:py-24 lg:grid-cols-[1fr_1.5fr]')}>
         <div>
           <Heading id="criteria-title">معايير القبول</Heading>
-          <p className="mt-8 max-w-[40ch] text-lg leading-loose text-slate">لكل مرحلة تسجيلها ومعاييرها، وتنتهي كل مرحلة بتحكيم.</p>
+          <p className="mt-8 max-w-[40ch] text-lg leading-loose text-slate">لكل مرحلة تسجيلها ومعاييرها، وتنتهي كل مرحلة بتحكيم. التسجيل مفتوح الآن لمرحلة الإلهام.</p>
           <div className="mt-6">
             <Segmented label="المرحلة" value={stage} onChange={setStage} options={STAGES.map((x) => ({ value: x.id, label: x.name }))} />
           </div>
@@ -273,14 +280,20 @@ function Criteria() {
             ))}
           </ul>
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-            <p className="text-slate">
-              <span className="font-medium text-navy">التسجيل: </span>
-              {s.registration.window}
-            </p>
-            <ButtonLink to={`/apply?as=participant&stage=${s.registration.track}`}>
-              {s.registration.label}
-              <ArrowLeft className="size-4" aria-hidden />
-            </ButtonLink>
+            {s.registration.open ? (
+              <>
+                <p className="text-slate">
+                  <span className="font-medium text-navy">التسجيل: </span>
+                  {s.registration.window}
+                </p>
+                <ButtonLink to={`/apply?as=participant&stage=${s.registration.track}`}>
+                  {s.registration.label}
+                  <ArrowLeft className="size-4" aria-hidden />
+                </ButtonLink>
+              </>
+            ) : (
+              <p className="rounded-full bg-canvas px-4 py-2 font-medium text-slate">التسجيل {SOON}</p>
+            )}
           </div>
         </div>
       </div>
@@ -293,6 +306,7 @@ const FAQ = [
   { q: 'من يحق لها التقديم؟', a: 'أي فريق يضم طالبة أو منسوبة لجامعة الأميرة نورة، أو تكون المؤسِّسة أو الشريكة المؤسِّسة فيه امرأة. ويُسمح بوجود الرجال في الفريق.' },
   { q: 'هل أحتاج إلى فريق قبل التقديم؟', a: 'لا. يمكنك التقديم فردية، وتتشكّل الفرق في ورش مرحلة الإلهام.' },
   { q: 'متى يفتح التسجيل ومتى يغلق؟', a: 'يفتح التسجيل في الحاضنة يوم 24 ديسمبر ويغلق يوم 4 فبراير. مقابلات الفرق من 7 إلى 11 فبراير.' },
+  { q: 'متى يفتح تسجيل المراحل الأخرى؟', a: 'التسجيل مفتوح الآن لمرحلة الإلهام. تسجيل تكوين وتمكين والانطلاق يُعلن قريبًا.' },
   { q: 'هل أحضر الفعاليات بلا تسجيل؟', a: 'نعم. فعاليات مرحلة الإلهام مفتوحة للجميع بلا تسجيل مسبق، والورش لمن سجّلن.' },
   { q: 'كيف يُختار المتأهلون في كل مرحلة؟', a: 'تنتهي كل مرحلة بتحكيم، وتقيّم اللجنة الفرق بمعايير معلنة مسبقًا، ثم تتأهل أعلى الفرق إلى المرحلة التالية.' },
 ]
@@ -331,7 +345,7 @@ function Help() {
         </div>
         <p className="inline-flex items-center gap-3 rounded-2xl bg-white px-6 py-4 text-lg font-medium text-navy shadow-card">
           <Mail className="size-5 shrink-0 text-teal" aria-hidden />
-          {HELP_EMAIL ? <span dir="ltr">{HELP_EMAIL}</span> : <span className="text-slate">بريد المساعدة: يُضاف قريبًا</span>}
+          {HELP_EMAIL ? <a href={`mailto:${HELP_EMAIL}`} dir="ltr" className="hover:underline">{HELP_EMAIL}</a> : <span className="text-slate">بريد المساعدة: يُضاف قريبًا</span>}
         </p>
       </div>
     </section>
