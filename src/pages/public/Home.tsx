@@ -101,7 +101,7 @@ function Hero() {
 /* 1. عن سُدُم */
 function About() {
   return (
-    <section id="about" className="scroll-mt-20 bg-white" aria-labelledby="about-title">
+    <section id="about" className="scroll-mt-20 bg-canvas" aria-labelledby="about-title">
       <div className={cn(shell, 'grid gap-12 py-20 md:py-24 lg:grid-cols-[1.15fr_1fr] lg:items-center')}>
         <div>
           <Heading id="about-title">عن سُدُم</Heading>
@@ -148,12 +148,12 @@ const GOALS = [
 
 function Goals() {
   return (
-    <section id="goals" className="scroll-mt-20 bg-canvas" aria-labelledby="goals-title">
+    <section id="goals" className="scroll-mt-20 bg-white" aria-labelledby="goals-title">
       <div className={cn(shell, 'py-20 md:py-24')}>
         <Heading id="goals-title">أهداف سُدُم</Heading>
         <ol className="mt-10 grid gap-4 md:grid-cols-3">
           {GOALS.map((g, i) => (
-            <li key={g} className="flex flex-col gap-5 rounded-2xl bg-white p-7 shadow-card">
+            <li key={g} className="flex flex-col gap-5 rounded-2xl bg-canvas p-7">
               <span aria-hidden className="tabular flex items-center gap-3 text-5xl leading-none font-bold text-teal">
                 {i + 1}
                 <span className="h-px flex-1 bg-line-strong" />
@@ -386,11 +386,11 @@ export default function Home() {
     <>
       <Hero />
       <Partners />
+      <President />
       <About />
       <Goals />
       <Audience />
       <StageJourney />
-      <President />
       <Criteria />
       <Faq />
       <Help />
