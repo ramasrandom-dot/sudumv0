@@ -14,11 +14,11 @@ import { Chip, Hero, ListRow, Rel, SectionTitle, Tile } from '../shared'
 /* ───────────── Home ───────────── */
 
 const FUNNEL = [
-  { label: 'مسجّلات في الإلهام', n: 500, color: '#2086C2' },
-  { label: 'مختبر الأفكار', n: 80, color: '#2086C2' },
-  { label: 'فرق تكوين', n: 25, color: '#39B67E' },
-  { label: 'فرق تمكين', n: 15, color: '#00535C' },
-  { label: 'شركات سنام (مستهدف)', n: 8, color: '#090E3B' },
+  { label: 'مسجّلات في الإلهام', n: 500, color: '#3E84BE' },
+  { label: 'مختبر الأفكار', n: 80, color: '#3E84BE' },
+  { label: 'فرق تكوين', n: 25, color: '#60B382' },
+  { label: 'فرق تمكين', n: 15, color: '#20525B' },
+  { label: 'شركات الانطلاق (مستهدف)', n: 8, color: '#031330' },
 ]
 
 export function AdminDashboard() {
@@ -138,7 +138,10 @@ function ApplicationRow({ a }: { a: Application }) {
             <div><dt className="text-slate">الفئة</dt><dd className="text-navy">{ENTRY_POINTS[a.entry].label}</dd></div>
             <div><dt className="text-slate">الكلية أو الجهة</dt><dd className="text-navy">{a.college}</dd></div>
             <div><dt className="text-slate">المشكلة</dt><dd className="text-navy">{a.problem}</dd></div>
-            <div><dt className="text-slate">الفكرة</dt><dd className="text-navy">{a.idea}</dd></div>
+            {a.idea && <div><dt className="text-slate">{a.track === 'ilham' ? 'الفكرة' : 'المنتج'}</dt><dd className="text-navy">{a.idea}</dd></div>}
+            {a.details?.map((d) => (
+              <div key={d.label}><dt className="text-slate">{d.label}</dt><dd className="text-navy">{d.value}</dd></div>
+            ))}
             <div className="flex flex-wrap gap-x-6">
               <div><dt className="text-slate">البريد</dt><dd className="text-navy" dir="ltr">{a.email}</dd></div>
               <div><dt className="text-slate">الجوال</dt><dd className="tabular text-navy" dir="ltr">{a.phone}</dd></div>
@@ -389,7 +392,7 @@ export function AdminPeople() {
                     <Avatar name={n.name} />
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-navy">{n.name} <Badge tone="blue">{KIND_LABEL[n.kind]}</Badge></p>
-                      <p className="text-sm text-slate">{n.org} · <span className="tabular">{n.years}</span> سنوات خبرة · <Rel iso={n.at} /></p>
+                      <p className="text-sm text-slate">{n.title ? `${n.title} · ` : ''}{n.org} · <span className="tabular">{n.years}</span> سنوات خبرة · <Rel iso={n.at} /></p>
                       <p className="mt-2 text-sm text-navy">{n.note}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {n.areas.map((a) => <Badge key={a} tone="neutral">{a}</Badge>)}

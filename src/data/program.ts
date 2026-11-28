@@ -27,7 +27,14 @@ export interface Stage {
   summary: string
   /** one line: what a team leaves with */
   outcome: string
+  /** who gets in: the stage's own acceptance criteria */
+  criteria: string[]
+  /** each stage has its own way in */
+  registration: { label: string; window: string; track: Track }
 }
+
+/** Placeholder partner slots shown with each stage until real partners are confirmed. */
+export const STAGE_PARTNER_SLOTS = 3
 
 export const STAGES: Stage[] = [
   {
@@ -35,29 +42,35 @@ export const STAGES: Stage[] = [
     index: 1,
     name: 'الإلهام',
     fullName: 'الإلهام',
-    color: '#2086C2',
+    color: '#3E84BE',
     on: '#FFFFFF',
-    tint: '#DCE8FF',
-    ink: '#17699B',
+    tint: '#DCEAF6',
+    ink: '#2A6496',
     weeks: 3,
     start: '2027-01-17',
     end: '2027-02-04',
     teams: 25,
-    teamsLabel: '500 مسجّلة',
-    gate: 'عرض الاختيار',
-    gateDate: '2027-02-04',
-    summary: 'فعاليات مفتوحة ومختبر أفكار لتكوين الفرق.',
+    teamsLabel: '500 حاضرة',
+    gate: 'مقابلات الفرق',
+    gateDate: '2027-02-11',
+    summary: 'فعاليات مفتوحة للجميع، ثم ثلاث ورش لصياغة المشكلة وبناء الفريق.',
     outcome: 'فكرة واضحة وفريق جاهز.',
+    criteria: [
+      'أن يضم الفريق طالبة أو منسوبة للجامعة، أو أن تكون المؤسِّسة أو الشريكة المؤسِّسة امرأة.',
+      'التقديم فردي أو بفريق من 2 إلى 5 أعضاء.',
+      'الفعاليات مفتوحة للجميع بلا تسجيل مسبق.',
+    ],
+    registration: { label: 'التسجيل في الحاضنة', window: 'من 24 ديسمبر إلى 4 فبراير', track: 'ilham' },
   },
   {
     id: 'takween',
     index: 2,
     name: 'تكوين',
     fullName: 'تكوين',
-    color: '#39B67E',
-    on: '#0A0F3C',
-    tint: '#D5FFDE',
-    ink: '#1C7A50',
+    color: '#60B382',
+    on: '#031330',
+    tint: '#DDF2E4',
+    ink: '#2F7A52',
     weeks: 6,
     start: '2027-03-14',
     end: '2027-04-22',
@@ -67,16 +80,24 @@ export const STAGES: Stage[] = [
     gateDate: '2027-04-22',
     summary: 'من الفكرة إلى نموذج أولي.',
     outcome: 'نموذج أولي جرّبه مستخدمون.',
+    criteria: [
+      'وضوح المشكلة: 40 درجة.',
+      'تناغم الفريق: 40 درجة.',
+      'الالتزام والجاهزية: 10 درجات.',
+      'الأثر المحتمل: 10 درجات.',
+      'يُقبل أعلى 25 فريقًا بعد مقابلة من 10 دقائق.',
+    ],
+    registration: { label: 'التسجيل في الحاضنة', window: 'بالتسجيل في الحاضنة، ثم مقابلات الفرق من 7 إلى 11 فبراير', track: 'ilham' },
   },
   {
     id: 'tamkeen',
     index: 3,
     name: 'تمكين',
     fullName: 'تمكين',
-    color: '#00535C',
+    color: '#20525B',
     on: '#FFFFFF',
-    tint: '#D9ECEE',
-    ink: '#00535C',
+    tint: '#DCE9EB',
+    ink: '#20525B',
     weeks: 12,
     start: '2027-04-25',
     end: '2027-07-29',
@@ -86,16 +107,22 @@ export const STAGES: Stage[] = [
     gateDate: '2027-07-29',
     summary: 'من النموذج الأولي إلى منتج يعمل.',
     outcome: 'منتج يعمل وله مستخدمون.',
+    criteria: [
+      'نموذج أولي جرّبه 5 مستخدمين على الأقل.',
+      'عرض من 3 دقائق في يوم التحكيم.',
+      '10 فرق متأهلة من تكوين، و5 مقاعد مفتوحة.',
+    ],
+    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 25 أبريل', track: 'tamkeen-seat' },
   },
   {
-    id: 'sanam',
+    id: 'intilaq',
     index: 4,
-    name: 'سنام',
-    fullName: 'سنام',
-    color: '#090E3B',
+    name: 'الانطلاق',
+    fullName: 'الانطلاق',
+    color: '#031330',
     on: '#FFFFFF',
-    tint: '#E3E4EE',
-    ink: '#090E3B',
+    tint: '#E1E4EA',
+    ink: '#031330',
     weeks: 12,
     start: '2027-09-05',
     end: '2027-12-02',
@@ -104,7 +131,13 @@ export const STAGES: Stage[] = [
     gate: 'يوم العروض الاستثماري',
     gateDate: '2027-12-02',
     summary: 'من المنتج إلى شركة.',
-    outcome: 'شركة جاهزة لدخول المسرعة.',
+    outcome: 'شركة ناشئة جاهزة للسوق والاستثمار.',
+    criteria: [
+      'منتج يعمل وله 20 مستخدمًا أو تجربة ميدانية.',
+      'نموذج عمل وهوية مطبّقان.',
+      '5 فرق متأهلة من تمكين، و3 مقاعد مفتوحة.',
+    ],
+    registration: { label: 'التقديم على مقعد مفتوح', window: 'قبل بداية المرحلة في 5 سبتمبر', track: 'intilaq-seat' },
   },
 ]
 
@@ -115,10 +148,10 @@ export const STAGE: Record<StageId, Stage> = Object.fromEntries(STAGES.map((s) =
 
 export const nextStage = (id: StageId): StageId | undefined => STAGES[STAGE[id].index]?.id
 
-/** Sanam is the fourth and last stage. Teams that finish it move on to the accelerator. */
-export const AFTER_PROGRAM = 'المسرعة'
+/** الانطلاق is the fourth and last stage. Teams that finish it graduate. */
+export const AFTER_PROGRAM = 'التخرّج'
 
-/** Where a team goes after a stage: the next stage's name, or the accelerator after Sanam. */
+/** Where a team goes after a stage: the next stage's name, or graduation after the last one. */
 export const nextLabel = (id: StageId) => {
   const next = nextStage(id)
   return next ? STAGE[next].fullName : AFTER_PROGRAM
@@ -126,9 +159,9 @@ export const nextLabel = (id: StageId) => {
 
 /** Calendar pauses shown on timelines. Ramadan 1448 dates are approximate. */
 export const PAUSES = [
-  { label: 'رمضان والعيد', title: 'رمضان وإجازة عيد الفطر', start: '2027-02-07', end: '2027-03-12', color: '#FF8A4C' },
-  { label: 'الأضحى', title: 'إجازة عيد الأضحى', start: '2027-05-13', end: '2027-05-27', color: '#CFD0DC' },
-  { label: 'الفاصل الصيفي', title: 'الفاصل الصيفي', start: '2027-07-30', end: '2027-09-04', color: '#DCE8FF' },
+  { label: 'رمضان والعيد', title: 'رمضان وإجازة عيد الفطر', start: '2027-02-07', end: '2027-03-12', color: '#8FDD90' },
+  { label: 'الأضحى', title: 'إجازة عيد الأضحى', start: '2027-05-13', end: '2027-05-27', color: '#C9D1D6' },
+  { label: 'الفاصل الصيفي', title: 'الفاصل الصيفي', start: '2027-07-30', end: '2027-09-04', color: '#DCEAF6' },
 ]
 
 export const ENTRY_POINTS: Record<EntryPoint, { label: string; detail: string }> = {
@@ -137,10 +170,11 @@ export const ENTRY_POINTS: Record<EntryPoint, { label: string; detail: string }>
   founder: { label: 'رائدات أعمال', detail: 'صاحبات منتج قائم يبحثن عن النمو.' },
 }
 
-export const TRACKS: Record<Track, { label: string; detail: string }> = {
-  ilham: { label: 'الإلهام', detail: 'لديكِ فكرة أو مشروع تخرج.' },
-  'tamkeen-seat': { label: 'مقعد مفتوح في تمكين', detail: 'لديكِ نموذج أولي مجرَّب.' },
-  'sanam-seat': { label: 'مقعد مفتوح في سنام', detail: 'لديكِ منتج يعمل وله مستخدمون.' },
+/** The three ways in. Each one has its own registration form. */
+export const TRACKS: Record<Track, { label: string; door: string; detail: string; stage: StageId; seats: string }> = {
+  ilham: { label: 'الإلهام', door: 'التسجيل في الحاضنة', detail: 'لديكِ فكرة أو مشروع تخرج.', stage: 'ilham', seats: '25 فريقًا تتأهل إلى تكوين' },
+  'tamkeen-seat': { label: 'مقعد مفتوح في تمكين', door: 'مقعد مفتوح في تمكين', detail: 'لديكِ نموذج أولي مجرَّب.', stage: 'tamkeen', seats: '5 مقاعد مفتوحة' },
+  'intilaq-seat': { label: 'مقعد مفتوح في الانطلاق', door: 'مقعد مفتوح في الانطلاق', detail: 'لديكِ منتج يعمل وله مستخدمون.', stage: 'intilaq', seats: '3 مقاعد مفتوحة' },
 }
 
 export interface WorkshopDef {
@@ -150,14 +184,18 @@ export interface WorkshopDef {
   date: string
 }
 
-/** The 23 workshops. Titles are plain-language versions of the official «عناوين الورش» list. */
+/** Sessions and workshops per stage. الإلهام follows its stage schedule; the rest are plain-language versions of «عناوين الورش». */
 export const WORKSHOPS: WorkshopDef[] = [
-  { stage: 'ilham', week: 1, title: 'اكتشاف المشكلات من حولك', date: '2027-01-18' },
-  { stage: 'ilham', week: 1, title: 'صياغة المشكلة بوضوح', date: '2027-01-20' },
-  { stage: 'ilham', week: 1, title: 'من البحث العلمي إلى مشروع', date: '2027-01-21' },
-  { stage: 'ilham', week: 2, title: 'مختبر الأفكار: طوّري فكرتك', date: '2027-01-26' },
-  { stage: 'ilham', week: 2, title: 'بناء الفريق وتوزيع الأدوار', date: '2027-01-27' },
-  { stage: 'ilham', week: 3, title: 'اعرضي فكرتك في دقيقتين', date: '2027-02-01' },
+  { stage: 'ilham', week: 1, title: 'الافتتاح: ما سُدُم؟', date: '2027-01-17' },
+  { stage: 'ilham', week: 1, title: 'قصص نجاح لمؤسِّسات', date: '2027-01-17' },
+  { stage: 'ilham', week: 1, title: 'اكتشفي المشكلة', date: '2027-01-18' },
+  { stage: 'ilham', week: 1, title: 'اسألي مؤسِّسة', date: '2027-01-18' },
+  { stage: 'ilham', week: 1, title: 'مستثمر يجيب', date: '2027-01-20' },
+  { stage: 'ilham', week: 2, title: 'من طالبة إلى رائدة أعمال', date: '2027-01-25' },
+  { stage: 'ilham', week: 2, title: 'من البحث العلمي إلى منتج في السوق', date: '2027-01-27' },
+  { stage: 'ilham', week: 3, title: 'صياغة المشكلة', date: '2027-02-01' },
+  { stage: 'ilham', week: 3, title: 'من الفكرة إلى المفهوم', date: '2027-02-02' },
+  { stage: 'ilham', week: 3, title: 'بناء الفريق', date: '2027-02-03' },
   { stage: 'takween', week: 1, title: 'التفكير التصميمي', date: '2027-03-15' },
   { stage: 'takween', week: 2, title: 'التحقق من المشكلة', date: '2027-03-22' },
   { stage: 'takween', week: 3, title: 'اختبار الفكرة بأقل تكلفة', date: '2027-03-29' },
@@ -170,11 +208,11 @@ export const WORKSHOPS: WorkshopDef[] = [
   { stage: 'tamkeen', week: 5, title: 'الهوية والعلامة التجارية', date: '2027-06-08' },
   { stage: 'tamkeen', week: 9, title: 'الأرقام والتسعير', date: '2027-07-06' },
   { stage: 'tamkeen', week: 12, title: 'عرض المنتج بعد التجربة', date: '2027-07-27' },
-  { stage: 'sanam', week: 1, title: 'تأسيس الشركة واتفاق المؤسِّسات', date: '2027-09-06' },
-  { stage: 'sanam', week: 3, title: 'دخول السوق والمبيعات', date: '2027-09-20' },
-  { stage: 'sanam', week: 5, title: 'النموذج المالي', date: '2027-10-04' },
-  { stage: 'sanam', week: 8, title: 'الاستعداد للاستثمار', date: '2027-10-25' },
-  { stage: 'sanam', week: 11, title: 'العرض أمام المستثمرين', date: '2027-11-15' },
+  { stage: 'intilaq', week: 1, title: 'تأسيس الشركة واتفاق المؤسِّسات', date: '2027-09-06' },
+  { stage: 'intilaq', week: 3, title: 'دخول السوق والمبيعات', date: '2027-09-20' },
+  { stage: 'intilaq', week: 5, title: 'النموذج المالي', date: '2027-10-04' },
+  { stage: 'intilaq', week: 8, title: 'الاستعداد للاستثمار', date: '2027-10-25' },
+  { stage: 'intilaq', week: 11, title: 'العرض أمام المستثمرين', date: '2027-11-15' },
 ]
 
 /** The five expertise areas, word for word from «مجالات المرشدين والخبراء». */
@@ -269,3 +307,13 @@ export const ESCALATION_LEVELS = {
 } as const
 
 export const SECTORS = ['الصحة', 'التعليم', 'التقنية المالية', 'التجارة الإلكترونية', 'الاستدامة', 'الخدمات']
+
+/** One fixed colour per supporting role, used on their profile cards and on their home screen. */
+export const ROLE_COLOR: Record<'mentor' | 'expert' | 'judge', { color: string; on: string; tint: string; ink: string }> = {
+  mentor: { color: '#20525B', on: '#FFFFFF', tint: '#DCE9EB', ink: '#20525B' },
+  expert: { color: '#3E84BE', on: '#FFFFFF', tint: '#DCEAF6', ink: '#2A6496' },
+  judge: { color: '#60B382', on: '#031330', tint: '#DDF2E4', ink: '#2F7A52' },
+}
+
+/** Where questions go. The address is not set yet. */
+export const HELP_EMAIL = ''

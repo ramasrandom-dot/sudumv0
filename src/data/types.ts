@@ -1,4 +1,4 @@
-export type StageId = 'ilham' | 'takween' | 'tamkeen' | 'sanam'
+export type StageId = 'ilham' | 'takween' | 'tamkeen' | 'intilaq'
 export type Role = 'participant' | 'mentor' | 'expert' | 'judge' | 'admin'
 export type EntryPoint = 'research' | 'student' | 'founder'
 
@@ -113,7 +113,7 @@ export interface Score {
   at: string
 }
 
-export type Track = 'ilham' | 'tamkeen-seat' | 'sanam-seat'
+export type Track = 'ilham' | 'tamkeen-seat' | 'intilaq-seat'
 export type ApplicationStatus = 'new' | 'interview' | 'accepted' | 'declined'
 
 export interface Application {
@@ -131,6 +131,8 @@ export interface Application {
   idea: string
   status: ApplicationStatus
   note?: string
+  /** answers that only this stage's form asks for */
+  details?: { label: string; value: string }[]
 }
 
 export type NominationKind = 'mentor' | 'expert' | 'judge'
@@ -140,6 +142,8 @@ export interface Nomination {
   at: string
   name: string
   email: string
+  /** job title, shown on the profile card with the organisation */
+  title?: string
   org: string
   years: number
   kind: NominationKind

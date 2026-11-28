@@ -20,9 +20,9 @@ type Variant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger' | 'light'
 type Size = 'sm' | 'md' | 'lg'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-navy text-white hover:bg-[#1a2160] active:bg-navy-900',
-  accent: 'bg-blue-ink text-white hover:bg-[#125a86]',
-  secondary: 'bg-white text-navy border border-line-strong hover:border-navy/40 hover:bg-[#fafafc]',
+  primary: 'bg-navy text-white hover:bg-[#0c2350] active:bg-navy-900',
+  accent: 'bg-blue-ink text-white hover:bg-[#22557f]',
+  secondary: 'bg-white text-navy border border-line-strong hover:border-navy/40 hover:bg-canvas',
   ghost: 'text-navy hover:bg-navy/5',
   danger: 'bg-white text-danger border border-danger/30 hover:bg-danger-tint',
   light: 'bg-white text-navy hover:bg-tint-blue',
@@ -111,7 +111,7 @@ export function EmptyState({ title, children, action }: { title: string; childre
 type Tone = 'neutral' | 'blue' | 'green' | 'teal' | 'navy' | 'warn' | 'danger' | 'orange'
 
 const tones: Record<Tone, string> = {
-  neutral: 'bg-[#ececf1] text-slate',
+  neutral: 'bg-[#e6eaec] text-slate',
   blue: 'bg-tint-blue text-blue-ink',
   green: 'bg-tint-mint text-green-ink',
   teal: 'bg-tint-teal text-teal',
@@ -217,7 +217,7 @@ export function Avatar({ name, size = 'md', tone = 'navy' }: { name: string; siz
 
 /* ───────────── Progress ───────────── */
 
-export function Progress({ value, color = '#0A0F3C', label }: { value: number; color?: string; label: string }) {
+export function Progress({ value, color = '#031330', label }: { value: number; color?: string; label: string }) {
   const v = Math.max(0, Math.min(100, value))
   return (
     <div
@@ -226,7 +226,7 @@ export function Progress({ value, color = '#0A0F3C', label }: { value: number; c
       aria-valuenow={Math.round(v)}
       aria-valuemin={0}
       aria-valuemax={100}
-      className="h-1.5 w-full overflow-hidden rounded-full bg-[#e6e6ee]"
+      className="h-1.5 w-full overflow-hidden rounded-full bg-line"
     >
       <div className="h-full rounded-full transition-[width] duration-500" style={{ width: `${v}%`, background: color }} />
     </div>
@@ -247,7 +247,7 @@ export function Segmented<T extends string>({
   label: string
 }) {
   return (
-    <div role="tablist" aria-label={label} className="inline-flex flex-wrap gap-1 rounded-xl bg-[#e8e8ee] p-1">
+    <div role="tablist" aria-label={label} className="inline-flex flex-wrap gap-1 rounded-xl bg-[#e3e8ea] p-1">
       {options.map((o) => (
         <button
           key={o.value}

@@ -35,7 +35,7 @@ export interface AppState {
 }
 
 // Bump when seed text or shape changes, so stale saved demo state is discarded.
-const VERSION = 2
+const VERSION = 3
 const KEY = 'sudum-demo-state'
 
 const fresh = (): AppState => ({
@@ -95,9 +95,10 @@ const makeActions = (set: (fn: (s: AppState) => AppState) => void) => ({
                 id: uid(n.kind[0]),
                 name: n.name,
                 role: n.kind as Role,
-                title: n.org,
+                title: n.title ?? n.org,
                 org: n.org,
                 areas: n.areas,
+                bio: n.note,
               },
             ]
           : s.people

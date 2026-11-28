@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { ArrowLeft, Rocket } from 'lucide-react'
+import { ArrowLeft, Check, GraduationCap } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { ButtonLink } from '@/components/ui'
-import { AFTER_PROGRAM, STAGE, STAGES, WORKSHOPS } from '@/data/program'
+import { AFTER_PROGRAM, STAGE, STAGES, STAGE_PARTNER_SLOTS, WORKSHOPS } from '@/data/program'
 import type { StageId } from '@/data/types'
 import { fmtDay } from '@/lib/dates'
 import { cn } from '@/lib/cn'
@@ -14,7 +14,7 @@ import Timeline from './Timeline'
 gsap.registerPlugin(useGSAP)
 
 /**
- * The whole program on one screen: four stages on a single line, then the accelerator.
+ * The whole program on one screen: four stages on a single line, then graduation.
  * Picking a stage floods the panel below with that stage's colour and shows its details.
  */
 function StageExplorer() {
@@ -104,10 +104,10 @@ function StageExplorer() {
           })}
           <div className="hidden flex-col items-center gap-2 text-center md:flex">
             <span className="grid size-14 scale-[0.72] place-items-center rounded-full border-2 border-dashed border-line-strong bg-white text-slate">
-              <Rocket className="size-6" aria-hidden />
+              <GraduationCap className="size-6" aria-hidden />
             </span>
             <span className="text-lg font-bold text-slate">{AFTER_PROGRAM}</span>
-            <span className="text-sm text-slate">بعد سنام</span>
+            <span className="text-sm text-slate">بعد الانطلاق</span>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ function StageExplorer() {
         <div key={active} className="stage-flood relative isolate overflow-hidden" style={{ background: stage.color, color: stage.on }}>
           <span
             aria-hidden
-            className="tabular pointer-events-none absolute bottom-[-0.16em] left-[3%] -z-10 text-[13rem] leading-none font-bold opacity-[0.08] select-none md:text-[24rem]"
+            className="tabular pointer-events-none absolute top-[-0.12em] left-[3%] -z-10 text-[13rem] leading-none font-bold opacity-[0.08] select-none md:text-[22rem]"
           >
             {stage.index}
           </span>
@@ -150,7 +150,7 @@ function StageExplorer() {
 
             <div className="stage-rise flex flex-col">
               <h3 className="text-lg font-bold">
-                الورش <span className="tabular text-base font-normal opacity-75">({workshops.length})</span>
+                {active === 'ilham' ? 'الفعاليات والورش' : 'الورش'} <span className="tabular text-base font-normal opacity-75">({workshops.length})</span>
               </h3>
               <ol className="mt-3 flex flex-col">
                 {workshops.map((w) => (
@@ -160,23 +160,60 @@ function StageExplorer() {
                   </li>
                 ))}
               </ol>
-              <div className="mt-auto pt-8">
-                {next ? (
-                  <button
-                    type="button"
-                    onClick={() => select(next.id)}
-                    className="inline-flex h-12 items-center gap-2 rounded-xl bg-white px-5 font-semibold text-navy transition-transform duration-200 hover:-translate-x-1"
-                  >
-                    التالي: {next.fullName}
-                    <ArrowLeft className="size-4" aria-hidden />
-                  </button>
-                ) : (
-                  <p className="inline-flex items-center gap-2 rounded-xl bg-black/15 px-5 py-3 font-semibold">
-                    <Rocket className="size-5" aria-hidden />
-                    بعد سنام: {AFTER_PROGRAM}
-                  </p>
-                )}
-              </div>
+            </div>
+          </div>
+
+          <div className="stage-rise grid gap-8 border-t border-current/15 p-6 md:p-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-14">
+            <div>
+              <h3 className="text-lg font-bold">معايير القبول</h3>
+              <ul className="mt-3 flex flex-col gap-2.5">
+                {stage.criteria.map((c) => (
+                  <li key={c} className="flex gap-3 text-lg">
+                    <Check className="mt-1.5 size-5 shrink-0 opacity-80" aria-hidden />
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold">شركاء المرحلة</h3>
+              <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {Array.from({ length: STAGE_PARTNER_SLOTS }, (_, i) => (
+                  <li key={i} className="grid h-16 place-items-center rounded-xl border border-dashed border-current/40 text-sm opacity-80">
+                    شريك {i + 1}
+                  </li>
+                ))}
+                <li className="grid h-16 place-items-center rounded-xl bg-black/15 px-2 text-center text-sm font-medium">شريك الخريجين</li>
+              </ul>
+              <p className="mt-2 text-sm opacity-75">تُعلن أسماء الشركاء قريبًا.</p>
+            </div>
+          </div>
+
+          <div className="stage-rise flex flex-wrap items-center justify-between gap-4 border-t border-current/15 p-6 md:px-10 lg:px-14">
+            <div>
+              <p className="text-sm opacity-75">التسجيل في هذه المرحلة</p>
+              <p className="mt-0.5 text-lg font-semibold">{stage.registration.window}</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <ButtonLink to={`/apply?as=participant&stage=${stage.registration.track}`} variant="light" size="lg">
+                {stage.registration.label}
+                <ArrowLeft className="size-4" aria-hidden />
+              </ButtonLink>
+              {next ? (
+                <button
+                  type="button"
+                  onClick={() => select(next.id)}
+                  className="inline-flex h-12 items-center gap-2 rounded-xl bg-black/15 px-5 font-semibold transition-transform duration-200 hover:-translate-x-1"
+                >
+                  التالي: {next.fullName}
+                  <ArrowLeft className="size-4" aria-hidden />
+                </button>
+              ) : (
+                <p className="inline-flex h-12 items-center gap-2 rounded-xl bg-black/15 px-5 font-semibold">
+                  <GraduationCap className="size-5" aria-hidden />
+                  بعد الانطلاق: {AFTER_PROGRAM}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -188,7 +225,7 @@ function StageExplorer() {
 export default function Program() {
   return (
     <>
-      <PageHero title="برنامج سُدُم" lede="أربع مراحل، ثم المسرعة." />
+      <PageHero title="مراحل سُدُم" lede="أربع مراحل، ولكل مرحلة تسجيلها وتحكيمها، ثم التخرّج." />
       <section className="bg-canvas" aria-label="مراحل البرنامج">
         <StageExplorer />
       </section>

@@ -5,13 +5,13 @@ import { useGSAP } from '@gsap/react'
 import { ArrowLeft } from 'lucide-react'
 import { Star } from '@/components/brand'
 import { ButtonLink } from '@/components/ui'
-import { STAGES, type Stage } from '@/data/program'
+import { AFTER_PROGRAM, STAGES, type Stage } from '@/data/program'
 import { cn } from '@/lib/cn'
 import { scrollToY } from '@/lib/SmoothScroll'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
-const TITLE = 'أربع مراحل من الفكرة إلى الشركة'
+const TITLE = 'مسارات سُدُم'
 const LAST = STAGES.length - 1
 const weeksLabel = (n: number) => `${n} ${n > 10 ? 'أسبوعًا' : 'أسابيع'}`
 
@@ -72,8 +72,11 @@ function StageCopy({ stage, index, pinned }: { stage: Stage; index: number; pinn
         </p>
         <div className={cn('journey-copy', pinned ? 'mt-[7svh] md:mt-[9svh]' : 'mt-8')}>
           <p className="text-[clamp(3.5rem,11vw,8.5rem)] leading-[1.15] font-bold">{stage.fullName}</p>
-          <p className="tabular mt-3 text-xl font-semibold opacity-80 md:mt-5 md:text-2xl">{weeksLabel(stage.weeks)}</p>
+          <p className="tabular mt-3 text-xl font-semibold opacity-80 md:mt-5 md:text-2xl">
+            {weeksLabel(stage.weeks)} · {stage.teamsLabel}
+          </p>
           <p className="mt-1 max-w-[16ch] text-2xl leading-snug font-semibold md:mt-2 md:text-4xl">{stage.outcome}</p>
+          {index === LAST && <p className="mt-4 text-lg font-semibold opacity-85 md:text-xl">ثم {AFTER_PROGRAM}</p>}
         </div>
       </div>
     </>
@@ -90,7 +93,7 @@ function StagesForReaders() {
       <ol className="sr-only">
         {STAGES.map((s) => (
           <li key={s.id}>
-            {s.fullName}: {weeksLabel(s.weeks)}. {s.outcome}
+            {s.fullName}: {weeksLabel(s.weeks)}، {s.teamsLabel}. {s.outcome}
           </li>
         ))}
       </ol>

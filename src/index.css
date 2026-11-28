@@ -1,25 +1,59 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "IBM Plex Sans Arabic", "Noto Sans Arabic", system-ui, sans-serif;
+/*
+ * Sudum identity type. Arabic: GE SS Text (Light for running text, Medium for headings).
+ * Latin letters and numerals: Gotham. Each family ships two weights, so every requested
+ * weight maps onto one of them instead of being faked.
+ */
+@font-face {
+  font-family: "GE SS Text";
+  src: url("./assets/fonts/GE_SS_Text_Light.woff2") format("woff2");
+  font-weight: 100 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "GE SS Text";
+  src: url("./assets/fonts/GE_SS_Text_Medium.woff2") format("woff2");
+  font-weight: 500 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham";
+  src: url("./assets/fonts/Gotham-Book.woff2") format("woff2");
+  font-weight: 100 400;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026;
+}
+@font-face {
+  font-family: "Gotham";
+  src: url("./assets/fonts/Gotham-Medium.woff2") format("woff2");
+  font-weight: 500 900;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026;
+}
 
-  --color-navy: #0a0f3c;
-  --color-navy-deep: #090e3b;
-  --color-navy-900: #060a2b;
-  --color-blue: #2086c2;
-  --color-blue-ink: #17699b;
-  --color-green: #39b67e;
-  --color-green-ink: #1c7a50;
-  --color-teal: #00535c;
-  --color-slate: #5b6480;
-  --color-canvas: #f3f2f3;
-  --color-line: #e2e2ea;
-  --color-line-strong: #cfd0dc;
-  --color-tint-blue: #dce8ff;
-  --color-tint-ice: #d2eeff;
-  --color-tint-mint: #d5ffde;
-  --color-tint-teal: #d9ecee;
-  --color-tint-navy: #e3e4ee;
+
+@theme {
+  --font-sans: "Gotham", "GE SS Text", "Noto Sans Arabic", system-ui, sans-serif;
+
+  --color-navy: #031330;
+  --color-navy-deep: #031330;
+  --color-navy-900: #020b1f;
+  --color-blue: #3e84be;
+  --color-blue-ink: #2a6496;
+  --color-green: #60b382;
+  --color-green-ink: #2f7a52;
+  --color-teal: #20525b;
+  --color-mint: #8fdd90;
+  --color-slate: #55637a;
+  --color-canvas: #f4f6f6;
+  --color-line: #e0e5e8;
+  --color-line-strong: #c9d1d6;
+  --color-tint-blue: #dceaf6;
+  --color-tint-ice: #dceaf6;
+  --color-tint-mint: #ddf2e4;
+  --color-tint-teal: #dce9eb;
+  --color-tint-navy: #e1e4ea;
   --color-orange: #ff8a4c;
   --color-orange-ink: #a8481a;
   --color-danger: #b42335;
@@ -27,8 +61,8 @@
   --color-warn: #8a5a00;
   --color-warn-tint: #fff1d1;
 
-  --shadow-card: 0 1px 2px rgb(10 15 60 / 0.04), 0 2px 8px rgb(10 15 60 / 0.04);
-  --shadow-raised: 0 2px 4px rgb(10 15 60 / 0.06), 0 12px 32px -8px rgb(10 15 60 / 0.18);
+  --shadow-card: 0 1px 2px rgb(3 19 48 / 0.04), 0 2px 8px rgb(3 19 48 / 0.04);
+  --shadow-raised: 0 2px 4px rgb(3 19 48 / 0.06), 0 12px 32px -8px rgb(3 19 48 / 0.18);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }

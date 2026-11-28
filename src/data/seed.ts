@@ -146,7 +146,7 @@ const expertFor: Record<string, string> = {
   'الاستعداد للاستثمار': 'e-yasser',
   'العرض أمام المستثمرين': 'e-yasser',
   'بناء نموذج أولي سريع': 'e-faisal',
-  'من البحث العلمي إلى مشروع': 'e-khalid',
+  'من البحث العلمي إلى منتج في السوق': 'e-khalid',
 }
 
 const tamkeenIds = tamkeen.map((t) => t.id)
@@ -172,6 +172,7 @@ export const sessions: Session[] = [
   { id: 's9', teamId: 't12', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-10', time: '12:00', topic: 'أتمتة إدارة المخزون', status: 'done', notes: 'ربطنا المتجر بجدول مخزون مع تنبيهات نفاد.' },
   { id: 's10', teamId: 't14', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-21', time: '10:00', topic: 'نموذج تصنيف الصور: خيارات بلا خوادم', status: 'requested' },
   { id: 's11', teamId: 't11', hostId: 'e-khalid', kind: 'clinic', date: '2027-06-19', time: '11:00', topic: 'صياغة عقد الخدمة مع ملاك السكن', status: 'scheduled' },
+  { id: 's12', teamId: 't2', hostId: 'e-faisal', kind: 'clinic', date: '2027-06-23', time: '11:00', topic: 'أتمتة تقارير الاستخدام الأسبوعية', status: 'scheduled' },
 ]
 
 export const slots: Slot[] = [
@@ -183,10 +184,10 @@ export const slots: Slot[] = [
 ]
 
 export const events: JudgingEvent[] = [
-  { id: 'g1', title: 'عرض الاختيار', date: '2027-02-04', stage: 'ilham', capacity: 25, judgeIds: ['j-amal', 'j-majed', 'j-hind'], teamIds: teams.map((t) => t.id), published: true, advancedIds: teams.map((t) => t.id) },
+  { id: 'g1', title: 'مقابلات الفرق', date: '2027-02-11', stage: 'ilham', capacity: 25, judgeIds: ['j-amal', 'j-majed', 'j-hind'], teamIds: teams.map((t) => t.id), published: true, advancedIds: teams.map((t) => t.id) },
   { id: 'g2', title: 'يوم التحكيم: ختام تكوين', date: '2027-04-22', stage: 'takween', capacity: 10, judgeIds: ['j-amal', 'j-majed', 'j-hind'], teamIds: teams.filter((t) => t.joinedVia === 'advanced').map((t) => t.id), published: true, advancedIds: tamkeenIds.slice(0, 10) },
   { id: 'g3', title: 'يوم التحكيم: ختام تمكين', date: '2027-07-29', stage: 'tamkeen', capacity: 5, judgeIds: ['j-amal', 'j-rana', 'j-tareq'], teamIds: tamkeenIds, published: false },
-  { id: 'g4', title: 'يوم العروض الاستثماري', date: '2027-12-02', stage: 'sanam', capacity: 8, judgeIds: ['j-majed', 'j-tareq', 'j-hind'], teamIds: [], published: false },
+  { id: 'g4', title: 'يوم العروض الاستثماري', date: '2027-12-02', stage: 'intilaq', capacity: 8, judgeIds: ['j-majed', 'j-tareq', 'j-hind'], teamIds: [], published: false },
 ]
 
 /** Deterministic pseudo-random scores: advanced teams score higher. */
@@ -232,12 +233,12 @@ scores.push(
 )
 
 export const applications: Application[] = [
-  { id: 'ap1', at: '2027-06-02', track: 'sanam-seat', entry: 'founder', leadName: 'شادن العتيبي', email: 'shaden@example.com', phone: '0500000001', college: 'خريجة كلية إدارة الأعمال', teamName: 'وِرد', teamSize: 4, problem: 'صعوبة إدارة الحجوزات في المراكز الصحية الصغيرة.', idea: 'نظام حجز ومتابعة للمراكز الصغيرة. لدينا 6 مراكز مشتركة بإيراد شهري.', status: 'interview' },
-  { id: 'ap2', at: '2027-06-05', track: 'sanam-seat', entry: 'founder', leadName: 'مشاعل الحربي', email: 'mashael@example.com', phone: '0500000002', college: 'رائدة أعمال', teamName: 'قِطاف', teamSize: 3, problem: 'المزارع الصغيرة لا تصل للمستهلك مباشرة.', idea: 'منصة اشتراك أسبوعي لسلال الخضار من المزارع المحلية.', status: 'new' },
-  { id: 'ap3', at: '2027-06-09', track: 'sanam-seat', entry: 'research', leadName: 'د. وفاء الشهري', email: 'wafa@example.com', phone: '0500000003', college: 'كلية الصيدلة', teamName: 'تركيب', teamSize: 3, problem: 'غياب بدائل محلية لمستحضرات طبية جلدية.', idea: 'مستحضر مرخّص مبني على براءة اختراع للفريق، مع تجربة بيع في صيدليتين.', status: 'new' },
+  { id: 'ap1', at: '2027-06-02', track: 'intilaq-seat', entry: 'founder', leadName: 'شادن العتيبي', email: 'shaden@example.com', phone: '0500000001', college: 'خريجة كلية إدارة الأعمال', teamName: 'وِرد', teamSize: 4, problem: 'صعوبة إدارة الحجوزات في المراكز الصحية الصغيرة.', idea: 'نظام حجز ومتابعة للمراكز الصغيرة. لدينا 6 مراكز مشتركة بإيراد شهري.', status: 'interview' },
+  { id: 'ap2', at: '2027-06-05', track: 'intilaq-seat', entry: 'founder', leadName: 'مشاعل الحربي', email: 'mashael@example.com', phone: '0500000002', college: 'رائدة أعمال', teamName: 'قِطاف', teamSize: 3, problem: 'المزارع الصغيرة لا تصل للمستهلك مباشرة.', idea: 'منصة اشتراك أسبوعي لسلال الخضار من المزارع المحلية.', status: 'new' },
+  { id: 'ap3', at: '2027-06-09', track: 'intilaq-seat', entry: 'research', leadName: 'د. وفاء الشهري', email: 'wafa@example.com', phone: '0500000003', college: 'كلية الصيدلة', teamName: 'تركيب', teamSize: 3, problem: 'غياب بدائل محلية لمستحضرات طبية جلدية.', idea: 'مستحضر مرخّص مبني على براءة اختراع للفريق، مع تجربة بيع في صيدليتين.', status: 'new' },
   { id: 'ap4', at: '2027-06-11', track: 'ilham', entry: 'student', leadName: 'رغد المطيري', email: 'raghad@example.com', phone: '0500000004', college: 'كلية التصاميم والفنون', teamName: '', teamSize: 1, problem: 'صعوبة إيجاد أزياء مناسبة لذوات الإعاقة الحركية.', idea: 'تصاميم تكيفية سهلة الارتداء.', status: 'new' },
   { id: 'ap5', at: '2027-06-12', track: 'ilham', entry: 'student', leadName: 'لجين القحطاني', email: 'lujain@example.com', phone: '0500000005', college: 'كلية علوم الحاسب والمعلومات', teamName: 'نَفَس', teamSize: 2, problem: 'مرضى الربو لا يتتبعون محفزات النوبات.', idea: 'تطبيق يربط جودة الهواء بالأعراض اليومية.', status: 'new' },
-  { id: 'ap6', at: '2027-05-30', track: 'sanam-seat', entry: 'founder', leadName: 'أسماء الدوسري', email: 'asma@example.com', phone: '0500000006', college: 'رائدة أعمال', teamName: 'منصّة رُكن', teamSize: 2, problem: 'المساحات التجارية الصغيرة شاغرة معظم الوقت.', idea: 'تأجير بالساعة للمساحات التجارية الصغيرة.', status: 'declined', note: 'المنتج في مرحلة الفكرة، يُنصح بالتقديم على الإلهام 2028.' },
+  { id: 'ap6', at: '2027-05-30', track: 'intilaq-seat', entry: 'founder', leadName: 'أسماء الدوسري', email: 'asma@example.com', phone: '0500000006', college: 'رائدة أعمال', teamName: 'منصّة رُكن', teamSize: 2, problem: 'المساحات التجارية الصغيرة شاغرة معظم الوقت.', idea: 'تأجير بالساعة للمساحات التجارية الصغيرة.', status: 'declined', note: 'المنتج في مرحلة الفكرة، يُنصح بالتقديم على الإلهام 2028.' },
 ]
 
 export const nominations: Nomination[] = [

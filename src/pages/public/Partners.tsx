@@ -41,7 +41,7 @@ const logos: LogoItem[] = [
         className="flex items-center gap-2 rounded-lg border border-dashed border-line-strong px-5 text-sm font-medium whitespace-nowrap text-slate"
         style={{ height: HEIGHT }}
       >
-        <Star className="size-3.5" color="#2086C2" />
+        <Star className="size-3.5" color="#3E84BE" />
         شعار شريك
       </span>
     ),

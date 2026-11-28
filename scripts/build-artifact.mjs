@@ -20,10 +20,7 @@ if (script?.length !== 1 || style?.length !== 1) throw new Error('Unexpected bui
 const page = [
   '<title>منصة سُدُم</title>',
   '<meta name="description" content="سُدُم — حاضنة جامعة الأميرة نورة بنت عبدالرحمن: رحلة من الفكرة إلى السوق في أربع محطات." />',
-  '<meta name="theme-color" content="#0A0F3C" />',
-  '<link rel="preconnect" href="https://fonts.googleapis.com" />',
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" />',
+  '<meta name="theme-color" content="#031330" />',
   '<script>document.documentElement.lang = "ar"; document.documentElement.dir = "rtl";</script>',
   style[0],
   '<div id="root"></div>',

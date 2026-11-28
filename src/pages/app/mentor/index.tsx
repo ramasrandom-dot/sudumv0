@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowRight, Check, ClipboardCheck, ExternalLink, Plus, Trash2, Undo2 } from 'lucide-react'
 import { StageBadge } from '@/components/brand'
-import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, Meta, PageHeader, Progress, Select, Textarea, buttonClass, useToast } from '@/components/ui'
-import { ENTRY_POINTS, STAGE, TODAY } from '@/data/program'
+import { Avatar, Badge, Button, Card, CardHeader, EmptyState, Field, Input, Meta, PageHeader, Progress, Select, Textarea, useToast } from '@/components/ui'
+import { ENTRY_POINTS, ROLE_COLOR, ROLE_LABEL, STAGE, TODAY } from '@/data/program'
 import type { Milestone, Team } from '@/data/types'
 import { fmtDay } from '@/lib/dates'
 import { firstName } from '@/lib/cn'
 import { useMe, useStore } from '@/store/AppStore'
 import { byId, isOverdue, milestoneProgress, stageWeek, teamMilestones, teamsOf } from '@/store/selectors'
-import { DateChip, Hero, ListRow, MilestoneBadge, NextStep, Rel, SectionTitle, SessionBadge, sessionKind } from '../shared'
+import { Count, DateChip, Hero, ListRow, MilestoneBadge, NextStep, Rel, SectionTitle, SessionBadge, sessionKind } from '../shared'
 
 /* ───────────── Review widget (shared with the reviews queue) ───────────── */
 
@@ -85,11 +85,18 @@ export function MentorTeams() {
   const queue = state.milestones
     .filter((m) => m.status === 'submitted' && teams.some((t) => t.id === m.teamId))
     .sort((a, b) => a.due.localeCompare(b.due))
+  const dates = state.sessions
+    .filter((s) => s.hostId === me.id && s.status === 'scheduled' && s.date >= TODAY)
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
   const week = stageWeek('tamkeen')
+  const tone = ROLE_COLOR.mentor
 
   return (
     <>
       <Hero
+        tag={ROLE_LABEL.mentor}
+        color={tone.color}
+        on={tone.on}
         hello={`أهلًا ${firstName(me.name)}`}
         line={
           <>
@@ -99,32 +106,68 @@ export function MentorTeams() {
       >
         <NextStep
           icon={ClipboardCheck}
-          title={queue.length ? <><span className="tabular">{queue.length}</span> مهام بانتظار اعتمادك</> : 'لا مهام بانتظارك'}
+          title={queue.length ? <><span className="tabular">{queue.length}</span> مهام بانتظار اعتمادك</> : 'لا شيء بانتظارك الآن'}
           hint={queue.length ? 'اعتمدها أو أعدها للفريق بملاحظة.' : 'تظهر هنا تسليمات فرقك الجديدة.'}
           action={
             queue.length > 0 && (
-              <a href="#queue" className={buttonClass('primary', 'lg')}>
+              <Button size="lg" onClick={() => document.getElementById('queue')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
                 ابدأ الاعتماد
-              </a>
+              </Button>
             )
           }
         />
       </Hero>
 
-      {queue.length > 0 && (
-        <>
-          <SectionTitle>بانتظار اعتمادك</SectionTitle>
-          <Card>
-            <ul id="queue" className="scroll-mt-24 divide-y divide-line">
-              {queue.map((m) => (
-                <ReviewMilestone key={m.id} m={m} team={byId(state.teams, m.teamId)} />
-              ))}
-            </ul>
-          </Card>
-        </>
-      )}
+      <SectionTitle>
+        <span id="queue" className="scroll-mt-24">
+          بانتظارك <Count n={queue.length} />
+        </span>
+      </SectionTitle>
+      <Card>
+        {queue.length ? (
+          <ul className="divide-y divide-line">
+            {queue.map((m) => (
+              <ReviewMilestone key={m.id} m={m} team={byId(state.teams, m.teamId)} />
+            ))}
+          </ul>
+        ) : (
+          <EmptyState title="لا شيء بانتظارك الآن">تظهر هنا تسليمات فرقك عند وصولها.</EmptyState>
+        )}
+      </Card>
 
-      <SectionTitle>فرقي</SectionTitle>
+      <SectionTitle
+        action={
+          <Link to="/app/mentor/dates" className="text-sm font-semibold text-blue-ink hover:underline">
+            كل المواعيد
+          </Link>
+        }
+      >
+        مواعيدك القادمة <Count n={dates.length} />
+      </SectionTitle>
+      <Card>
+        {dates.length ? (
+          <ul className="divide-y divide-line">
+            {dates.slice(0, 3).map((s) => (
+              <ListRow key={s.id}>
+                <DateChip iso={s.date} time={s.time} />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-navy">{s.topic}</p>
+                  <p className="text-sm text-slate">
+                    فريق {byId(state.teams, s.teamId)?.name} · {sessionKind(s.kind)}
+                  </p>
+                </div>
+                <Rel iso={s.date} />
+              </ListRow>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState title="لا مواعيد قادمة" />
+        )}
+      </Card>
+
+      <SectionTitle>
+        فرقك <Count n={teams.length} />
+      </SectionTitle>
       {teams.length === 0 ? (
         <Card><EmptyState title="لم تُسند إليك فرق بعد" /></Card>
       ) : (
@@ -134,14 +177,12 @@ export function MentorTeams() {
             const p = milestoneProgress(ms)
             const waiting = ms.filter((m) => m.status === 'submitted').length
             const late = ms.filter(isOverdue).length
-            const next = state.sessions
-              .filter((s) => s.teamId === t.id && s.hostId === me.id && s.status === 'scheduled' && s.date >= TODAY)
-              .sort((a, b) => a.date.localeCompare(b.date))[0]
+            const next = dates.find((s) => s.teamId === t.id)
             return (
               <li key={t.id}>
                 <Link
                   to={`/app/mentor/teams/${t.id}`}
-                  className="flex h-full flex-col gap-4 rounded-xl border border-line bg-white p-5 shadow-card transition-[border-color,box-shadow] duration-200 hover:border-navy/30 hover:shadow-raised"
+                  className="flex h-full flex-col gap-4 rounded-2xl border border-line bg-white p-5 shadow-card transition-[border-color,box-shadow] duration-200 hover:border-navy/30 hover:shadow-raised"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">

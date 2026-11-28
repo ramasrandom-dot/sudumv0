@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LogOut, RotateCcw } from 'lucide-react'
-import { Logo } from '@/components/brand'
+import { Logo, PnuLogo } from '@/components/brand'
 import { ConfirmAction, Select, SkipLink, useToast } from '@/components/ui'
 import { ROLE_LABEL, TODAY } from '@/data/program'
 import { DEMO_USERS } from '@/data/seed'
@@ -40,8 +40,10 @@ export default function AppLayout() {
         style={{ top: 'env(safe-area-inset-top, 0px)' }}
       >
         <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
-          <Link to="/" aria-label="الموقع العام لسُدُم" className="shrink-0">
+          <Link to="/" aria-label="الموقع العام لسُدُم" className="flex shrink-0 items-center gap-3">
             <Logo className="h-9" />
+            <span className="hidden h-7 w-px bg-line-strong sm:block" aria-hidden />
+            <PnuLogo variant="color" className="hidden h-8 sm:block" />
           </Link>
 
           <nav aria-label="أقسام المنصة" className="mx-auto hidden items-center gap-1 lg:flex">

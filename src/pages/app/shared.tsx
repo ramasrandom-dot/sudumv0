@@ -64,7 +64,7 @@ export function Stat({ label, value, note, accent }: { label: string; value: Rea
   return (
     <div className="flex flex-col gap-1 rounded-xl border border-line bg-white p-5 shadow-card">
       <span className="text-sm text-slate">{label}</span>
-      <span className="tabular text-3xl font-bold" style={{ color: accent ?? '#0A0F3C' }}>
+      <span className="tabular text-3xl font-bold" style={{ color: accent ?? '#031330' }}>
         {value}
       </span>
       {note && <span className="text-sm text-slate">{note}</span>}
@@ -86,12 +86,15 @@ export function StageDot({ stage }: { stage: Team['stage'] }) {
 export function Hero({
   hello,
   line,
-  color = '#0A0F3C',
+  tag,
+  color = '#031330',
   on = '#FFFFFF',
   children,
 }: {
   hello: ReactNode
   line?: ReactNode
+  /** the role's name, shown above the greeting */
+  tag?: ReactNode
   color?: string
   on?: string
   children?: ReactNode
@@ -99,6 +102,12 @@ export function Hero({
   return (
     <section className="relative isolate overflow-hidden rounded-3xl px-6 py-8 shadow-raised md:px-10 md:py-10" style={{ background: color, color: on }}>
       <BigStar className="spin-slow pointer-events-none absolute -top-16 -left-14 -z-10 size-64 opacity-15 md:size-80" />
+      {tag && (
+        <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-black/15 px-3 py-1 text-sm font-medium">
+          <BigStar className="size-3" />
+          {tag}
+        </p>
+      )}
       <h1 className="text-3xl font-bold md:text-5xl">{hello}</h1>
       {line && <p className="mt-2 text-lg opacity-85 md:text-xl">{line}</p>}
       {children && <div className="mt-6 flex flex-col gap-4">{children}</div>}
@@ -147,6 +156,11 @@ export function Tile({ to, icon: Icon, label, value, count, alert }: { to: strin
       <ArrowLeft className="size-5 shrink-0 text-slate transition-transform duration-200 group-hover:-translate-x-1" aria-hidden />
     </Link>
   )
+}
+
+/** The number beside a section title. */
+export function Count({ n }: { n: number }) {
+  return <span className="tabular ms-1 rounded-full bg-line px-2.5 py-0.5 align-middle text-sm font-medium text-navy">{n}</span>
 }
 
 export function SectionTitle({ children, action }: { children: ReactNode; action?: ReactNode }) {

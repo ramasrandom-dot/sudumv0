@@ -1,6 +1,7 @@
 import { Check } from 'lucide-react'
-import logoColor from '@/assets/brand/sudum-logo-color.png'
-import logoWhite from '@/assets/brand/sudum-logo-white.png'
+import logoColor from '@/assets/brand/sudum-logo-color.svg'
+import logoWhite from '@/assets/brand/sudum-logo-white.svg'
+import pnuColor from '@/assets/brand/pnu-logo-color.png'
 import pnuWhite from '@/assets/brand/pnu-logo-white.svg'
 import { STAGE, STAGES } from '@/data/program'
 import type { StageId } from '@/data/types'
@@ -40,20 +41,21 @@ export function Logo({ variant = 'color', className }: { variant?: 'color' | 'wh
       src={variant === 'white' ? logoWhite : logoColor}
       alt="سُدُم SUDUM"
       className={cn('h-10 w-auto', className)}
-      width={900}
-      height={391}
+      width={850}
+      height={369}
     />
   )
 }
 
-export function PnuLogo({ className }: { className?: string }) {
+/** The university lockup: colour on light surfaces, white on dark ones. */
+export function PnuLogo({ variant = 'white', className }: { variant?: 'color' | 'white'; className?: string }) {
   return (
     <img
-      src={pnuWhite}
-      alt="جامعة الأميرة نورة بنت عبدالرحمن · مركز الابتكار وريادة الأعمال"
+      src={variant === 'white' ? pnuWhite : pnuColor}
+      alt="جامعة الأميرة نورة بنت عبدالرحمن · وكالة الجامعة للدراسات العليا والبحث العلمي · مركز الابتكار وريادة الأعمال"
       className={cn('h-10 w-auto', className)}
-      width={1080}
-      height={358}
+      width={726}
+      height={200}
     />
   )
 }
@@ -83,7 +85,7 @@ export function StageTrack({ current, exited = false }: { current: StageId; exit
           <li key={s.id} className="flex min-w-0 flex-1 flex-col gap-2">
             <span
               className="h-1.5 rounded-full"
-              style={{ background: done || now ? s.color : '#E2E2EA', opacity: now && exited ? 0.4 : 1 }}
+              style={{ background: done || now ? s.color : '#E0E5E8', opacity: now && exited ? 0.4 : 1 }}
             />
             <span className={cn('flex items-center gap-1 text-xs', now ? 'font-bold text-navy' : 'text-slate')}>
               {done && <Check className="size-3" style={{ color: s.ink }} aria-hidden />}

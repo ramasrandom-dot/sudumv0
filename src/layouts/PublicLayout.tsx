@@ -4,11 +4,12 @@ import { Menu, X } from 'lucide-react'
 import SmoothScroll, { scrollToTop } from '@/lib/SmoothScroll'
 import { Logo, PnuLogo } from '@/components/brand'
 import { ButtonLink, SkipLink } from '@/components/ui'
+import { HELP_EMAIL } from '@/data/program'
 import { cn } from '@/lib/cn'
 
 const links = [
   { to: '/', label: 'الرئيسية', end: true },
-  { to: '/program', label: 'البرنامج' },
+  { to: '/program', label: 'المراحل' },
   { to: '/mentors', label: 'المرشدون والخبراء' },
   { to: '/apply', label: 'التقديم' },
 ]
@@ -37,8 +38,10 @@ function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
-        <Link to="/" className="shrink-0" aria-label="سُدُم: الصفحة الرئيسية">
+        <Link to="/" className="flex shrink-0 items-center gap-3 sm:gap-4" aria-label="سُدُم: الصفحة الرئيسية">
           <Logo variant="white" className="h-9 sm:h-10" />
+          <span className="h-8 w-px bg-white/20" aria-hidden />
+          <PnuLogo className="h-8 sm:h-9" />
         </Link>
 
         <nav aria-label="الرئيسية" className="hidden items-center gap-1 md:flex">
@@ -60,7 +63,7 @@ function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ButtonLink to="/login" variant="light" size="md" className="hidden sm:inline-flex">
+          <ButtonLink to="/login" variant="light" size="md" className="max-sm:hidden">
             دخول المنصة
           </ButtonLink>
           <button
@@ -112,13 +115,20 @@ function SiteFooter() {
             <span className="h-10 w-px bg-white/15" aria-hidden />
             <PnuLogo className="h-11" />
           </div>
-          <p className="mt-6 max-w-[42ch] text-white/70">
-            هنا تولد الشركات.
+          <p className="mt-6 max-w-[42ch] text-white/70">هنا تتشكّل الأفكار، وتتلاقى المواهب والفرص، لتولد مشاريع تصنع أثرها.</p>
+          <p className="mt-4 text-white/85">
+            {HELP_EMAIL ? (
+              <a className="hover:text-white hover:underline" href={`mailto:${HELP_EMAIL}`} dir="ltr">
+                {HELP_EMAIL}
+              </a>
+            ) : (
+              'بريد المساعدة: يُضاف قريبًا'
+            )}
           </p>
         </div>
         <nav aria-label="روابط الموقع" className="md:col-span-2 md:justify-self-end">
           <ul className="flex flex-wrap gap-x-8 gap-y-2 md:flex-col">
-            <li><Link className="text-white/85 hover:text-white" to="/program">البرنامج</Link></li>
+            <li><Link className="text-white/85 hover:text-white" to="/program">المراحل</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/mentors">المرشدون والخبراء</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/apply">التقديم</Link></li>
             <li><Link className="text-white/85 hover:text-white" to="/login">دخول المنصة</Link></li>
@@ -127,7 +137,7 @@ function SiteFooter() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-sm text-white/55 sm:px-6 lg:px-10">
-          <p>مركز الابتكار وريادة الأعمال | جامعة الأميرة نورة بنت عبد الرحمن</p>
+          <p>مركز الابتكار وريادة الأعمال | جامعة الأميرة نورة بنت عبدالرحمن</p>
           <p>نسخة تجريبية · البيانات افتراضية</p>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, ExternalLink, Lock } from 'lucide-react'
 import { StageBadge, Star } from '@/components/brand'
 import { Badge, Card, CardHeader, EmptyState, Field, Meta, PageHeader, Progress, Textarea, buttonClass, useToast } from '@/components/ui'
-import { CRITERIA, ENTRY_POINTS, STAGE } from '@/data/program'
+import { CRITERIA, ENTRY_POINTS, ROLE_COLOR, ROLE_LABEL, STAGE } from '@/data/program'
 import type { JudgingEvent } from '@/data/types'
 import { fmtDate, fmtDay, relativeDays } from '@/lib/dates'
 import { cn, firstName } from '@/lib/cn'
@@ -68,6 +68,9 @@ export function JudgeEvents() {
   return (
     <>
       <Hero
+        tag={ROLE_LABEL.judge}
+        color={ROLE_COLOR.judge.color}
+        on={ROLE_COLOR.judge.on}
         hello={`أهلًا ${firstName(me.name)}`}
         line={
           current ? (

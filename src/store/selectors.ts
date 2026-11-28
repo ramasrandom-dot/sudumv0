@@ -19,7 +19,7 @@ export const stageWeek = (stage: StageId) => {
 
 /** The stage that is running on TODAY, if any. */
 export const activeStage = (): StageId | undefined =>
-  (['ilham', 'takween', 'tamkeen', 'sanam'] as StageId[]).find((id) => TODAY >= STAGE[id].start && TODAY <= STAGE[id].end)
+  (['ilham', 'takween', 'tamkeen', 'intilaq'] as StageId[]).find((id) => TODAY >= STAGE[id].start && TODAY <= STAGE[id].end)
 
 export const teamMilestones = (state: AppState, teamId: string) =>
   state.milestones.filter((m) => m.teamId === teamId).sort((a, b) => a.due.localeCompare(b.due))
